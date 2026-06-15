@@ -699,16 +699,23 @@ function selectProject(data) {
 // ════════════════════════════════════════════════
 // CHOSEN CANDIDATE
 // ════════════════════════════════════════════════
-function setChosen(pk) {
+async function setChosen(pk) {
   if (!currentProject) return;
-  // toggle off if already chosen
-  if (projData.chosen === pk) {
-    projData.chosen = null;
-  } else {
-    projData.chosen = pk;
-  }
+
+  // toggle
+  projData.chosen = (projData.chosen === pk) ? null : pk;
   renderChosenState();
-  saveToGitHub();
+
+  // must save to GitHub – get token if we don't have one
+  const token = await ensureToken();
+  if (!token) {
+    // rolled back – user cancelled
+    projData.chosen = (projData.chosen === pk) ? null : pk;
+    renderChosenState();
+    showSaved('⚠ לא נשמר – נדרש טוקן');
+    return;
+  }
+  await saveToGitHub();
 }
 
 function renderChosenState() {
@@ -726,6 +733,25 @@ function renderChosenState() {
       chooseBtn.textContent = isChosen ? 'מועדף ✓' : 'קבע כמועדף';
     }
   });
+}
+
+// ════════════════════════════════════════════════
+// TOKEN MANAGEMENT
+// stored in sessionStorage so it survives page reload
+// but not shared between browser tabs/sessions
+// ════════════════════════════════════════════════
+function ensureToken() {
+  // already in memory
+  if (ghToken) return Promise.resolve(ghToken);
+  // try sessionStorage (survives F5, not tab close)
+  const stored = sessionStorage.getItem('gh_token');
+  if (stored) { ghToken = stored; return Promise.resolve(ghToken); }
+  // ask user
+  const t = prompt('הזן GitHub token לשמירה ל-GitHub:\n(Fine-grained · Contents: Read+Write · מאגר זה בלבד)');
+  if (!t || !t.trim()) return Promise.resolve(null);
+  ghToken = t.trim();
+  sessionStorage.setItem('gh_token', ghToken);
+  return Promise.resolve(ghToken);
 }
 
 // ════════════════════════════════════════════════
@@ -774,21 +800,29 @@ async function loadProjectFromGH(name) {
   }
 }
 
+async function triggerSave() {
+  if (!currentProject){ alert('לא נבחר פרויקט'); return; }
+  const token = await ensureToken();
+  if (!token) { showSaved('⚠ לא נשמר – נדרש טוקן'); return; }
+  await saveToGitHub();
+}
+
 async function saveToGitHub() {
   const name = currentProject;
   if (!name) return;
   const data = { name, chats: projData.chats, notes: projData.notes, chosen: projData.chosen||null, saved: new Date().toISOString() };
 
-  if (!ghToken) {
-    // No token – save locally only (chat messages already in memory)
-    localStorage.setItem('proj_'+name, JSON.stringify(data));
-    showSaved('נשמר מקומית');
-    return;
-  }
+  // always save locally as backup
+  localStorage.setItem('proj_'+name, JSON.stringify(data));
+
+  const token = ghToken || sessionStorage.getItem('gh_token');
+  if (!token) { showSaved('נשמר מקומית'); return; }
+  ghToken = token;
+
   try {
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
     const path = GH_API + encodeURIComponent(name) + '.json';
-    const headers = { 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json', 'Authorization':'token '+ghToken };
+    const headers = { 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json', 'Authorization':'token '+token };
     let sha;
     try { const c=await fetch(path,{headers}); if(c.ok){const f=await c.json();sha=f.sha;} } catch(e){}
     const body = { message:`Update ${name}`, content };
@@ -797,8 +831,7 @@ async function saveToGitHub() {
     if (!res.ok) throw new Error(await res.text());
     showSaved('✓ נשמר ב-GitHub');
   } catch(e) {
-    localStorage.setItem('proj_'+name, JSON.stringify(data));
-    showSaved('⚠ נשמר מקומית בלבד');
+    showSaved('⚠ שגיאת GitHub – נשמר מקומית');
   }
 }
 
@@ -1151,6 +1184,9 @@ function init(){
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO);
+  // restore token from session if available
+  const storedToken = sessionStorage.getItem('gh_token');
+  if (storedToken) ghToken = storedToken;
   // open modal on first load and pre-fetch project list
   loadProjList();
   document.getElementById('proj-modal').classList.add('open');
