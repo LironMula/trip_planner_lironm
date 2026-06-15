@@ -810,44 +810,57 @@ function switchAlt(pk, btn) {
   document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-'+pk).classList.add('active');
   btn.classList.add('active');
-  // fix map size after panel becomes visible
   setTimeout(() => {
     const m = mapInstances[pk];
     if (m) {
       m.invalidateSize();
-      const pts = MAP_POINTS[pk];
-      m.fitBounds(L.latLngBounds(pts.map(p=>[p.lat,p.lng])), { padding:[40,40] });
+      const d = MAP_DATA[pk];
+      const all = [...d.sleeps.map(s=>[s.lat,s.lng]), ...d.attractions.map(a=>[a.lat,a.lng])];
+      m.fitBounds(L.latLngBounds(all), { padding:[40,40] });
     }
   }, 50);
 }
 
 // ════════════════════════════════════════════════
-// MAPS – OpenStreetMap via Leaflet (free, no key)
+// MAPS – OpenStreetMap via Leaflet
+// sleep locations: large connected dots, show night range
+// attractions: numbered 1,2,3... per plan, color-coded wire from their base sleep location
 // ════════════════════════════════════════════════
-const MAP_POINTS = {
-  p7: [
-    {lat:45.6227,lng:8.7282,label:'מלאנפסה',     color:'#888',   day:'13.8',       nights:null},
-    {lat:46.022, lng:9.239, label:"מנאג'ו",       color:'#c8773a',day:'13–14.8',    nights:[1,2]},
-    {lat:45.977, lng:9.262, label:"בלאג'יו",      color:'#c8773a',day:'14.8',       nights:null},
-    {lat:46.194, lng:9.024, label:'בלינצונה',     color:'#aaa',   day:'15.8 עצירה', nights:null},
-    {lat:47.694, lng:9.273, label:'מירסבורג',     color:'#1a4a6b',day:'15–17.8',    nights:[3,5]},
-    {lat:47.706, lng:9.196, label:'אי מאינאו',    color:'#1a4a6b',day:'16.8',       nights:null},
-    {lat:47.895, lng:8.144, label:'טיטיזי',       color:'#2d5a3d',day:'18–19.8',    nights:[6,7]},
-    {lat:47.900, lng:7.922, label:'שטיינוואזן',   color:'#2d5a3d',day:'19.8',       nights:null},
-  ],
-  p9: [
-    {lat:45.6227,lng:8.7282,label:'מלאנפסה',     color:'#888',   day:'16.8',       nights:null},
-    {lat:46.022, lng:9.239, label:"מנאג'ו",       color:'#c8773a',day:'16–17.8',    nights:[1,2]},
-    {lat:45.977, lng:9.262, label:"בלאג'יו",      color:'#c8773a',day:'17.8',       nights:null},
-    {lat:46.194, lng:9.024, label:'בלינצונה',     color:'#aaa',   day:'18.8 עצירה', nights:null},
-    {lat:47.694, lng:9.273, label:'מירסבורג',     color:'#1a4a6b',day:'18–20.8',    nights:[3,5]},
-    {lat:47.706, lng:9.196, label:'אי מאינאו',    color:'#1a4a6b',day:'19.8',       nights:null},
-    {lat:47.895, lng:8.144, label:'טיטיזי',       color:'#2d5a3d',day:'21–24.8',    nights:[6,9]},
-    {lat:47.900, lng:7.922, label:'שטיינוואזן',   color:'#2d5a3d',day:'22.8',       nights:null},
-    {lat:48.130, lng:8.232, label:'טריברג',        color:'#2d5a3d',day:'23.8',       nights:null},
-    {lat:46.004, lng:8.951, label:'לוגאנו',        color:'#1a6b5a',day:'25.8',       nights:[10,10]},
-    {lat:45.6227,lng:8.7282,label:'מלאנפסה חזרה', color:'#888',   day:'26.8',       nights:null},
-  ]
+
+// Each sleep has { lat, lng, label, nights:[first,last], color }
+// Each attraction has { lat, lng, label, day, base: 'sleep-label' (matches sleep.label) }
+const MAP_DATA = {
+  p7: {
+    sleeps: [
+      { lat:45.6227, lng:8.7282, label:'מלאנפסה',  nights:null,  color:'#888888' },
+      { lat:46.022,  lng:9.239,  label:"מנאג'ו",    nights:[1,2], color:'#c8773a' },
+      { lat:47.694,  lng:9.273,  label:'מירסבורג',  nights:[3,5], color:'#1a4a6b' },
+      { lat:47.895,  lng:8.144,  label:'טיטיזי',    nights:[6,7], color:'#2d5a3d' },
+    ],
+    attractions: [
+      { lat:45.977,  lng:9.262,  label:"בלאג'יו",       day:'14.8',        base:"מנאג'ו"   },
+      { lat:46.194,  lng:9.024,  label:'בלינצונה',       day:'15.8 עצירה',  base:"מנאג'ו"   },
+      { lat:47.706,  lng:9.196,  label:'אי מאינאו',      day:'16.8',        base:'מירסבורג'  },
+      { lat:47.900,  lng:7.922,  label:'שטיינוואזן פארק',day:'19.8',        base:'טיטיזי'    },
+    ]
+  },
+  p9: {
+    sleeps: [
+      { lat:45.6227, lng:8.7282, label:'מלאנפסה',  nights:null,   color:'#888888' },
+      { lat:46.022,  lng:9.239,  label:"מנאג'ו",    nights:[1,2],  color:'#c8773a' },
+      { lat:47.694,  lng:9.273,  label:'מירסבורג',  nights:[3,5],  color:'#1a4a6b' },
+      { lat:47.895,  lng:8.144,  label:'טיטיזי',    nights:[6,9],  color:'#2d5a3d' },
+      { lat:46.004,  lng:8.951,  label:'לוגאנו',    nights:[10,10],color:'#1a6b5a' },
+    ],
+    attractions: [
+      { lat:45.977,  lng:9.262,  label:"בלאג'יו",        day:'17.8',       base:"מנאג'ו"  },
+      { lat:46.194,  lng:9.024,  label:'בלינצונה',        day:'18.8 עצירה', base:"מנאג'ו"  },
+      { lat:47.706,  lng:9.196,  label:'אי מאינאו',       day:'19.8',       base:'מירסבורג' },
+      { lat:47.706,  lng:9.196,  label:'שיט קונסטנץ',     day:'20.8',       base:'מירסבורג' },
+      { lat:47.900,  lng:7.922,  label:'שטיינוואזן פארק', day:'22.8',       base:'טיטיזי'   },
+      { lat:48.130,  lng:8.232,  label:'טריברג',           day:'23.8',       base:'טיטיזי'   },
+    ]
+  }
 };
 
 let leafletLoaded = false;
@@ -862,7 +875,6 @@ async function initMaps() {
     await ldScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
     leafletLoaded = true;
   }
-  // render p7 immediately (visible), p9 after short delay (hidden panel)
   renderMap('p7');
   setTimeout(() => renderMap('p9'), 200);
 }
@@ -870,8 +882,7 @@ async function initMaps() {
 function renderMap(pk) {
   const el = document.getElementById('map-'+pk);
   if (!el || mapInstances[pk]) return;
-  const pts = MAP_POINTS[pk];
-  const latlngs = pts.map(p => [p.lat, p.lng]);
+  const { sleeps, attractions } = MAP_DATA[pk];
 
   const map = L.map(el, { zoomControl:true, scrollWheelZoom:false });
   mapInstances[pk] = map;
@@ -880,42 +891,85 @@ function renderMap(pk) {
     attribution:'© OpenStreetMap', maxZoom:18
   }).addTo(map);
 
-  // route line
-  L.polyline(latlngs, { color:'#1a4a6b', weight:2.5, dashArray:'6 4', opacity:.65 }).addTo(map);
+  // ── 1. Main route: connect sleep locations with solid line ──
+  const sleepLatLngs = sleeps.map(s => [s.lat, s.lng]);
+  L.polyline(sleepLatLngs, {
+    color:'#444', weight:2.5, opacity:.55, dashArray: null
+  }).addTo(map);
 
-  // markers
-  pts.forEach((p, i) => {
-    const nightLabel = p.nights ? `<div style="font-size:9px;font-weight:700;opacity:.85">
-      לילות ${p.nights[0]}–${p.nights[1]}</div>` : '';
-    const markerSize = p.nights ? 32 : 24;
+  // ── 2. Spokes: from each sleep to its attractions ──
+  attractions.forEach(attr => {
+    const base = sleeps.find(s => s.label === attr.base);
+    if (!base) return;
+    L.polyline([[base.lat, base.lng],[attr.lat, attr.lng]], {
+      color: base.color, weight:1.8, opacity:.7, dashArray:'4 5'
+    }).addTo(map);
+  });
+
+  // ── 3. Sleep markers: large circle, night range label ──
+  sleeps.forEach(sleep => {
+    const nightText = sleep.nights
+      ? `${sleep.nights[0]}–${sleep.nights[1]}`
+      : '';
+    const size = sleep.nights ? 44 : 28;
+    const fontSize = sleep.nights ? '10' : '9';
     const icon = L.divIcon({
       className:'',
       html:`<div style="
-        background:${p.color};color:#fff;border-radius:50%;
-        width:${markerSize}px;height:${markerSize}px;
+        background:${sleep.color};color:#fff;border-radius:50%;
+        width:${size}px;height:${size}px;
         display:flex;flex-direction:column;align-items:center;justify-content:center;
-        font-size:${p.nights?'11':'10'}px;font-weight:800;
-        border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);
-        font-family:Heebo,sans-serif;line-height:1.1;">
-        <div>${i+1}</div>
-        ${nightLabel}
+        border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.4);
+        font-family:Heebo,sans-serif;line-height:1.15;text-align:center;">
+        ${nightText
+          ? `<div style="font-size:${fontSize}px;font-weight:900">${nightText}</div>
+             <div style="font-size:8px;opacity:.85">לילות</div>`
+          : `<div style="font-size:9px;font-weight:700">✈</div>`}
       </div>`,
-      iconSize:[markerSize,markerSize], iconAnchor:[markerSize/2,markerSize/2]
+      iconSize:[size,size], iconAnchor:[size/2,size/2]
     });
-    const nightInfo = p.nights
-      ? `<br><span style="font-size:.78rem;color:#c8773a;font-weight:700">לילות ${p.nights[0]}–${p.nights[1]}</span>` : '';
-    L.marker([p.lat, p.lng], {icon})
+    const nightPopup = sleep.nights
+      ? `<span style="color:${sleep.color};font-weight:700">לילות ${sleep.nights[0]}–${sleep.nights[1]}</span>` : '';
+    L.marker([sleep.lat, sleep.lng], {icon, zIndexOffset:100})
       .addTo(map)
-      .bindPopup(`<div dir="rtl" style="font-family:Heebo,sans-serif;min-width:130px">
-        <strong>${p.label}</strong>${nightInfo}<br>
-        <span style="font-size:.8rem;color:#666">${p.day}</span>
+      .bindPopup(`<div dir="rtl" style="font-family:Heebo,sans-serif;min-width:120px">
+        <strong>${sleep.label}</strong><br>${nightPopup}
       </div>`);
   });
 
-  // fitBounds – use setTimeout to ensure container has size
+  // ── 4. Attraction markers: small numbered circle ──
+  attractions.forEach((attr, i) => {
+    const base = sleeps.find(s => s.label === attr.base);
+    const color = base ? base.color : '#666';
+    const size = 24;
+    const icon = L.divIcon({
+      className:'',
+      html:`<div style="
+        background:${color};color:#fff;border-radius:50%;
+        width:${size}px;height:${size}px;
+        display:flex;align-items:center;justify-content:center;
+        border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);
+        font-family:Heebo,sans-serif;font-size:11px;font-weight:800;">
+        ${i+1}
+      </div>`,
+      iconSize:[size,size], iconAnchor:[size/2,size/2]
+    });
+    L.marker([attr.lat, attr.lng], {icon, zIndexOffset:50})
+      .addTo(map)
+      .bindPopup(`<div dir="rtl" style="font-family:Heebo,sans-serif;min-width:120px">
+        <strong>${attr.label}</strong><br>
+        <span style="font-size:.8rem;color:#666">${attr.day}</span>
+      </div>`);
+  });
+
+  // ── 5. Fit all points ──
+  const allLatLngs = [
+    ...sleeps.map(s=>[s.lat,s.lng]),
+    ...attractions.map(a=>[a.lat,a.lng])
+  ];
   setTimeout(() => {
     map.invalidateSize();
-    map.fitBounds(L.latLngBounds(latlngs), { padding:[40,40] });
+    map.fitBounds(L.latLngBounds(allLatLngs), { padding:[40,40] });
   }, 100);
 }
 
