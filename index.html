@@ -673,6 +673,15 @@ function switchAlt(pk, btn) {
   document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-'+pk).classList.add('active');
   btn.classList.add('active');
+  // fix map size after panel becomes visible
+  setTimeout(() => {
+    const m = mapInstances[pk];
+    if (m) {
+      m.invalidateSize();
+      const pts = MAP_POINTS[pk];
+      m.fitBounds(L.latLngBounds(pts.map(p=>[p.lat,p.lng])), { padding:[40,40] });
+    }
+  }, 50);
 }
 
 // ════════════════════════════════════════════════
@@ -680,25 +689,25 @@ function switchAlt(pk, btn) {
 // ════════════════════════════════════════════════
 const MAP_POINTS = {
   p7: [
-    {lat:45.6227,lng:8.7282,label:'מלאנפסה',color:'#888',day:'13.8'},
-    {lat:46.022, lng:9.239, label:"מנאג'ו (לינה)",color:'#c8773a',day:'13–14.8'},
-    {lat:45.977, lng:9.262, label:"בלאג'יו",color:'#c8773a',day:'14.8'},
-    {lat:46.194, lng:9.024, label:'בלינצונה',color:'#999',day:'15.8 עצירה'},
-    {lat:47.694, lng:9.273, label:'מירסבורג (לינה)',color:'#1a4a6b',day:'15–17.8'},
-    {lat:47.706, lng:9.196, label:'אי מאינאו',color:'#1a4a6b',day:'16.8'},
-    {lat:47.895, lng:8.144, label:'טיטיזי (לינה)',color:'#2d5a3d',day:'18–19.8'},
-    {lat:47.900, lng:7.922, label:'שטיינוואזן פארק',color:'#2d5a3d',day:'19.8'},
+    {lat:45.6227,lng:8.7282,label:'מלאנפסה',     color:'#888',   day:'13.8',       nights:null},
+    {lat:46.022, lng:9.239, label:"מנאג'ו",       color:'#c8773a',day:'13–14.8',    nights:[1,2]},
+    {lat:45.977, lng:9.262, label:"בלאג'יו",      color:'#c8773a',day:'14.8',       nights:null},
+    {lat:46.194, lng:9.024, label:'בלינצונה',     color:'#aaa',   day:'15.8 עצירה', nights:null},
+    {lat:47.694, lng:9.273, label:'מירסבורג',     color:'#1a4a6b',day:'15–17.8',    nights:[3,5]},
+    {lat:47.706, lng:9.196, label:'אי מאינאו',    color:'#1a4a6b',day:'16.8',       nights:null},
+    {lat:47.895, lng:8.144, label:'טיטיזי',       color:'#2d5a3d',day:'18–19.8',    nights:[6,7]},
+    {lat:47.900, lng:7.922, label:'שטיינוואזן',   color:'#2d5a3d',day:'19.8',       nights:null},
   ],
   p9: [
-    {lat:45.6227,lng:8.7282,label:'מלאנפסה',color:'#888',day:'16.8'},
-    {lat:46.022, lng:9.239, label:"מנאג'ו (לינה)",color:'#c8773a',day:'16–17.8'},
-    {lat:45.977, lng:9.262, label:"בלאג'יו",color:'#c8773a',day:'17.8'},
-    {lat:46.194, lng:9.024, label:'בלינצונה',color:'#999',day:'18.8 עצירה'},
-    {lat:47.694, lng:9.273, label:'מירסבורג (לינה)',color:'#1a4a6b',day:'18–20.8'},
-    {lat:47.706, lng:9.196, label:'אי מאינאו',color:'#1a4a6b',day:'19.8'},
-    {lat:47.895, lng:8.144, label:'טיטיזי (לינה)',color:'#2d5a3d',day:'21–24.8'},
-    {lat:47.900, lng:7.922, label:'שטיינוואזן פארק',color:'#2d5a3d',day:'22.8'},
-    {lat:48.130, lng:8.232, label:'טריברג',color:'#2d5a3d',day:'23.8'},
+    {lat:45.6227,lng:8.7282,label:'מלאנפסה',     color:'#888',   day:'16.8',       nights:null},
+    {lat:46.022, lng:9.239, label:"מנאג'ו",       color:'#c8773a',day:'16–17.8',    nights:[1,2]},
+    {lat:45.977, lng:9.262, label:"בלאג'יו",      color:'#c8773a',day:'17.8',       nights:null},
+    {lat:46.194, lng:9.024, label:'בלינצונה',     color:'#aaa',   day:'18.8 עצירה', nights:null},
+    {lat:47.694, lng:9.273, label:'מירסבורג',     color:'#1a4a6b',day:'18–20.8',    nights:[3,5]},
+    {lat:47.706, lng:9.196, label:'אי מאינאו',    color:'#1a4a6b',day:'19.8',       nights:null},
+    {lat:47.895, lng:8.144, label:'טיטיזי',       color:'#2d5a3d',day:'21–24.8',    nights:[6,9]},
+    {lat:47.900, lng:7.922, label:'שטיינוואזן',   color:'#2d5a3d',day:'22.8',       nights:null},
+    {lat:48.130, lng:8.232, label:'טריברג',        color:'#2d5a3d',day:'23.8',       nights:null},
   ]
 };
 
@@ -707,61 +716,68 @@ const mapInstances = {};
 
 async function initMaps() {
   if (!leafletLoaded) {
-    // Load Leaflet CSS
     const css = document.createElement('link');
     css.rel = 'stylesheet';
     css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
     document.head.appendChild(css);
-    // Load Leaflet JS
     await ldScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
     leafletLoaded = true;
   }
+  // render p7 immediately (visible), p9 after short delay (hidden panel)
   renderMap('p7');
-  renderMap('p9');
+  setTimeout(() => renderMap('p9'), 200);
 }
 
 function renderMap(pk) {
   const el = document.getElementById('map-'+pk);
   if (!el || mapInstances[pk]) return;
   const pts = MAP_POINTS[pk];
-  // center = average of all points
-  const avgLat = pts.reduce((s,p)=>s+p.lat,0)/pts.length;
-  const avgLng = pts.reduce((s,p)=>s+p.lng,0)/pts.length;
+  const latlngs = pts.map(p => [p.lat, p.lng]);
 
-  const map = L.map(el, { zoomControl:true, scrollWheelZoom:false }).setView([avgLat, avgLng], 7);
+  const map = L.map(el, { zoomControl:true, scrollWheelZoom:false });
   mapInstances[pk] = map;
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution:'© OpenStreetMap',
-    maxZoom:18
+    attribution:'© OpenStreetMap', maxZoom:18
   }).addTo(map);
 
-  // draw route line
-  const latlngs = pts.map(p => [p.lat, p.lng]);
-  L.polyline(latlngs, { color:'#1a4a6b', weight:2.5, dashArray:'6 4', opacity:.7 }).addTo(map);
+  // route line
+  L.polyline(latlngs, { color:'#1a4a6b', weight:2.5, dashArray:'6 4', opacity:.65 }).addTo(map);
 
-  // add markers
+  // markers
   pts.forEach((p, i) => {
+    const nightLabel = p.nights ? `<div style="font-size:9px;font-weight:700;opacity:.85">
+      לילות ${p.nights[0]}–${p.nights[1]}</div>` : '';
+    const markerSize = p.nights ? 32 : 24;
     const icon = L.divIcon({
       className:'',
       html:`<div style="
         background:${p.color};color:#fff;border-radius:50%;
-        width:28px;height:28px;display:flex;align-items:center;justify-content:center;
-        font-size:11px;font-weight:800;border:2px solid #fff;
-        box-shadow:0 2px 6px rgba(0,0,0,.3);font-family:Heebo,sans-serif;">
-        ${i+1}</div>`,
-      iconSize:[28,28], iconAnchor:[14,14]
+        width:${markerSize}px;height:${markerSize}px;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        font-size:${p.nights?'11':'10'}px;font-weight:800;
+        border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);
+        font-family:Heebo,sans-serif;line-height:1.1;">
+        <div>${i+1}</div>
+        ${nightLabel}
+      </div>`,
+      iconSize:[markerSize,markerSize], iconAnchor:[markerSize/2,markerSize/2]
     });
+    const nightInfo = p.nights
+      ? `<br><span style="font-size:.78rem;color:#c8773a;font-weight:700">לילות ${p.nights[0]}–${p.nights[1]}</span>` : '';
     L.marker([p.lat, p.lng], {icon})
       .addTo(map)
-      .bindPopup(`<div dir="rtl" style="font-family:Heebo,sans-serif;min-width:120px">
-        <strong>${p.label}</strong><br>
+      .bindPopup(`<div dir="rtl" style="font-family:Heebo,sans-serif;min-width:130px">
+        <strong>${p.label}</strong>${nightInfo}<br>
         <span style="font-size:.8rem;color:#666">${p.day}</span>
       </div>`);
   });
 
-  // fit bounds
-  map.fitBounds(L.latLngBounds(latlngs), { padding:[30,30] });
+  // fitBounds – use setTimeout to ensure container has size
+  setTimeout(() => {
+    map.invalidateSize();
+    map.fitBounds(L.latLngBounds(latlngs), { padding:[40,40] });
+  }, 100);
 }
 
 function ldScript(src){ return new Promise((r,j)=>{ const s=document.createElement('script'); s.src=src; s.onload=r; s.onerror=j; document.head.appendChild(s); }); }
