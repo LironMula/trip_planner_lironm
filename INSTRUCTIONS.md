@@ -1,7 +1,10 @@
 # Trip Planner – Agent Instructions
 
-This document explains how to add or update a project in the trip planner web app hosted at:
-**https://lironmula.github.io/trip_planner_lironm/**
+This document is the **single source of truth** for any AI agent adding or updating a project.
+App URL: **https://lironmula.github.io/trip_planner_lironm/**
+
+> **Your job is to research the trip and build great content.**
+> All technical implementation details are in this file — the prompt you received should contain only trip-specific questions.
 
 ---
 
@@ -9,7 +12,7 @@ This document explains how to add or update a project in the trip planner web ap
 
 ```
 trip_planner_lironm/
-├── index.html          ← the web app (do not modify unless updating the app itself)
+├── index.html          ← the web app (modify only for new alternatives or map data)
 ├── INSTRUCTIONS.md     ← this file
 └── projects/
     ├── 2026_summer_trip.json
@@ -18,24 +21,32 @@ trip_planner_lironm/
 
 ---
 
-## How to Add a New Project
+## Overview: What Files You Need to Create or Update
 
-### Step 1 – Create the JSON file
+| Task | File(s) to touch |
+|------|-----------------|
+| Add a new project | `projects/<name>.json` only |
+| Add/update Q&A or chat | `projects/<name>.json` only |
+| Add a new alternative (sidebar tab) | `index.html` — `PLANS`, `MAP_DATA`, HTML panels |
+| Update map points for an existing alternative | `index.html` — `MAP_DATA` only |
 
-Create a file named `projects/<project_name>.json`.
+---
 
-**Naming rules:**
-- Use underscores, not spaces: `2027_winter_trip.json`
-- Lowercase preferred
-- No special characters
+## Part 1 — Project JSON
 
-### Step 2 – JSON structure
+### Naming rules
+- Filename: `projects/<name>.json`
+- Name: letters, digits, underscores, hyphens only. No spaces. Max 50 chars.
+- Example: `portugal_2027.json`
+
+### Full JSON structure
 
 ```json
 {
-  "name": "2027_winter_trip",
+  "name": "portugal_2027",
   "created": "2027-01-01T00:00:00.000Z",
   "saved":   "2027-01-01T00:00:00.000Z",
+  "chosen":  null,
   "chats": {
     "p7": [],
     "p9": []
@@ -44,168 +55,220 @@ Create a file named `projects/<project_name>.json`.
 }
 ```
 
-**Fields:**
-| Field | Type | Description |
-|-------|------|-------------|
-| `name` | string | Must match the filename (without `.json`) |
-| `created` | ISO 8601 datetime | Creation date |
-| `saved` | ISO 8601 datetime | Last save date – update on every write |
-| `chats` | object | Chat messages per alternative. Keys must match alternative keys in `index.html` (`p7`, `p9`, etc.) |
-| `notes` | object | Free key-value notes. Currently unused by the UI but preserved on save |
-| `chosen` | string or null | Key of the chosen/preferred alternative (`"p7"`, `"p9"`, or `null`). The app opens this alternative first on project load. |
+| Field | Type | Notes |
+|-------|------|-------|
+| `name` | string | Must match filename (without `.json`) |
+| `created` | ISO 8601 | Creation timestamp |
+| `saved` | ISO 8601 | Update on every write |
+| `chosen` | `"p7"` / `"p9"` / `null` | Which alternative opens first |
+| `chats` | object | Keys must match alternative keys in `index.html` |
+| `notes` | object | Reserved — leave as `{}` |
 
-### Step 3 – Chat message format
-
-Each item in `chats.p7` or `chats.p9` must follow this structure:
+### Chat message format
 
 ```json
 {
-  "plan_key": "p7",
-  "username": "Liron",
-  "message": "This looks great - I prefer the 7-night option",
+  "plan_key":   "p7",
+  "username":   "Liron",
+  "message":    "This looks great",
   "created_at": "2026-06-15T14:30:00.000Z"
 }
 ```
 
-**Validation rules enforced by the UI:**
-- `username`: letters only (Hebrew, Latin, Arabic), max 20 characters
-- `message`: letters, digits, dashes and spaces only. Apostrophes are removed. All other characters become underscores. Max 1000 characters
-- Max **20 messages** per alternative (`p7` or `p9`). Messages beyond 20 are ignored
+**Security rules (enforced by UI):**
+- `username`: letters only (Hebrew/Latin/Arabic), max 20 chars
+- `message`: letters, digits, dashes, spaces only — no `< > " ' / = \`` — max 1000 chars
+- Max **20 messages** per alternative
 
-### Step 4 – Push to GitHub via API
+---
 
-Use the GitHub Contents API. Replace `<TOKEN>` with a Fine-grained personal access token
-with **Contents: Read and Write** permission on this repository only.
+## Part 2 — Alternatives in index.html
 
-```bash
-# Encode the JSON file
-CONTENT=$(base64 -w 0 projects/my_new_project.json)
+The app has **two hardcoded alternatives**: `p7` and `p9`.
+Each is defined in three places inside `index.html`:
 
-# Push (new file – no sha needed)
-curl -X PUT \
-  "https://api.github.com/repos/LironMula/trip_planner_lironm/contents/projects/my_new_project.json" \
-  -H "Authorization: token <TOKEN>" \
-  -H "Accept: application/vnd.github.v3+json" \
-  -H "Content-Type: application/json" \
-  -d "{\"message\": \"Add my_new_project\", \"content\": \"$CONTENT\"}"
+### 2a. `PLANS` object — trip data
+
+Located inside `<script>` near the top. Structure:
+
+```javascript
+const PLANS = {
+  p7: {
+    rows: [
+      // One entry per day — shown in the summary table
+      { d:'13.8', r:'Airport → Lake Como', dr:'1h00m', s:'Menaggio', z:'zi' },
+      // z values: 'zi'=Italy, 'zk'=Konstanz/Switzerland, 'zf'=forest, 'zx'=flight day
+    ],
+    det: [
+      // One entry per day — shown in the detailed plan
+      {
+        d: '13.8',
+        t: 'Arrival at Lake Como',
+        z: 'zi',
+        m: 'Morning: ...',   // בוקר
+        n: 'Noon: ...',      // צהריים
+        e: 'Evening: ...',   // ערב
+        sp: 'Split plan for special needs child: ...'
+      },
+    ],
+    qa: [
+      // Q&A summary — ordered from GENERAL to SPECIFIC
+      // First: what is the destination / why go there
+      // Then: logistics (car, cost, borders, food restrictions)
+      // Then: activities, accommodation
+      // Last: fine-grained / personal specifics
+      { q: 'What is the Black Forest?', a: 'The Black Forest is...' },
+      { q: 'Do we need a rental car?',  a: 'Yes, because...' },
+      // ... more Q&A
+    ]
+  },
+  p9: {
+    // same structure
+  }
+};
 ```
 
-**To update an existing file** you must include the current `sha`:
+**Important — apostrophes in Hebrew text:**
+Hebrew words containing `'` (e.g. בלאג'יו, צ'ק אין) **must** be escaped as `\'` inside single-quoted JS strings, or the entire script will silently break. Use `\'` or switch to backtick strings.
 
-```bash
-# Get current sha
-SHA=$(curl -s \
-  -H "Authorization: token <TOKEN>" \
-  "https://api.github.com/repos/LironMula/trip_planner_lironm/contents/projects/my_project.json" \
-  | python3 -c "import sys,json; print(json.load(sys.stdin)['sha'])")
+### 2b. `MAP_DATA` object — map visuals
 
-# Update
-CONTENT=$(base64 -w 0 projects/my_project.json)
-curl -X PUT \
-  "https://api.github.com/repos/LironMula/trip_planner_lironm/contents/projects/my_project.json" \
-  -H "Authorization: token <TOKEN>" \
-  -H "Accept: application/vnd.github.v3+json" \
-  -H "Content-Type: application/json" \
-  -d "{\"message\": \"Update my_project\", \"content\": \"$CONTENT\", \"sha\": \"$SHA\"}"
+```javascript
+const MAP_DATA = {
+  p7: {
+    sleeps: [
+      // Overnight locations — shown as large numbered circles, connected by solid line
+      { lat: 45.62, lng: 8.73, label: 'Malpensa',  nights: null,  color: '#888888' },
+      { lat: 46.02, lng: 9.24, label: 'Menaggio',  nights: [1,2], color: '#c8773a' },
+      // nights: [firstNight, lastNight] or null for airports/transit
+      // label must be unique — used to link attractions
+    ],
+    attractions: [
+      // Day-trip locations — shown as small numbered circles
+      // connected by dashed colored line to their base sleep location
+      { lat: 45.98, lng: 9.26, label: 'Bellagio', day: '14.8', base: 'Menaggio' },
+      // base: must exactly match a label in sleeps[]
+      // color is inherited automatically from the base sleep
+    ]
+  },
+  p9: { sleeps: [...], attractions: [...] }
+};
+```
+
+**Visual result:**
+- Sleep markers: large circle showing `1–3 / לילות`, connected by solid dark route line
+- Attraction markers: small numbered circles (1, 2, 3...), colored to match their base
+- Spoke lines: dashed colored lines from each sleep to its attractions
+
+### 2c. HTML panels — sidebar and content
+
+Each alternative needs:
+1. A sidebar button (inside `.alts-sidebar`):
+```html
+<button class="alt-btn" id="sidebtn-p7" onclick="switchAlt('p7',this)">
+  Name<br><span style="font-size:.72rem;font-weight:400;color:var(--rock)">dates · N nights</span>
+</button>
+```
+
+2. A full content panel (inside `.alts-main`):
+```html
+<div class="alt-panel active" id="panel-p7">
+  <div class="alt-card">
+    <div class="alt-hdr">
+      <div>
+        <div class="alt-title">
+          <span class="chosen-badge" id="chosen-badge-p7">✓ מועדף</span>
+          Alternative Name
+        </div>
+        <div class="alt-meta">dates · N nights</div>
+      </div>
+      <button class="choose-btn" id="choose-btn-p7" onclick="setChosen('p7')">קבע כמועדף</button>
+    </div>
+    <div class="alt-body">
+      <div class="qa-section" id="qa-p7"></div>
+      <!-- version bars, table, map, detail, chat — copy from existing panel -->
+    </div>
+  </div>
+</div>
 ```
 
 ---
 
-## How the Web App Loads Projects
+## Part 3 — Pushing Files to GitHub
 
-The app reads project files directly from the **public GitHub raw URL** – no token required for reading:
+Use the GitHub Contents API with a Fine-grained token
+(Contents: Read and Write, scoped to `trip_planner_lironm` only).
 
+### Push a new file
+```python
+import urllib.request, json, base64
+
+TOKEN = "<YOUR_TOKEN>"
+API   = "https://api.github.com/repos/LironMula/trip_planner_lironm/contents/projects/my_project.json"
+HDRS  = {"Authorization": f"token {TOKEN}",
+         "Accept": "application/vnd.github.v3+json",
+         "Content-Type": "application/json"}
+
+with open("my_project.json", "rb") as f:
+    content = base64.b64encode(f.read()).decode()
+
+payload = json.dumps({"message": "Add my_project", "content": content}).encode()
+urllib.request.urlopen(urllib.request.Request(API, data=payload, headers=HDRS, method="PUT"))
+```
+
+### Update an existing file (requires sha)
+```python
+# 1. Get current sha
+with urllib.request.urlopen(urllib.request.Request(API, headers=HDRS)) as r:
+    sha = json.load(r)["sha"]
+
+# 2. Push with sha
+with open("my_project.json", "rb") as f:
+    content = base64.b64encode(f.read()).decode()
+
+payload = json.dumps({"message": "Update", "content": content, "sha": sha}).encode()
+urllib.request.urlopen(urllib.request.Request(API, data=payload, headers=HDRS, method="PUT"))
+```
+
+Same pattern for `index.html` — just change the API path to `.../contents/index.html`.
+
+### Reading (no token needed — repo is public)
 ```
 https://raw.githubusercontent.com/LironMula/trip_planner_lironm/main/projects/<name>.json
 ```
 
-The project list is fetched from the GitHub API:
+---
 
-```
-https://api.github.com/repos/LironMula/trip_planner_lironm/contents/projects
-```
+## Part 4 — Security Rules
 
-This lists all `.json` files. The app strips `.json` from each filename to get the project name.
+- Never inject raw user text into `innerHTML` — always escape `< > " ' / = \``
+- Project names: letters, digits, underscores, hyphens only (validated by UI)
+- Chat messages loaded from GitHub are re-sanitized before display
+- Token: Fine-grained, repo-scoped, 90-day expiry max — never commit to repo
 
 ---
 
-## How the App Displays Alternatives
+## Part 5 — Minimal Copy-Paste Templates
 
-The web app currently has **two hardcoded alternatives** (`p7` and `p9`) defined in `index.html`.
-
-The `chats` object in the JSON file maps to these alternatives by key.
-
-If you need to add a **new alternative**, you must also update `index.html`:
-1. Add a new entry to the `PLANS` object (rows, detail, map points)
-2. Add a new sidebar button and panel in the HTML
-3. Add the new key to the `chats` object in any existing project JSON files
-
----
-
-## Minimal Valid Project (copy-paste ready)
-
+### Minimal project JSON
 ```json
 {
-  "name": "new_project_name",
+  "name": "my_trip",
   "created": "2026-01-01T00:00:00.000Z",
-  "saved": "2026-01-01T00:00:00.000Z",
-  "chats": {
-    "p7": [],
-    "p9": []
-  },
-  "notes": {}
+  "saved":   "2026-01-01T00:00:00.000Z",
+  "chosen":  null,
+  "chats":   { "p7": [], "p9": [] },
+  "notes":   {}
 }
 ```
 
----
-
-## Token Security
-
-- Always use a **Fine-grained token** scoped to this repository only
-- Set expiry to 90 days or less
-- Never commit the token to the repository
-- The token is only needed for **writing** – reading is public and requires no authentication
-
----
-
-## Map Data Structure
-
-The map for each alternative is defined **in `index.html`** inside the `MAP_DATA` object (not in the project JSON). Each alternative has two arrays:
-
-### `sleeps` – overnight stay locations
-```json
-{ "lat": 46.022, "lng": 9.239, "label": "Menaggio", "nights": [1, 2], "color": "#c8773a" }
-```
-| Field | Description |
-|-------|-------------|
-| `lat`, `lng` | Coordinates |
-| `label` | Display name (must be unique – used to link attractions) |
-| `nights` | `[firstNight, lastNight]` or `null` for transit points (airport etc.) |
-| `color` | Hex color for this base and its attractions |
-
-### `attractions` – day-trip locations
-```json
-{ "lat": 45.977, "lng": 9.262, "label": "Bellagio", "day": "17.8", "base": "Menaggio" }
-```
-| Field | Description |
-|-------|-------------|
-| `lat`, `lng` | Coordinates |
-| `label` | Display name |
-| `day` | Date label shown in popup |
-| `base` | Must exactly match a `label` in the `sleeps` array – this determines which sleep the spoke line connects to, and which color the attraction marker inherits |
-
-### Visual rules
-- **Sleep markers**: large circles showing night range (e.g. `3–5` / `לילות`), connected by a solid dark line in route order
-- **Attraction markers**: small circles numbered 1, 2, 3... per plan, colored to match their base sleep location
-- **Spoke lines**: dashed colored line from each sleep to each of its attractions
-
-### How to add a new attraction
-1. Add entry to `MAP_DATA[pk].attractions` in `index.html`
-2. Set `base` to exactly match an existing sleep label
-3. The attraction inherits the sleep's color automatically
-
-### How to add a new sleep location
-1. Add entry to `MAP_DATA[pk].sleeps`
-2. Choose a unique `label` and a distinct `color`
-3. Set `nights` to the correct range, or `null` for transit-only stops
-4. Update any existing attractions whose `base` should link to this new sleep
+### Q&A ordering (always general → specific)
+1. What is the destination / why go there
+2. Is a rental car needed
+3. How many nights / overall route
+4. Estimated costs
+5. Border crossings / logistics
+6. Food restrictions / dietary needs
+7. Activities for the specific travelers
+8. Which attractions are covered / not covered
+9. Fine-grained personal specifics
