@@ -137,10 +137,28 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 .sc{font-weight:700;white-space:nowrap;}
 
 /* map */
-.map-box{min-height:280px;border-radius:10px;overflow:hidden;margin-top:12px;background:#e8f0f8;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;padding:14px;}
-.map-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:640px;}
-.chip{background:#fff;border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:.76rem;display:flex;align-items:center;gap:5px;}
-.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.map-box{border-radius:10px;overflow:hidden;margin-top:12px;background:#e8f0f8;position:relative;height:340px;}
+.map-box iframe{width:100%;height:100%;border:none;display:block;}
+
+/* alternatives sidebar layout */
+.alts-layout{display:flex;gap:0;align-items:flex-start;margin-top:4px;}
+.alts-sidebar{width:190px;flex-shrink:0;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden;position:sticky;top:58px;z-index:10;}
+.alts-sidebar-title{background:var(--lake);color:#fff;padding:11px 16px;font-size:.82rem;font-weight:800;}
+.alt-btn{display:block;width:100%;background:none;border:none;border-bottom:1px solid var(--border);font-family:'Heebo',sans-serif;font-size:.86rem;font-weight:600;color:var(--text);padding:12px 16px;cursor:pointer;text-align:right;transition:all .2s;line-height:1.4;}
+.alt-btn:last-child{border-bottom:none;}
+.alt-btn:hover{background:#eef4fb;color:var(--lake);}
+.alt-btn.active{background:#ddeaf7;color:var(--lake);border-right:3px solid var(--lake);}
+.alts-main{flex:1;min-width:0;padding-right:14px;}
+.alt-panel{display:none;} .alt-panel.active{display:block;}
+@media(max-width:680px){
+  .alts-layout{flex-direction:column;}
+  .alts-sidebar{width:100%;position:static;display:flex;flex-wrap:wrap;border-radius:10px;}
+  .alts-sidebar-title{width:100%;border-radius:0;}
+  .alt-btn{flex:1;min-width:120px;border-bottom:none;border-left:1px solid var(--border);text-align:center;padding:10px 8px;}
+  .alt-btn:last-child{border-left:none;}
+  .alt-btn.active{border-right:none;border-bottom:3px solid var(--lake);}
+  .alts-main{padding-right:0;margin-top:10px;}
+}
 
 /* detail */
 .det-sec{margin-top:22px;}
@@ -286,98 +304,121 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
       <div class="li"><div class="ld" style="background:var(--bf)"></div>יער השחור</div>
     </div>
 
-    <!-- ALT P7 -->
-    <div class="alt-card">
-      <div class="alt-hdr">
-        <div class="alt-title">מילאן_7_מילאן</div>
-        <div class="alt-meta">13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00</div>
+    <div class="alts-layout">
+      <!-- SIDEBAR -->
+      <div class="alts-sidebar">
+        <div class="alts-sidebar-title">אלטרנטיבות</div>
+        <button class="alt-btn active" onclick="switchAlt('p7',this)">
+          מילאן_7_מילאן<br><span style="font-size:.72rem;font-weight:400;color:var(--rock)">13–20.8 · 7 לילות</span>
+        </button>
+        <button class="alt-btn" onclick="switchAlt('p9',this)">
+          מילאן_9_מילאן<br><span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · 9 לילות</span>
+        </button>
       </div>
-      <div class="alt-body">
-        <div class="vbar"><span>טבלה:</span>
-          <button class="vbtn active" onclick="setVer('p7t','current',this)">עדכנית</button>
-          <button class="vbtn" onclick="setVer('p7t','old',this)">גרסה קודמת</button>
-        </div>
-        <div class="vwrap" id="p7t">
-          <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
-          <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th></tr></thead>
-          <tbody id="tb7"></tbody></table></div>
-        </div>
-        <div style="margin-top:18px">
-          <div class="vbar"><span>מפה:</span>
-            <button class="vbtn active" onclick="setVer('p7m','current',this)">עדכנית</button>
-            <button class="vbtn" onclick="setVer('p7m','old',this)">גרסה קודמת</button>
-          </div>
-          <div class="vwrap" id="p7m">
-            <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
-            <div class="map-box">
-              <div style="font-weight:700;font-size:.87rem;margin-bottom:5px">📍 נקודות לינה ואטרקציות</div>
-              <div class="map-chips" id="mc7"></div>
-            </div>
-          </div>
-        </div>
-        <div class="det-sec"><h3>תכנית מפורטת</h3><div id="det7"></div></div>
-        <div class="chat-sec">
-          <h3>💬 שיחה</h3>
-          <div class="chat-msgs" id="chat7"><div class="chat-empty">אין הערות עדיין</div></div>
-          <div class="cform">
-            <h4>הוסף הערה</h4>
-            <label>שם (אותיות בלבד, עד 20)</label>
-            <input type="text" id="cu7" placeholder="השם שלך" maxlength="20" oninput="sanitizeUser(this)"/>
-            <label>הערה (עד 1000 תווים)</label>
-            <textarea id="ct7" placeholder="מה על דעתך?" maxlength="1000" oninput="sanitizeMsg(this)"></textarea>
-            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-              <button class="sbtn" onclick="sendChat('p7')">שלח</button>
-              <span id="chat7-counter" style="font-size:.75rem;color:var(--rock)"></span>
-            </div>
-            <div class="cmeta" id="cd7"></div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- ALT P9 -->
-    <div class="alt-card">
-      <div class="alt-hdr">
-        <div class="alt-title">מילאן_9_מילאן</div>
-        <div class="alt-meta">16–25 באוגוסט 2026 · 9 לילות · יוצאים 15:00 · חוזרים 13:00</div>
-      </div>
-      <div class="alt-body">
-        <div class="vbar"><span>טבלה:</span>
-          <button class="vbtn active" onclick="setVer('p9t','current',this)">עדכנית</button>
-          <button class="vbtn" onclick="setVer('p9t','old',this)">גרסה קודמת</button>
-        </div>
-        <div class="vwrap" id="p9t">
-          <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
-          <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th></tr></thead>
-          <tbody id="tb9"></tbody></table></div>
-        </div>
-        <div style="margin-top:18px">
-          <div class="vbar"><span>מפה:</span>
-            <button class="vbtn active" onclick="setVer('p9m','current',this)">עדכנית</button>
-            <button class="vbtn" onclick="setVer('p9m','old',this)">גרסה קודמת</button>
-          </div>
-          <div class="vwrap" id="p9m">
-            <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
-            <div class="map-box">
-              <div style="font-weight:700;font-size:.87rem;margin-bottom:5px">📍 נקודות לינה ואטרקציות</div>
-              <div class="map-chips" id="mc9"></div>
+      <!-- MAIN CONTENT -->
+      <div class="alts-main">
+
+        <!-- PANEL P7 -->
+        <div class="alt-panel active" id="panel-p7">
+          <div class="alt-card">
+            <div class="alt-hdr">
+              <div class="alt-title">מילאן_7_מילאן</div>
+              <div class="alt-meta">13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00</div>
+            </div>
+            <div class="alt-body">
+              <div class="vbar"><span>טבלה:</span>
+                <button class="vbtn active" onclick="setVer('p7t','current',this)">עדכנית</button>
+                <button class="vbtn" onclick="setVer('p7t','old',this)">גרסה קודמת</button>
+              </div>
+              <div class="vwrap" id="p7t">
+                <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+                <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th></tr></thead>
+                <tbody id="tb7"></tbody></table></div>
+              </div>
+              <div style="margin-top:18px">
+                <div class="vbar"><span>מפה:</span>
+                  <button class="vbtn active" onclick="setVer('p7m','current',this)">עדכנית</button>
+                  <button class="vbtn" onclick="setVer('p7m','old',this)">גרסה קודמת</button>
+                </div>
+                <div class="vwrap" id="p7m">
+                  <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+                  <div class="map-box" id="map-p7"></div>
+                </div>
+              </div>
+              <div class="det-sec"><h3>תכנית מפורטת</h3><div id="det7"></div></div>
+              <div class="chat-sec">
+                <h3>💬 שיחה</h3>
+                <div class="chat-msgs" id="chat7"><div class="chat-empty">אין הערות עדיין</div></div>
+                <div class="cform">
+                  <h4>הוסף הערה</h4>
+                  <label>שם (אותיות בלבד, עד 20)</label>
+                  <input type="text" id="cu7" placeholder="השם שלך" maxlength="20" oninput="sanitizeUser(this)"/>
+                  <label>הערה (עד 1000 תווים)</label>
+                  <textarea id="ct7" placeholder="מה על דעתך?" maxlength="1000" oninput="sanitizeMsg(this)"></textarea>
+                  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                    <button class="sbtn" onclick="sendChat('p7')">שלח</button>
+                    <span id="chat7-counter" style="font-size:.75rem;color:var(--rock)"></span>
+                  </div>
+                  <div class="cmeta" id="cd7"></div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="det-sec"><h3>תכנית מפורטת</h3><div id="det9"></div></div>
-        <div class="chat-sec">
-          <h3>💬 שיחה</h3>
-          <div class="chat-msgs" id="chat9"><div class="chat-empty">אין הערות עדיין</div></div>
-          <div class="cform">
-            <h4>הוסף הערה</h4>
-            <label>שם (אותיות בלבד, עד 20)</label>
-            <input type="text" id="cu9" placeholder="השם שלך" maxlength="20" oninput="sanitizeUser(this)"/>
-            <label>הערה (עד 1000 תווים)</label>
-            <textarea id="ct9" placeholder="מה על דעתך?" maxlength="1000" oninput="sanitizeMsg(this)"></textarea>
-            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-              <button class="sbtn" onclick="sendChat('p9')">שלח</button>
-              <span id="chat9-counter" style="font-size:.75rem;color:var(--rock)"></span>
+        </div><!-- /panel-p7 -->
+
+        <!-- PANEL P9 -->
+        <div class="alt-panel" id="panel-p9">
+          <div class="alt-card">
+            <div class="alt-hdr">
+              <div class="alt-title">מילאן_9_מילאן</div>
+              <div class="alt-meta">16–25 באוגוסט 2026 · 9 לילות · יוצאים 15:00 · חוזרים 13:00</div>
             </div>
+            <div class="alt-body">
+              <div class="vbar"><span>טבלה:</span>
+                <button class="vbtn active" onclick="setVer('p9t','current',this)">עדכנית</button>
+                <button class="vbtn" onclick="setVer('p9t','old',this)">גרסה קודמת</button>
+              </div>
+              <div class="vwrap" id="p9t">
+                <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+                <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th></tr></thead>
+                <tbody id="tb9"></tbody></table></div>
+              </div>
+              <div style="margin-top:18px">
+                <div class="vbar"><span>מפה:</span>
+                  <button class="vbtn active" onclick="setVer('p9m','current',this)">עדכנית</button>
+                  <button class="vbtn" onclick="setVer('p9m','old',this)">גרסה קודמת</button>
+                </div>
+                <div class="vwrap" id="p9m">
+                  <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+                  <div class="map-box" id="map-p9"></div>
+                </div>
+              </div>
+              <div class="det-sec"><h3>תכנית מפורטת</h3><div id="det9"></div></div>
+              <div class="chat-sec">
+                <h3>💬 שיחה</h3>
+                <div class="chat-msgs" id="chat9"><div class="chat-empty">אין הערות עדיין</div></div>
+                <div class="cform">
+                  <h4>הוסף הערה</h4>
+                  <label>שם (אותיות בלבד, עד 20)</label>
+                  <input type="text" id="cu9" placeholder="השם שלך" maxlength="20" oninput="sanitizeUser(this)"/>
+                  <label>הערה (עד 1000 תווים)</label>
+                  <textarea id="ct9" placeholder="מה על דעתך?" maxlength="1000" oninput="sanitizeMsg(this)"></textarea>
+                  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                    <button class="sbtn" onclick="sendChat('p9')">שלח</button>
+                    <span id="chat9-counter" style="font-size:.75rem;color:var(--rock)"></span>
+                  </div>
+                  <div class="cmeta" id="cd9"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /panel-p9 -->
+
+      </div><!-- /alts-main -->
+    </div><!-- /alts-layout -->
+  </div><!-- /alts-content -->
+</div><!-- /alternatives -->
             <div class="cmeta" id="cd9"></div>
           </div>
         </div>
@@ -622,15 +663,112 @@ async function saveToGitHub() {
 }
 
 // ════════════════════════════════════════════════
+// ALTERNATIVE SWITCHER (sidebar)
+// ════════════════════════════════════════════════
+function switchAlt(pk, btn) {
+  document.querySelectorAll('.alt-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-'+pk).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ════════════════════════════════════════════════
+// MAPS – OpenStreetMap via Leaflet (free, no key)
+// ════════════════════════════════════════════════
+const MAP_POINTS = {
+  p7: [
+    {lat:45.6227,lng:8.7282,label:'מלאנפסה',color:'#888',day:'13.8'},
+    {lat:46.022, lng:9.239, label:"מנאג'ו (לינה)",color:'#c8773a',day:'13–14.8'},
+    {lat:45.977, lng:9.262, label:"בלאג'יו",color:'#c8773a',day:'14.8'},
+    {lat:46.194, lng:9.024, label:'בלינצונה',color:'#999',day:'15.8 עצירה'},
+    {lat:47.694, lng:9.273, label:'מירסבורג (לינה)',color:'#1a4a6b',day:'15–17.8'},
+    {lat:47.706, lng:9.196, label:'אי מאינאו',color:'#1a4a6b',day:'16.8'},
+    {lat:47.895, lng:8.144, label:'טיטיזי (לינה)',color:'#2d5a3d',day:'18–19.8'},
+    {lat:47.900, lng:7.922, label:'שטיינוואזן פארק',color:'#2d5a3d',day:'19.8'},
+  ],
+  p9: [
+    {lat:45.6227,lng:8.7282,label:'מלאנפסה',color:'#888',day:'16.8'},
+    {lat:46.022, lng:9.239, label:"מנאג'ו (לינה)",color:'#c8773a',day:'16–17.8'},
+    {lat:45.977, lng:9.262, label:"בלאג'יו",color:'#c8773a',day:'17.8'},
+    {lat:46.194, lng:9.024, label:'בלינצונה',color:'#999',day:'18.8 עצירה'},
+    {lat:47.694, lng:9.273, label:'מירסבורג (לינה)',color:'#1a4a6b',day:'18–20.8'},
+    {lat:47.706, lng:9.196, label:'אי מאינאו',color:'#1a4a6b',day:'19.8'},
+    {lat:47.895, lng:8.144, label:'טיטיזי (לינה)',color:'#2d5a3d',day:'21–24.8'},
+    {lat:47.900, lng:7.922, label:'שטיינוואזן פארק',color:'#2d5a3d',day:'22.8'},
+    {lat:48.130, lng:8.232, label:'טריברג',color:'#2d5a3d',day:'23.8'},
+  ]
+};
+
+let leafletLoaded = false;
+const mapInstances = {};
+
+async function initMaps() {
+  if (!leafletLoaded) {
+    // Load Leaflet CSS
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(css);
+    // Load Leaflet JS
+    await ldScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
+    leafletLoaded = true;
+  }
+  renderMap('p7');
+  renderMap('p9');
+}
+
+function renderMap(pk) {
+  const el = document.getElementById('map-'+pk);
+  if (!el || mapInstances[pk]) return;
+  const pts = MAP_POINTS[pk];
+  // center = average of all points
+  const avgLat = pts.reduce((s,p)=>s+p.lat,0)/pts.length;
+  const avgLng = pts.reduce((s,p)=>s+p.lng,0)/pts.length;
+
+  const map = L.map(el, { zoomControl:true, scrollWheelZoom:false }).setView([avgLat, avgLng], 7);
+  mapInstances[pk] = map;
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© OpenStreetMap',
+    maxZoom:18
+  }).addTo(map);
+
+  // draw route line
+  const latlngs = pts.map(p => [p.lat, p.lng]);
+  L.polyline(latlngs, { color:'#1a4a6b', weight:2.5, dashArray:'6 4', opacity:.7 }).addTo(map);
+
+  // add markers
+  pts.forEach((p, i) => {
+    const icon = L.divIcon({
+      className:'',
+      html:`<div style="
+        background:${p.color};color:#fff;border-radius:50%;
+        width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+        font-size:11px;font-weight:800;border:2px solid #fff;
+        box-shadow:0 2px 6px rgba(0,0,0,.3);font-family:Heebo,sans-serif;">
+        ${i+1}</div>`,
+      iconSize:[28,28], iconAnchor:[14,14]
+    });
+    L.marker([p.lat, p.lng], {icon})
+      .addTo(map)
+      .bindPopup(`<div dir="rtl" style="font-family:Heebo,sans-serif;min-width:120px">
+        <strong>${p.label}</strong><br>
+        <span style="font-size:.8rem;color:#666">${p.day}</span>
+      </div>`);
+  });
+
+  // fit bounds
+  map.fitBounds(L.latLngBounds(latlngs), { padding:[30,30] });
+}
+
+function ldScript(src){ return new Promise((r,j)=>{ const s=document.createElement('script'); s.src=src; s.onload=r; s.onerror=j; document.head.appendChild(s); }); }
+
+// ════════════════════════════════════════════════
 // RENDER
 // ════════════════════════════════════════════════
 function renderTable(id, pk) {
   document.getElementById(id).innerHTML = PLANS[pk].rows.map(r=>`
     <tr class="${r.z}"><td class="dc">${r.d}</td><td class="rc">${r.r}</td><td class="drc">${r.dr}</td><td class="sc">${r.s}</td></tr>`).join('');
-}
-function renderChips(id, pk) {
-  document.getElementById(id).innerHTML = PLANS[pk].pts.map(p=>
-    `<div class="chip"><div class="dot" style="background:${p.c}"></div>${p.l}</div>`).join('');
 }
 function renderDetail(id, pk) {
   document.getElementById(id).innerHTML = PLANS[pk].det.map(d=>{
@@ -795,8 +933,8 @@ function init(){
   ['cu7','cu9'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input',function(){ sanitizeUser(this); document.cookie='chat_user='+encodeURIComponent(this.value)+';max-age=31536000;path=/'; }); });
 
   renderTable('tb7','p7'); renderTable('tb9','p9');
-  renderChips('mc7','p7'); renderChips('mc9','p9');
   renderDetail('det7','p7'); renderDetail('det9','p9');
+  initMaps();
   updateDates(); setInterval(updateDates,30000);
   setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO);
 }
