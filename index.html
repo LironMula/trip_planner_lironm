@@ -742,15 +742,102 @@ function renderChosenState() {
 // ════════════════════════════════════════════════
 function ensureToken() {
   if (ghToken) return Promise.resolve(ghToken);
-  // localStorage persists across tab closes and browser restarts – same as home_planner
   const stored = localStorage.getItem('gh_token_trip');
   if (stored) { ghToken = stored; return Promise.resolve(ghToken); }
-  const t = prompt('הזן GitHub token לשמירה ל-GitHub:\n(Fine-grained · Contents: Read+Write · מאגר זה בלבד)\nיישמר בדפדפן – לא תישאל שוב.');
-  if (!t || !t.trim()) return Promise.resolve(null);
-  ghToken = t.trim();
-  localStorage.setItem('gh_token_trip', ghToken);
-  sessionStorage.setItem('gh_token', ghToken); // keep session copy too
-  return Promise.resolve(ghToken);
+  // show custom token dialog instead of prompt
+  return showTokenDialog();
+}
+
+function showTokenDialog() {
+  return new Promise(resolve => {
+    // create modal if not exists
+    let modal = document.getElementById('token-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'token-modal';
+      modal.style.cssText = `
+        display:flex;position:fixed;inset:0;background:rgba(10,20,40,.7);
+        z-index:2000;align-items:center;justify-content:center;`;
+      modal.innerHTML = `
+        <div style="background:#fff;border-radius:14px;width:92%;max-width:500px;
+          box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden;font-family:Heebo,sans-serif;">
+          <div style="background:linear-gradient(135deg,#1a4a6b,#0d2f47);color:#fff;padding:20px 24px 16px;">
+            <div style="font-size:1.1rem;font-weight:900;margin-bottom:4px">🔑 GitHub Token נדרש לשמירה</div>
+            <div style="font-size:.8rem;opacity:.75">ישמר בדפדפן – לא תישאל שוב</div>
+          </div>
+          <div style="padding:20px 24px;">
+            <div style="background:#f0f7ff;border:1px solid #c0d8f0;border-radius:9px;padding:14px 16px;margin-bottom:16px;font-size:.83rem;line-height:1.8;">
+              <strong style="display:block;margin-bottom:6px">כיצד לקבל טוקן – 3 שלבים:</strong>
+              <ol style="padding-right:18px;margin:0;">
+                <li>לחץ על הלינק למטה ← <strong>Generate new token</strong></li>
+                <li>תחת <strong>Repository access</strong> ← בחר <strong>Only selected repositories</strong> ← בחר <code style="background:#e8f0f8;padding:1px 5px;border-radius:4px">trip_planner_lironm</code></li>
+                <li>תחת <strong>Permissions → Repository permissions → Contents</strong> ← בחר <strong>Read and write</strong> ← לחץ <strong>Generate token</strong></li>
+              </ol>
+              <a href="https://github.com/settings/personal-access-tokens/new?description=trip-planner&expiration=365"
+                 target="_blank"
+                 style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+                   background:#1a4a6b;color:#fff;padding:7px 14px;border-radius:7px;
+                   text-decoration:none;font-size:.82rem;font-weight:700;">
+                🔗 פתח את דף יצירת הטוקן ב-GitHub
+              </a>
+            </div>
+            <label style="display:block;font-size:.8rem;font-weight:700;color:#6b7280;margin-bottom:5px">
+              הדבק את הטוקן כאן:
+            </label>
+            <input id="token-input" type="password"
+              placeholder="github_pat_..."
+              style="width:100%;font-family:monospace;font-size:.85rem;padding:9px 12px;
+                border:1px solid #d1dce8;border-radius:8px;margin-bottom:6px;direction:ltr;" />
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+              <input type="checkbox" id="token-show" style="cursor:pointer">
+              <label for="token-show" style="font-size:.78rem;color:#6b7280;cursor:pointer">הצג טוקן</label>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+              <button id="token-cancel"
+                style="background:none;border:1px solid #d1dce8;border-radius:8px;padding:8px 20px;
+                  font-family:Heebo,sans-serif;font-size:.88rem;cursor:pointer;color:#6b7280;">
+                ביטול
+              </button>
+              <button id="token-confirm"
+                style="background:#1a4a6b;color:#fff;border:none;border-radius:8px;padding:8px 22px;
+                  font-family:Heebo,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;">
+                שמור והתחבר
+              </button>
+            </div>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+    }
+
+    const input    = document.getElementById('token-input');
+    const confirm  = document.getElementById('token-confirm');
+    const cancel   = document.getElementById('token-cancel');
+    const showCb   = document.getElementById('token-show');
+
+    input.value = '';
+    modal.style.display = 'flex';
+    setTimeout(() => input.focus(), 100);
+
+    showCb.onchange = () => { input.type = showCb.checked ? 'text' : 'password'; };
+
+    const close = (val) => {
+      modal.style.display = 'none';
+      confirm.onclick = null; cancel.onclick = null;
+      resolve(val || null);
+    };
+
+    confirm.onclick = () => {
+      const t = input.value.trim();
+      if (!t) { input.style.borderColor='#b94040'; input.focus(); return; }
+      ghToken = t;
+      localStorage.setItem('gh_token_trip', t);
+      sessionStorage.setItem('gh_token', t);
+      close(t);
+    };
+    cancel.onclick = () => close(null);
+
+    input.onkeydown = (e) => { if (e.key === 'Enter') confirm.onclick(); };
+  });
 }
 
 // ════════════════════════════════════════════════
