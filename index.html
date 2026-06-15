@@ -687,12 +687,13 @@ let activeProjTab = 'existing';
 // PROJECT MODAL
 // ════════════════════════════════════════════════
 function openProjModal() {
-  document.getElementById('proj-modal').classList.add('open');
-  document.getElementById('modal-cancel-btn').style.display = currentProject ? '' : 'none';
-  // only reload if list shows loading/error state (not already populated)
-  const list = document.getElementById('proj-list');
-  const hasItems = list.querySelector('.proj-item');
-  if (!hasItems) loadProjList();
+  const modal = document.getElementById('proj-modal');
+  if (!modal) return;
+  modal.classList.add('open');
+  const cancelBtn = document.getElementById('modal-cancel-btn');
+  if (cancelBtn) cancelBtn.style.display = currentProject ? '' : 'none';
+  // reload list fresh every time (cheap API call, ensures up-to-date)
+  loadProjList();
 }
 function closeProjModal() {
   document.getElementById('proj-modal').classList.remove('open');
@@ -1402,9 +1403,8 @@ function init(){
   // restore token from localStorage (persists forever) or sessionStorage
   const storedToken = localStorage.getItem('gh_token_trip') || sessionStorage.getItem('gh_token');
   if (storedToken) ghToken = storedToken;
-  // open modal on first load and pre-fetch project list
-  loadProjList();
-  document.getElementById('proj-modal').classList.add('open');
+  // open project modal after a short delay to ensure DOM is fully ready
+  setTimeout(() => openProjModal(), 80);
 }
 
 init();
