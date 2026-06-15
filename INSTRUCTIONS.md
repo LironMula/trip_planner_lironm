@@ -165,3 +165,47 @@ If you need to add a **new alternative**, you must also update `index.html`:
 - Set expiry to 90 days or less
 - Never commit the token to the repository
 - The token is only needed for **writing** – reading is public and requires no authentication
+
+---
+
+## Map Data Structure
+
+The map for each alternative is defined **in `index.html`** inside the `MAP_DATA` object (not in the project JSON). Each alternative has two arrays:
+
+### `sleeps` – overnight stay locations
+```json
+{ "lat": 46.022, "lng": 9.239, "label": "Menaggio", "nights": [1, 2], "color": "#c8773a" }
+```
+| Field | Description |
+|-------|-------------|
+| `lat`, `lng` | Coordinates |
+| `label` | Display name (must be unique – used to link attractions) |
+| `nights` | `[firstNight, lastNight]` or `null` for transit points (airport etc.) |
+| `color` | Hex color for this base and its attractions |
+
+### `attractions` – day-trip locations
+```json
+{ "lat": 45.977, "lng": 9.262, "label": "Bellagio", "day": "17.8", "base": "Menaggio" }
+```
+| Field | Description |
+|-------|-------------|
+| `lat`, `lng` | Coordinates |
+| `label` | Display name |
+| `day` | Date label shown in popup |
+| `base` | Must exactly match a `label` in the `sleeps` array – this determines which sleep the spoke line connects to, and which color the attraction marker inherits |
+
+### Visual rules
+- **Sleep markers**: large circles showing night range (e.g. `3–5` / `לילות`), connected by a solid dark line in route order
+- **Attraction markers**: small circles numbered 1, 2, 3... per plan, colored to match their base sleep location
+- **Spoke lines**: dashed colored line from each sleep to each of its attractions
+
+### How to add a new attraction
+1. Add entry to `MAP_DATA[pk].attractions` in `index.html`
+2. Set `base` to exactly match an existing sleep label
+3. The attraction inherits the sleep's color automatically
+
+### How to add a new sleep location
+1. Add entry to `MAP_DATA[pk].sleeps`
+2. Choose a unique `label` and a distinct `color`
+3. Set `nights` to the correct range, or `null` for transit-only stops
+4. Update any existing attractions whose `base` should link to this new sleep
