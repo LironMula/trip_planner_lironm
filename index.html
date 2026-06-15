@@ -96,8 +96,8 @@ body.mobile-view main{padding:12px 8px 60px;}
 
 /* ── ALT CARD ── */
 .alt-card{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.07);margin-bottom:40px;overflow:hidden;}
-.alt-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--border);}
-.alt-title{font-size:1.25rem;font-weight:900;color:var(--lake);}
+.alt-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.alt-title{font-size:1.25rem;font-weight:900;color:var(--lake);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .alt-meta{font-size:.82rem;color:var(--rock);margin-top:2px;}
 .alt-body{padding:20px 22px;}
 body.mobile-view .alt-body{padding:12px 12px;}
@@ -174,20 +174,24 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 .sbox{background:#fff8f0;border:1px solid #e8c890;border-radius:7px;padding:7px 10px;font-size:.8rem;margin-top:7px;color:#5a3a10;}
 .sbox strong{color:var(--accent);}
 
-/* chat */
-.chat-sec{margin-top:22px;}
-
 /* chosen candidate */
-.alt-btn.chosen{background:#fef9ec;border-right:3px solid var(--accent);}
-.alt-btn.active.chosen{background:#fff3d4;}
+.alt-btn.chosen{background:#fef9ec !important;border-right:3px solid var(--accent) !important;}
+.alt-btn.active.chosen{background:#fff3d4 !important;}
 .chosen-star{display:none;color:var(--accent);margin-right:3px;}
 .alt-btn.chosen .chosen-star{display:inline;}
-.chosen-badge{display:none;background:var(--accent);color:#fff;font-size:.68rem;font-weight:800;padding:2px 7px;border-radius:10px;margin-right:5px;vertical-align:middle;}
-.chosen-badge.visible{display:inline;}
-.choose-btn{display:block;width:100%;margin-top:10px;background:none;border:1px solid var(--border);color:var(--rock);border-radius:7px;padding:7px 14px;font-family:'Heebo',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;}
-.choose-btn:hover{border-color:var(--accent);color:var(--accent);}
-.choose-btn.is-chosen{background:var(--accent);color:#fff;border-color:var(--accent);}
-.choose-btn.is-chosen::before{content:'✓ ';}
+.chosen-badge{display:none;background:var(--accent);color:#fff;font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:10px;}
+.chosen-badge.visible{display:inline-block;}
+.choose-btn{
+  display:inline-block;background:#fff;border:1.5px solid var(--border);
+  color:var(--rock);border-radius:8px;padding:7px 16px;
+  font-family:'Heebo',sans-serif;font-size:.82rem;font-weight:700;
+  cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;
+}
+.choose-btn:hover{border-color:var(--accent);color:var(--accent);background:#fff8f0;}
+.choose-btn.is-chosen{background:var(--accent) !important;color:#fff !important;border-color:var(--accent) !important;}
+
+/* chat */
+.chat-sec{margin-top:22px;}
 .chat-sec h3{font-size:.95rem;font-weight:800;color:var(--lake);margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid var(--border);}
 .chat-msgs{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;max-height:320px;overflow-y:auto;padding-left:3px;}
 .cmsg{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:.85rem;}
@@ -336,7 +340,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
         <!-- PANEL P7 -->
         <div class="alt-panel active" id="panel-p7">
           <div class="alt-card">
-            <div class="alt-hdr" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div class="alt-hdr">
               <div>
                 <div class="alt-title">
                   <span class="chosen-badge" id="chosen-badge-p7">✓ מועדף</span>
@@ -344,9 +348,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
                 </div>
                 <div class="alt-meta">13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00</div>
               </div>
-              <button class="choose-btn" id="choose-btn-p7" onclick="setChosen('p7')" style="width:auto;min-width:110px">
-                קבע כמועדף
-              </button>
+              <button class="choose-btn" id="choose-btn-p7" onclick="setChosen('p7')">קבע כמועדף</button>
             </div>
             <div class="alt-body">
               <div class="vbar"><span>טבלה:</span>
@@ -392,7 +394,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
         <!-- PANEL P9 -->
         <div class="alt-panel" id="panel-p9">
           <div class="alt-card">
-            <div class="alt-hdr" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div class="alt-hdr">
               <div>
                 <div class="alt-title">
                   <span class="chosen-badge" id="chosen-badge-p9">✓ מועדף</span>
@@ -400,9 +402,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
                 </div>
                 <div class="alt-meta">16–26 באוגוסט 2026 · 10 לילות · יוצאים 15:00 · חוזרים 13:00</div>
               </div>
-              <button class="choose-btn" id="choose-btn-p9" onclick="setChosen('p9')" style="width:auto;min-width:110px">
-                קבע כמועדף
-              </button>
+              <button class="choose-btn" id="choose-btn-p9" onclick="setChosen('p9')">קבע כמועדף</button>
             </div>
             <div class="alt-body">
               <div class="vbar"><span>טבלה:</span>
