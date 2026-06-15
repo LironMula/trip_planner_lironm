@@ -712,6 +712,10 @@ function confirmProjModal() {
   if (activeProjTab === 'new') {
     const name = document.getElementById('new-proj-name').value.trim();
     if (!name) { alert('יש להזין שם פרויקט'); return; }
+    if (!validateProjectName(name)) {
+      alert('שם הפרויקט יכול להכיל אותיות, ספרות, מקף ורווח בלבד (עד 50 תווים)');
+      return;
+    }
     selectProject({ name, created: new Date().toISOString(), chats:{p7:[],p9:[]}, notes:{}, chosen:null });
     return;
   }
@@ -982,13 +986,14 @@ async function loadProjList() {
     if (!res.ok) throw new Error(res.status);
     const files = await res.json();
     const projects = files.filter(f => f.name.endsWith('.json'))
-      .map(f => f.name.replace('.json',''));
+      .map(f => f.name.replace('.json',''))
+      .filter(n => validateProjectName(n)); // reject names with injection chars
     if (!projects.length) {
       el.innerHTML = '<div class="proj-loading">אין פרויקטים עדיין.</div>';
     } else {
       el.innerHTML = projects.map(n => `
         <div class="proj-item" data-name="${esc(n)}"
-          onclick="this.parentElement.querySelectorAll('.proj-item').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')">
+          onclick="this.parentElement.querySelectorAll(\'.proj-item\').forEach(x=>x.classList.remove(\'selected\'));this.classList.add(\'selected\')">
           <div>
             <div class="proj-name">${esc(n)}</div>
             <div class="proj-meta">☁ GitHub</div>
@@ -1003,15 +1008,25 @@ async function loadProjList() {
 }
 
 async function loadProjectFromGH(name) {
+  // validate name before using in URL
+  if (!validateProjectName(name)) { alert('שם פרויקט לא תקין'); return; }
   try {
-    // Raw content – no token needed for public repo
     const res = await fetch(GH_RAW + encodeURIComponent(name) + '.json?t='+Date.now());
     if (!res.ok) throw new Error(res.status);
-    const data = await res.json();
-    data.name = name;
+    const raw = await res.json();
+    // sanitize all chat entries loaded from GitHub
+    const data = {
+      name:   String(raw.name || name).slice(0,50),
+      chosen: ['p7','p9',null].includes(raw.chosen) ? raw.chosen : null,
+      notes:  {},
+      chats: {
+        p7: Array.isArray(raw.chats?.p7) ? raw.chats.p7.slice(0,MAX_CHAT).map(sanitizeChatEntry) : [],
+        p9: Array.isArray(raw.chats?.p9) ? raw.chats.p9.slice(0,MAX_CHAT).map(sanitizeChatEntry) : [],
+      }
+    };
     selectProject(data);
   } catch(e) {
-    alert('שגיאה בטעינת הפרויקט: '+e.message);
+    alert('שגיאה בטעינת הפרויקט: '+esc(e.message));
   }
 }
 
@@ -1269,20 +1284,76 @@ function sanitizeMsg(el) {
 }
 
 // ════════════════════════════════════════════════
+// SECURITY – XSS / INJECTION PROTECTION
+// All user-supplied content MUST pass through these functions
+// before being placed into the DOM.
+// ════════════════════════════════════════════════
+
+// esc: HTML-encode every dangerous character
+// Used when inserting user text via innerHTML
+function esc(s) {
+  return String(s)
+    .replace(/&/g,  '&amp;')
+    .replace(/</g,  '&lt;')
+    .replace(/>/g,  '&gt;')
+    .replace(/"/g,  '&quot;')
+    .replace(/'/g,  '&#x27;')
+    .replace(/\//g, '&#x2F;')
+    .replace(/`/g,  '&#x60;')
+    .replace(/=/g,  '&#x3D;');
+}
+
+// safeText: set element text using textContent (never interprets HTML)
+function safeText(el, text) {
+  if (el) el.textContent = String(text);
+}
+
+// safeAttr: validate that a string is safe for use as a CSS class name or id
+function safeClass(s) {
+  return String(s).replace(/[^a-zA-Z0-9_-]/g, '');
+}
+
+// validateProjectName: only allow safe characters in project names
+// (prevents path traversal and injection via GitHub API calls)
+function validateProjectName(name) {
+  return /^[a-zA-Z0-9_\-\u0590-\u05FF\u0600-\u06FF ]{1,50}$/.test(name);
+}
+
+// sanitizeLoadedChat: clean messages loaded from GitHub before rendering
+// Even if someone pushed malicious content directly to the JSON file
+function sanitizeChatEntry(entry) {
+  return {
+    plan_key:   String(entry.plan_key   || '').slice(0,10),
+    username:   String(entry.username   || '').replace(/[^a-zA-Z\u0590-\u05FF\u0600-\u06FF]/g,'').slice(0,20),
+    message:    String(entry.message    || '').replace(/[<>&"'`=/\\]/g,'_').slice(0,1000),
+    created_at: String(entry.created_at || new Date().toISOString()).slice(0,30),
+  };
+}
+// ════════════════════════════════════════════════
 // CHAT
 // ════════════════════════════════════════════════
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function fmtD(iso){ const d=new Date(iso); return d.toLocaleDateString('he-IL')+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}); }
+function fmtD(iso){
+  try {
+    const d=new Date(iso);
+    if (isNaN(d)) return '';
+    return d.toLocaleDateString('he-IL')+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+  } catch(e){ return ''; }
+}
 
 function renderChats(pk) {
   const id = pk==='p7'?'chat7':'chat9';
-  const msgs = (projData.chats&&projData.chats[pk])||[];
+  const raw = (projData.chats&&projData.chats[pk])||[];
   const el = document.getElementById(id);
   if (!el) return;
-  if (!msgs.length){ el.innerHTML='<div class="chat-empty">אין הערות עדיין</div>'; return; }
+  if (!raw.length){ el.innerHTML='<div class="chat-empty">אין הערות עדיין</div>'; return; }
+  // sanitize every entry loaded from GitHub before rendering
+  const msgs = raw.map(sanitizeChatEntry);
   el.innerHTML = msgs.map(m=>`
     <div class="cmsg">
-      <div class="cmsg-hdr"><span class="cmsg-user">${esc(m.username)}</span><span class="cmsg-date">${fmtD(m.created_at)}</span></div>
+      <div class="cmsg-hdr">
+        <span class="cmsg-user">${esc(m.username)}</span>
+        <span class="cmsg-date">${esc(fmtD(m.created_at))}</span>
+      </div>
       <div>${esc(m.message)}</div>
     </div>`).join('');
   el.scrollTop = el.scrollHeight;
