@@ -1,59 +1,10 @@
 {
   "name": "2026_summer_trip",
-  "created": "2026-06-15T00:00:00.000Z",
-  "saved": "2026-06-15T00:00:00.000Z",
   "chats": {
     "p7": [],
     "p9": []
   },
   "notes": {},
-  "alternatives": {
-    "p7": {
-      "name": "מילאן_7_מילאן",
-      "meta": "13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00",
-      "rows": [
-        {"date":"13.8","route":"מלאנפסה ← אגם קומו","drive":"1h00m","sleep":"מנאג'ו","zone":"italy"},
-        {"date":"14.8","route":"מנאג'ו ← סירה ← בלאג'יו ← סירה ← מנאג'ו","drive":"15m each way","sleep":"מנאג'ו","zone":"italy"},
-        {"date":"15.8","route":"מנאג'ו ← בלינצונה ← מירסבורג","drive":"2h00m incl. stop","sleep":"מירסבורג","zone":"konstanz"},
-        {"date":"16.8","route":"מירסבורג ← אי מאינאו ← מירסבורג","drive":"20m each way","sleep":"מירסבורג","zone":"konstanz"},
-        {"date":"17.8","route":"מירסבורג ← סירה ← קונסטנץ ← סירה ← מירסבורג","drive":"40m each way","sleep":"מירסבורג","zone":"konstanz"},
-        {"date":"18.8","route":"מירסבורג ← טיטיזי","drive":"1h30m","sleep":"טיטיזי","zone":"forest"},
-        {"date":"19.8","route":"טיטיזי ← שטיינוואזן פארק ← טיטיזי","drive":"35m each way","sleep":"טיטיזי","zone":"forest"},
-        {"date":"20.8","route":"טיטיזי ← מלאנפסה","drive":"2h15m depart 0800","sleep":"— טיסה","zone":"fly"}
-      ],
-      "mapPoints": [
-        {"label":"13–14.8 מנאג'ו (לינה)","color":"#c8773a"},
-        {"label":"14.8 בלאג'יו (שיט)","color":"#c8773a"},
-        {"label":"15–17.8 מירסבורג (לינה)","color":"#1a4a6b"},
-        {"label":"16.8 אי מאינאו","color":"#1a4a6b"},
-        {"label":"18–19.8 טיטיזי (לינה)","color":"#2d5a3d"},
-        {"label":"19.8 שטיינוואזן פארק","color":"#2d5a3d"}
-      ]
-    },
-    "p9": {
-      "name": "מילאן_9_מילאן",
-      "meta": "16–25 באוגוסט 2026 · 9 לילות · יוצאים 15:00 · חוזרים 13:00",
-      "rows": [
-        {"date":"16.8","route":"מלאנפסה ← אגם קומו","drive":"1h00m","sleep":"מנאג'ו","zone":"italy"},
-        {"date":"17.8","route":"מנאג'ו ← סירה ← בלאג'יו ← סירה ← מנאג'ו","drive":"15m each way","sleep":"מנאג'ו","zone":"italy"},
-        {"date":"18.8","route":"מנאג'ו ← בלינצונה ← מירסבורג","drive":"2h00m incl. stop","sleep":"מירסבורג","zone":"konstanz"},
-        {"date":"19.8","route":"מירסבורג ← אי מאינאו ← מירסבורג","drive":"20m each way","sleep":"מירסבורג","zone":"konstanz"},
-        {"date":"20.8","route":"מירסבורג ← סירה ← קונסטנץ ← סירה ← מירסבורג","drive":"40m each way","sleep":"מירסבורג","zone":"konstanz"},
-        {"date":"21.8","route":"מירסבורג ← טיטיזי","drive":"1h30m","sleep":"טיטיזי","zone":"forest"},
-        {"date":"22.8","route":"טיטיזי ← שטיינוואזן פארק ← טיטיזי","drive":"35m each way","sleep":"טיטיזי","zone":"forest"},
-        {"date":"23.8","route":"טיטיזי ← טריברג ← טיטיזי","drive":"40m each way","sleep":"טיטיזי","zone":"forest"},
-        {"date":"24.8","route":"יום חופשי – ללא נסיעה","drive":"—","sleep":"טיטיזי","zone":"forest"},
-        {"date":"25.8","route":"טיטיזי ← מלאנפסה","drive":"2h15m depart 0800","sleep":"— טיסה","zone":"fly"}
-      ],
-      "mapPoints": [
-        {"label":"16–17.8 מנאג'ו (לינה)","color":"#c8773a"},
-        {"label":"17.8 בלאג'יו (שיט)","color":"#c8773a"},
-        {"label":"18–20.8 מירסבורג (לינה)","color":"#1a4a6b"},
-        {"label":"19.8 אי מאינאו","color":"#1a4a6b"},
-        {"label":"21–24.8 טיטיזי (לינה)","color":"#2d5a3d"},
-        {"label":"22.8 שטיינוואזן פארק","color":"#2d5a3d"},
-        {"label":"23.8 טריברג","color":"#2d5a3d"}
-      ]
-    }
-  }
+  "chosen": "p9",
+  "saved": "2026-06-15T16:13:58.946Z"
 }
