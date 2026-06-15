@@ -52,6 +52,7 @@ Create a file named `projects/<project_name>.json`.
 | `saved` | ISO 8601 datetime | Last save date – update on every write |
 | `chats` | object | Chat messages per alternative. Keys must match alternative keys in `index.html` (`p7`, `p9`, etc.) |
 | `notes` | object | Free key-value notes. Currently unused by the UI but preserved on save |
+| `chosen` | string or null | Key of the chosen/preferred alternative (`"p7"`, `"p9"`, or `null`). The app opens this alternative first on project load. |
 
 ### Step 3 – Chat message format
 
