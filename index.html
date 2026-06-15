@@ -176,6 +176,18 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 
 /* chat */
 .chat-sec{margin-top:22px;}
+
+/* chosen candidate */
+.alt-btn.chosen{background:#fef9ec;border-right:3px solid var(--accent);}
+.alt-btn.active.chosen{background:#fff3d4;}
+.chosen-star{display:none;color:var(--accent);margin-right:3px;}
+.alt-btn.chosen .chosen-star{display:inline;}
+.chosen-badge{display:none;background:var(--accent);color:#fff;font-size:.68rem;font-weight:800;padding:2px 7px;border-radius:10px;margin-right:5px;vertical-align:middle;}
+.chosen-badge.visible{display:inline;}
+.choose-btn{display:block;width:100%;margin-top:10px;background:none;border:1px solid var(--border);color:var(--rock);border-radius:7px;padding:7px 14px;font-family:'Heebo',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;}
+.choose-btn:hover{border-color:var(--accent);color:var(--accent);}
+.choose-btn.is-chosen{background:var(--accent);color:#fff;border-color:var(--accent);}
+.choose-btn.is-chosen::before{content:'✓ ';}
 .chat-sec h3{font-size:.95rem;font-weight:800;color:var(--lake);margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid var(--border);}
 .chat-msgs{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;max-height:320px;overflow-y:auto;padding-left:3px;}
 .cmsg{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:.85rem;}
@@ -308,11 +320,13 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
       <!-- SIDEBAR -->
       <div class="alts-sidebar">
         <div class="alts-sidebar-title">אלטרנטיבות</div>
-        <button class="alt-btn active" onclick="switchAlt('p7',this)">
-          מילאן_7_מילאן<br><span style="font-size:.72rem;font-weight:400;color:var(--rock)">13–20.8 · 7 לילות</span>
+        <button class="alt-btn active" id="sidebtn-p7" onclick="switchAlt('p7',this)">
+          <span class="chosen-star">⭐</span>מילאן_7_מילאן<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">13–20.8 · 7 לילות</span>
         </button>
-        <button class="alt-btn" onclick="switchAlt('p9',this)">
-          מילאן_9_מילאן<br><span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–26.8 · 10 לילות</span>
+        <button class="alt-btn" id="sidebtn-p9" onclick="switchAlt('p9',this)">
+          <span class="chosen-star">⭐</span>מילאן_9_מילאן<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–26.8 · 10 לילות</span>
         </button>
       </div>
 
@@ -322,9 +336,17 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
         <!-- PANEL P7 -->
         <div class="alt-panel active" id="panel-p7">
           <div class="alt-card">
-            <div class="alt-hdr">
-              <div class="alt-title">מילאן_7_מילאן</div>
-              <div class="alt-meta">13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00</div>
+            <div class="alt-hdr" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+              <div>
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-p7">✓ מועדף</span>
+                  מילאן_7_מילאן
+                </div>
+                <div class="alt-meta">13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-p7" onclick="setChosen('p7')" style="width:auto;min-width:110px">
+                קבע כמועדף
+              </button>
             </div>
             <div class="alt-body">
               <div class="vbar"><span>טבלה:</span>
@@ -370,9 +392,17 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
         <!-- PANEL P9 -->
         <div class="alt-panel" id="panel-p9">
           <div class="alt-card">
-            <div class="alt-hdr">
-              <div class="alt-title">מילאן_9_מילאן</div>
-              <div class="alt-meta">16–26 באוגוסט 2026 · 10 לילות · יוצאים 15:00 · חוזרים 13:00</div>
+            <div class="alt-hdr" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+              <div>
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-p9">✓ מועדף</span>
+                  מילאן_9_מילאן
+                </div>
+                <div class="alt-meta">16–26 באוגוסט 2026 · 10 לילות · יוצאים 15:00 · חוזרים 13:00</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-p9" onclick="setChosen('p9')" style="width:auto;min-width:110px">
+                קבע כמועדף
+              </button>
             </div>
             <div class="alt-body">
               <div class="vbar"><span>טבלה:</span>
@@ -640,7 +670,7 @@ function confirmProjModal() {
   if (activeProjTab === 'new') {
     const name = document.getElementById('new-proj-name').value.trim();
     if (!name) { alert('יש להזין שם פרויקט'); return; }
-    selectProject({ name, created: new Date().toISOString(), chats:{p7:[],p9:[]}, notes:{} });
+    selectProject({ name, created: new Date().toISOString(), chats:{p7:[],p9:[]}, notes:{}, chosen:null });
     return;
   }
   const sel = document.querySelector('.proj-item.selected');
@@ -650,7 +680,7 @@ function confirmProjModal() {
 
 function selectProject(data) {
   currentProject = data.name;
-  projData = { chats: data.chats||{p7:[],p9:[]}, notes: data.notes||{} };
+  projData = { chats: data.chats||{p7:[],p9:[]}, notes: data.notes||{}, chosen: data.chosen||null };
   document.getElementById('proj-badge').textContent = '📁 '+currentProject;
   document.getElementById('header-title').textContent = currentProject;
   document.getElementById('header-sub').textContent = 'לחץ לשינוי פרויקט';
@@ -658,7 +688,44 @@ function selectProject(data) {
   document.getElementById('alts-content').style.display = 'block';
   renderChats('p7'); renderChats('p9');
   updateChatCounters();
+  renderChosenState();
+  // open chosen alternative first if set
+  const startAlt = projData.chosen || 'p7';
+  const startBtn = document.getElementById('sidebtn-' + startAlt);
+  if (startBtn) switchAlt(startAlt, startBtn);
   closeProjModal();
+}
+
+// ════════════════════════════════════════════════
+// CHOSEN CANDIDATE
+// ════════════════════════════════════════════════
+function setChosen(pk) {
+  if (!currentProject) return;
+  // toggle off if already chosen
+  if (projData.chosen === pk) {
+    projData.chosen = null;
+  } else {
+    projData.chosen = pk;
+  }
+  renderChosenState();
+  saveToGitHub();
+}
+
+function renderChosenState() {
+  const chosen = projData.chosen;
+  ['p7','p9'].forEach(pk => {
+    const sideBtn   = document.getElementById('sidebtn-' + pk);
+    const badge     = document.getElementById('chosen-badge-' + pk);
+    const chooseBtn = document.getElementById('choose-btn-' + pk);
+    if (!sideBtn) return;
+    const isChosen = chosen === pk;
+    sideBtn.classList.toggle('chosen', isChosen);
+    if (badge)     badge.classList.toggle('visible', isChosen);
+    if (chooseBtn) {
+      chooseBtn.classList.toggle('is-chosen', isChosen);
+      chooseBtn.textContent = isChosen ? 'מועדף ✓' : 'קבע כמועדף';
+    }
+  });
 }
 
 // ════════════════════════════════════════════════
@@ -710,7 +777,7 @@ async function loadProjectFromGH(name) {
 async function saveToGitHub() {
   const name = currentProject;
   if (!name) return;
-  const data = { name, chats: projData.chats, notes: projData.notes, saved: new Date().toISOString() };
+  const data = { name, chats: projData.chats, notes: projData.notes, chosen: projData.chosen||null, saved: new Date().toISOString() };
 
   if (!ghToken) {
     // No token – save locally only (chat messages already in memory)
