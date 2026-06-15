@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מתכנן טיולים</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;900&display=swap');
+:root{
+  --lake:#1a4a6b;--forest:#2d5a3d;--snow:#f4f7fa;--rock:#6b7280;
+  --accent:#c8773a;--white:#fff;--text:#1a1a2e;--border:#d1dce8;--danger:#b94040;
+  --zi:#c8773a18;--zk:#1a4a6b18;--zf:#2d5a3d18;
+  --bi:#c8773a;--bk:#1a4a6b;--bf:#2d5a3d;
+  --nav-h:52px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Heebo',sans-serif;background:var(--snow);color:var(--text);line-height:1.6;font-size:15px;}
+body.mobile-view{font-size:14px;}
+
+/* ── MODAL OVERLAY ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,20,40,.65);z-index:1000;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:#fff;border-radius:16px;width:92%;max-width:520px;box-shadow:0 8px 40px rgba(0,0,0,.22);overflow:hidden;}
+.modal-hdr{background:linear-gradient(135deg,var(--lake),#0d2f47);color:#fff;padding:20px 24px 16px;}
+.modal-hdr h2{font-size:1.2rem;font-weight:900;}
+.modal-hdr p{font-size:.82rem;opacity:.75;margin-top:3px;}
+.modal-body{padding:20px 24px;}
+.modal-body label{display:block;font-size:.82rem;font-weight:700;color:var(--rock);margin-bottom:4px;margin-top:12px;}
+.modal-body input{width:100%;font-family:'Heebo',sans-serif;font-size:.9rem;padding:9px 12px;border:1px solid var(--border);border-radius:8px;direction:rtl;}
+.modal-body input:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 3px rgba(26,74,107,.12);}
+.modal-body .hint{font-size:.75rem;color:var(--rock);margin-top:3px;}
+.modal-footer{display:flex;gap:10px;padding:16px 24px;border-top:1px solid var(--border);justify-content:flex-end;}
+.btn{font-family:'Heebo',sans-serif;font-size:.9rem;font-weight:700;padding:9px 22px;border-radius:8px;border:none;cursor:pointer;transition:all .2s;}
+.btn-primary{background:var(--lake);color:#fff;} .btn-primary:hover{background:#0d2f47;}
+.btn-accent{background:var(--accent);color:#fff;} .btn-accent:hover{background:#a86330;}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--rock);} .btn-ghost:hover{border-color:var(--lake);color:var(--lake);}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-sm{padding:5px 14px;font-size:.8rem;}
+
+/* project list */
+.proj-list{margin-top:14px;display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;}
+.proj-item{display:flex;align-items:center;justify-content:space-between;background:var(--snow);border:1px solid var(--border);border-radius:9px;padding:10px 14px;cursor:pointer;transition:all .2s;}
+.proj-item:hover{border-color:var(--lake);background:#eef4fb;}
+.proj-item.selected{border-color:var(--lake);background:#ddeaf7;}
+.proj-name{font-weight:700;font-size:.9rem;}
+.proj-meta{font-size:.75rem;color:var(--rock);}
+.proj-actions{display:flex;gap:6px;flex-shrink:0;}
+.proj-loading{text-align:center;padding:20px;color:var(--rock);font-size:.85rem;}
+.tab-row{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.tab-row button{background:none;border:none;font-family:'Heebo',sans-serif;font-size:.88rem;font-weight:600;color:var(--rock);padding:8px 18px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab-row button.active{color:var(--lake);border-bottom-color:var(--lake);}
+
+/* ── HEADER ── */
+.app-header{background:linear-gradient(135deg,var(--lake) 0%,#0d2f47 60%,var(--forest) 100%);color:#fff;padding:20px 20px 16px;position:relative;overflow:hidden;}
+.app-header::before{content:'';position:absolute;top:-50px;left:-50px;width:260px;height:260px;background:radial-gradient(circle,rgba(200,119,58,.15) 0%,transparent 70%);pointer-events:none;}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.header-left{display:flex;align-items:center;gap:12px;}
+.proj-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:5px 12px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.proj-badge:hover{background:rgba(255,255,255,.25);}
+.header-title{font-size:1.4rem;font-weight:900;letter-spacing:-.5px;}
+.header-subtitle{font-size:.8rem;opacity:.7;margin-top:2px;}
+.header-controls{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.icon-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;transition:all .2s;}
+.icon-btn:hover{background:rgba(255,255,255,.28);}
+.icon-btn.active-view{background:rgba(255,255,255,.35);border-color:rgba(255,255,255,.5);}
+
+/* ── NAV ── */
+.main-nav{display:flex;gap:0;background:#fff;border-bottom:2px solid var(--border);padding:0 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto;}
+.main-nav::-webkit-scrollbar{height:0;}
+.mnb{background:none;border:none;font-family:'Heebo',sans-serif;font-size:.9rem;font-weight:600;color:var(--rock);padding:13px 16px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.mnb:hover{color:var(--lake);}
+.mnb.active{color:var(--lake);border-bottom-color:var(--lake);}
+
+/* ── MAIN ── */
+main{max-width:1140px;margin:0 auto;padding:20px 16px 80px;}
+body.mobile-view main{padding:12px 8px 60px;}
+.section{display:none;} .section.active{display:block;}
+
+/* status bar */
+.status-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+#db-status{font-size:.75rem;padding:4px 12px;border-radius:20px;font-weight:600;cursor:pointer;flex-shrink:0;}
+#db-status.ok{background:#e8f5e9;color:#2d5a3d;}
+#db-status.err{background:#fdecea;color:#b94040;}
+#db-status.local{background:#fff8e1;color:#7a5a00;}
+#gh-status{font-size:.75rem;padding:4px 12px;border-radius:20px;font-weight:600;flex-shrink:0;}
+#gh-status.ok{background:#e8f5e9;color:#2d5a3d;}
+#gh-status.none{background:#f0f0f0;color:#888;}
+#gh-status.err{background:#fdecea;color:#b94040;}
+
+/* settings panel */
+.sbar{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px;display:none;}
+.sbar.open{display:block;}
+.sbar label{display:block;font-size:.8rem;font-weight:700;margin-bottom:3px;margin-top:8px;}
+.sbar input{font-family:monospace;font-size:.8rem;padding:6px 10px;border:1px solid var(--border);border-radius:6px;width:100%;max-width:420px;margin-bottom:4px;}
+.sbar .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+
+/* ── ALT CARD ── */
+.alt-card{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.07);margin-bottom:40px;overflow:hidden;}
+.alt-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--border);}
+.alt-title{font-size:1.25rem;font-weight:900;color:var(--lake);}
+.alt-meta{font-size:.82rem;color:var(--rock);margin-top:2px;}
+.alt-body{padding:20px 22px;}
+body.mobile-view .alt-body{padding:12px 12px;}
+body.mobile-view .alt-hdr{padding:14px 14px 10px;}
+
+/* version bar */
+.vbar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.vbar span{font-size:.8rem;color:var(--rock);}
+.vbtn{background:none;border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-family:'Heebo',sans-serif;font-size:.78rem;cursor:pointer;color:var(--rock);transition:all .2s;}
+.vbtn:hover{border-color:var(--lake);color:var(--lake);}
+.vbtn.active{background:var(--lake);color:#fff;border-color:var(--lake);}
+.vwrap{position:relative;}
+.old-overlay{display:none;position:absolute;inset:0;background:rgba(150,150,150,.2);border-radius:10px;pointer-events:none;z-index:5;}
+.old-label{display:none;background:#888;color:#fff;font-size:.75rem;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:6px;width:fit-content;}
+.vwrap.is-old .old-overlay{display:block;}
+.vwrap.is-old .old-label{display:inline-block;}
+.vwrap.is-old table,.vwrap.is-old .map-box{filter:grayscale(.5) brightness(.97);}
+
+/* table */
+.tbl-wrap{overflow-x:auto;border-radius:10px;box-shadow:0 1px 8px rgba(0,0,0,.06);}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:.87rem;}
+thead tr{background:var(--lake);color:#fff;}
+thead th{padding:10px 12px;text-align:right;font-weight:700;font-size:.8rem;white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f0f5fa;}
+tbody td{padding:9px 12px;vertical-align:middle;}
+body.mobile-view table{font-size:.78rem;}
+body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
+.zi{border-right:4px solid var(--bi);background:var(--zi);}
+.zk{border-right:4px solid var(--bk);background:var(--zk);}
+.zf{border-right:4px solid var(--bf);background:var(--zf);}
+.zx{border-right:4px solid #aaa;background:#f7f7f7;color:#999;}
+.dc{font-weight:700;white-space:nowrap;}
+.rc{font-size:.83rem;}
+.drc{font-family:monospace;font-size:.8rem;color:var(--lake);font-weight:700;direction:ltr;text-align:left;white-space:nowrap;}
+.sc{font-weight:700;white-space:nowrap;}
+
+/* map */
+.map-box{min-height:280px;border-radius:10px;overflow:hidden;margin-top:12px;background:#e8f0f8;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;padding:14px;}
+.map-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:640px;}
+.chip{background:#fff;border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:.76rem;display:flex;align-items:center;gap:5px;}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+/* detail */
+.det-sec{margin-top:22px;}
+.det-sec h3{font-size:.95rem;font-weight:800;color:var(--lake);margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid var(--border);}
+.dblock{margin-bottom:13px;background:var(--snow);border-radius:9px;padding:12px 16px;border-right:3px solid var(--border);}
+.dblock.zi{border-right-color:var(--bi);}
+.dblock.zk{border-right-color:var(--bk);}
+.dblock.zf{border-right-color:var(--bf);}
+.dtitle{font-weight:800;font-size:.9rem;margin-bottom:7px;display:flex;align-items:center;gap:7px;}
+.dbadge{background:var(--lake);color:#fff;font-size:.7rem;padding:2px 7px;border-radius:9px;}
+.trow{display:grid;grid-template-columns:65px 1fr;gap:5px 10px;font-size:.83rem;margin-bottom:3px;}
+.tlabel{color:var(--accent);font-weight:700;}
+.sbox{background:#fff8f0;border:1px solid #e8c890;border-radius:7px;padding:7px 10px;font-size:.8rem;margin-top:7px;color:#5a3a10;}
+.sbox strong{color:var(--accent);}
+
+/* chat */
+.chat-sec{margin-top:22px;}
+.chat-sec h3{font-size:.95rem;font-weight:800;color:var(--lake);margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid var(--border);}
+.chat-msgs{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;max-height:320px;overflow-y:auto;padding-left:3px;}
+.cmsg{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:.85rem;}
+.cmsg-hdr{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.cmsg-user{font-weight:800;color:var(--lake);font-size:.83rem;}
+.cmsg-date{font-size:.73rem;color:var(--rock);}
+.chat-empty{text-align:center;color:var(--rock);font-size:.83rem;padding:20px;background:#fff;border-radius:10px;border:1px dashed var(--border);}
+.cform{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+.cform h4{font-size:.88rem;font-weight:800;margin-bottom:10px;}
+.cform label{display:block;font-size:.78rem;font-weight:700;color:var(--rock);margin-bottom:3px;}
+.cform input,.cform textarea{width:100%;font-family:'Heebo',sans-serif;font-size:.86rem;padding:7px 10px;border:1px solid var(--border);border-radius:7px;color:var(--text);background:var(--snow);margin-bottom:10px;direction:rtl;transition:border .2s;}
+.cform input:focus,.cform textarea:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 3px rgba(26,74,107,.1);}
+.cform textarea{min-height:70px;resize:vertical;}
+.sbtn{background:var(--lake);color:#fff;border:none;padding:8px 22px;border-radius:8px;font-family:'Heebo',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.sbtn:hover{background:#0d2f47;}
+.cmeta{font-size:.75rem;color:var(--rock);margin-top:6px;}
+
+/* legend */
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;margin-bottom:14px;}
+.li{display:flex;align-items:center;gap:5px;}
+.ld{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+
+/* settings section */
+.guide{background:#f0f7ff;border:1px solid #c0d8f0;border-radius:10px;padding:16px 22px;margin-bottom:24px;font-size:.83rem;line-height:1.8;}
+.guide pre{background:#1a1a2e;color:#e0e8f0;padding:12px 14px;border-radius:8px;margin:8px 0;font-size:.76rem;overflow-x:auto;direction:ltr;text-align:left;}
+.guide ol{padding-right:18px;}
+
+/* save indicator */
+.save-indicator{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2d5a3d;color:#fff;padding:8px 20px;border-radius:20px;font-size:.85rem;font-weight:700;z-index:500;box-shadow:0 4px 14px rgba(0,0,0,.2);}
+.save-indicator.show{display:block;}
+
+@media(max-width:600px){
+  .header-title{font-size:1.1rem;}
+  .header-subtitle{display:none;}
+  .mnb{padding:11px 10px;font-size:.82rem;}
+  body.mobile-view .trow{grid-template-columns:55px 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- SAVE INDICATOR -->
+<div class="save-indicator" id="save-indicator">✓ נשמר</div>
+
+<!-- ═══════════════════════════════════════
+     PROJECT MODAL
+═══════════════════════════════════════ -->
+<div class="modal-bg open" id="proj-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>📁 בחר פרויקט טיול</h2>
+      <p>כל פרויקט הוא טיול עצמאי עם אלטרנטיבות ושיחות</p>
+    </div>
+    <div class="modal-body">
+      <div class="tab-row">
+        <button class="active" onclick="switchProjTab('existing',this)">פרויקטים קיימים</button>
+        <button onclick="switchProjTab('new',this)">פרויקט חדש</button>
+        <button onclick="switchProjTab('github',this)">GitHub</button>
+      </div>
+
+      <!-- EXISTING -->
+      <div id="ptab-existing">
+        <div class="proj-list" id="proj-list">
+          <div class="proj-loading">טוען פרויקטים...</div>
+        </div>
+      </div>
+
+      <!-- NEW -->
+      <div id="ptab-new" style="display:none">
+        <label>שם הפרויקט</label>
+        <input type="text" id="new-proj-name" placeholder="למשל: אירופה קיץ 2027" maxlength="50"/>
+        <div class="hint">שם קצר וברור – ישמש גם כשם הקובץ ב-GitHub</div>
+      </div>
+
+      <!-- GITHUB SETTINGS -->
+      <div id="ptab-github" style="display:none">
+        <label>GitHub Username</label>
+        <input type="text" id="gh-user" placeholder="שם המשתמש שלך"/>
+        <label>Repository Name</label>
+        <input type="text" id="gh-repo" placeholder="trip-planner"/>
+        <label>Personal Access Token (Fine-grained)</label>
+        <input type="password" id="gh-token" placeholder="github_pat_..."/>
+        <div class="hint">נדרשות הרשאות Contents: Read and Write על המאגר בלבד</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeProjModal()" id="modal-cancel-btn" style="display:none">ביטול</button>
+      <button class="btn btn-primary" onclick="confirmProjModal()">המשך</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     APP HEADER
+═══════════════════════════════════════ -->
+<header class="app-header">
+  <div class="header-row">
+    <div class="header-left">
+      <div class="proj-badge" onclick="openProjModal()" id="proj-badge">📁 בחר פרויקט</div>
+      <div>
+        <div class="header-title" id="header-title">מתכנן טיולים</div>
+        <div class="header-subtitle" id="header-sub">בחר פרויקט להתחיל</div>
+      </div>
+    </div>
+    <div class="header-controls">
+      <button class="icon-btn" onclick="saveToGitHub()" title="שמור ל-GitHub">💾 שמור</button>
+      <button class="icon-btn active-view" onclick="toggleView(this)" id="view-btn">📱 מובייל</button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="main-nav">
+  <button class="mnb active" onclick="switchSec('alternatives',this)">אלטרנטיבות</button>
+  <button class="mnb" onclick="switchSec('settings-sec',this)">⚙ הגדרות</button>
+</nav>
+
+<main>
+
+<!-- STATUS -->
+<div class="status-row">
+  <div id="db-status" class="local" onclick="document.getElementById('sbar').classList.toggle('open')">💬 שיחות: מקומי בלבד</div>
+  <div id="gh-status" class="none">📁 GitHub: לא מחובר</div>
+</div>
+<div class="sbar" id="sbar">
+  <label>Supabase URL</label>
+  <input type="text" id="sb-url" placeholder="https://xxxx.supabase.co"/>
+  <label>Supabase Anon Key</label>
+  <input type="text" id="sb-key" placeholder="eyJ..."/>
+  <div class="row">
+    <button class="btn btn-primary btn-sm" onclick="saveSupaSettings()">התחבר</button>
+  </div>
+</div>
+
+<!-- ═══ ALTERNATIVES ═══ -->
+<div id="alternatives" class="section active">
+  <div id="no-project-msg" style="text-align:center;padding:48px 20px;color:var(--rock);">
+    <div style="font-size:3rem;margin-bottom:12px">📁</div>
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">לא נבחר פרויקט</div>
+    <div style="font-size:.9rem">לחץ על "📁 בחר פרויקט" בראש הדף</div>
+  </div>
+  <div id="alts-content" style="display:none">
+    <div class="legend">
+      <div class="li"><div class="ld" style="background:var(--bi)"></div>אגם קומו</div>
+      <div class="li"><div class="ld" style="background:var(--bk)"></div>אגם קונסטנץ</div>
+      <div class="li"><div class="ld" style="background:var(--bf)"></div>יער השחור</div>
+    </div>
+
+    <!-- ALT P7 -->
+    <div class="alt-card">
+      <div class="alt-hdr">
+        <div class="alt-title">מילאן_7_מילאן</div>
+        <div class="alt-meta">13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00</div>
+      </div>
+      <div class="alt-body">
+        <div class="vbar"><span>טבלה:</span>
+          <button class="vbtn active" onclick="setVer('p7t','current',this)">עדכנית</button>
+          <button class="vbtn" onclick="setVer('p7t','old',this)">גרסה קודמת</button>
+        </div>
+        <div class="vwrap" id="p7t">
+          <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+          <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th></tr></thead>
+          <tbody id="tb7"></tbody></table></div>
+        </div>
+        <div style="margin-top:18px">
+          <div class="vbar"><span>מפה:</span>
+            <button class="vbtn active" onclick="setVer('p7m','current',this)">עדכנית</button>
+            <button class="vbtn" onclick="setVer('p7m','old',this)">גרסה קודמת</button>
+          </div>
+          <div class="vwrap" id="p7m">
+            <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+            <div class="map-box">
+              <div style="font-weight:700;font-size:.87rem;margin-bottom:5px">📍 נקודות לינה ואטרקציות</div>
+              <div class="map-chips" id="mc7"></div>
+            </div>
+          </div>
+        </div>
+        <div class="det-sec"><h3>תכנית מפורטת</h3><div id="det7"></div></div>
+        <div class="chat-sec">
+          <h3>💬 שיחה</h3>
+          <div class="chat-msgs" id="chat7"><div class="chat-empty">אין הערות עדיין</div></div>
+          <div class="cform">
+            <h4>הוסף הערה</h4>
+            <label>שם</label><input type="text" id="cu7" placeholder="השם שלך"/>
+            <label>הערה</label><textarea id="ct7" placeholder="מה על דעתך?"></textarea>
+            <button class="sbtn" onclick="sendChat('p7')">שלח</button>
+            <div class="cmeta" id="cd7"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALT P9 -->
+    <div class="alt-card">
+      <div class="alt-hdr">
+        <div class="alt-title">מילאן_9_מילאן</div>
+        <div class="alt-meta">16–25 באוגוסט 2026 · 9 לילות · יוצאים 15:00 · חוזרים 13:00</div>
+      </div>
+      <div class="alt-body">
+        <div class="vbar"><span>טבלה:</span>
+          <button class="vbtn active" onclick="setVer('p9t','current',this)">עדכנית</button>
+          <button class="vbtn" onclick="setVer('p9t','old',this)">גרסה קודמת</button>
+        </div>
+        <div class="vwrap" id="p9t">
+          <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+          <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th></tr></thead>
+          <tbody id="tb9"></tbody></table></div>
+        </div>
+        <div style="margin-top:18px">
+          <div class="vbar"><span>מפה:</span>
+            <button class="vbtn active" onclick="setVer('p9m','current',this)">עדכנית</button>
+            <button class="vbtn" onclick="setVer('p9m','old',this)">גרסה קודמת</button>
+          </div>
+          <div class="vwrap" id="p9m">
+            <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+            <div class="map-box">
+              <div style="font-weight:700;font-size:.87rem;margin-bottom:5px">📍 נקודות לינה ואטרקציות</div>
+              <div class="map-chips" id="mc9"></div>
+            </div>
+          </div>
+        </div>
+        <div class="det-sec"><h3>תכנית מפורטת</h3><div id="det9"></div></div>
+        <div class="chat-sec">
+          <h3>💬 שיחה</h3>
+          <div class="chat-msgs" id="chat9"><div class="chat-empty">אין הערות עדיין</div></div>
+          <div class="cform">
+            <h4>הוסף הערה</h4>
+            <label>שם</label><input type="text" id="cu9" placeholder="השם שלך"/>
+            <label>הערה</label><textarea id="ct9" placeholder="מה על דעתך?"></textarea>
+            <button class="sbtn" onclick="sendChat('p9')">שלח</button>
+            <div class="cmeta" id="cd9"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /alternatives -->
+
+<!-- SETTINGS -->
+<div id="settings-sec" class="section">
+  <div class="guide">
+    <strong style="font-size:.95rem;display:block;margin-bottom:8px">📋 GitHub – שמירת פרויקטים</strong>
+    <ol>
+      <li>צור מאגר ב-GitHub (למשל trip-planner)</li>
+      <li>צור Fine-grained token עם הרשאת Contents: Read and Write</li>
+      <li>פתח את חלון הפרויקט (📁) ולחץ על טאב GitHub</li>
+      <li>הזן שם משתמש, שם מאגר, וטוקן – ולחץ המשך</li>
+    </ol>
+    <strong style="font-size:.95rem;display:block;margin:12px 0 8px">💬 Supabase – שיחות משותפות</strong>
+    <ol>
+      <li>צור חשבון ב-supabase.com</li>
+      <li>צור טבלה:</li>
+    </ol>
+    <pre>CREATE TABLE trip_chat (
+  id BIGSERIAL PRIMARY KEY,
+  proj_key TEXT, plan_key TEXT,
+  username TEXT, message TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE trip_chat ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "all" ON trip_chat FOR ALL USING (true) WITH CHECK (true);</pre>
+    <ol start="3"><li>הזן URL ו-anon key בשורת הסטטוס למעלה</li></ol>
+  </div>
+</div>
+
+</main>
+<footer style="text-align:center;color:var(--rock);font-size:.75rem;padding:18px;border-top:1px solid var(--border)">
+  מתכנן טיולים · נבנה עם Claude
+</footer>
+
+<script>
+// ════════════════════════════════════════════════
+// PLAN DATA
+// ════════════════════════════════════════════════
+const PLANS = {
+  p7:{
+    rows:[
+      {d:'13.8',r:'מלאנפסה ← אגם קומו',dr:'1h00m',s:"מנאג'ו",z:'zi'},
+      {d:'14.8',r:"מנאג'ו ← סירה ← בלאג'יו ← סירה ← מנאג'ו",dr:'15m each way',s:"מנאג'ו",z:'zi'},
+      {d:'15.8',r:"מנאג'ו ← בלינצונה ← מירסבורג",dr:'2h00m incl. stop',s:'מירסבורג',z:'zk'},
+      {d:'16.8',r:'מירסבורג ← אי מאינאו ← מירסבורג',dr:'20m each way',s:'מירסבורג',z:'zk'},
+      {d:'17.8',r:'מירסבורג ← סירה ← קונסטנץ ← סירה ← מירסבורג',dr:'40m each way',s:'מירסבורג',z:'zk'},
+      {d:'18.8',r:'מירסבורג ← טיטיזי',dr:'1h30m',s:'טיטיזי',z:'zf'},
+      {d:'19.8',r:'טיטיזי ← שטיינוואזן פארק ← טיטיזי',dr:'35m each way',s:'טיטיזי',z:'zf'},
+      {d:'20.8',r:'טיטיזי ← מלאנפסה',dr:'2h15m depart 0800',s:'— טיסה',z:'zx'},
+    ],
+    pts:[
+      {l:"13–14.8 מנאג'ו",c:'#c8773a'},{l:"14.8 בלאג'יו",c:'#c8773a'},
+      {l:'15–17.8 מירסבורג',c:'#1a4a6b'},{l:'16.8 אי מאינאו',c:'#1a4a6b'},
+      {l:'18–19.8 טיטיזי',c:'#2d5a3d'},{l:'19.8 שטיינוואזן',c:'#2d5a3d'},
+    ],
+    det:[
+      {d:'13.8',t:'הגעה לאגם קומו',z:'zi',m:'נחיתה 10:45. השכרת רכב. קנייה (senza glutine).',n:"הגעה למנאג'ו ~16:00.",e:'ארוחת ערב על האגם.',sp:'ערב שקט בדירה.'},
+      {d:'14.8',t:"שיט לבלאג'יו",z:'zi',m:"שיט (15 דק', 5 יורו). לפני 9:00.",n:'ארוחה (senza glutine). שיט חזרה.',e:'ערב על האגם.',sp:"נשאר עם הורה בפארק מנאג'ו."},
+      {d:'15.8',t:'מעבר לקונסטנץ',z:'zk',m:'בלינצונה (25 דק\'). מעבר גבול קיאסו.',n:'הגעה למירסבורג.',e:'קנייה (glutenfrei). עיר ישנה.',sp:'יום נסיעה – קצב אחיד.'},
+      {d:'16.8',t:'אי מאינאו',z:'zk',m:'נסיעה (20 דק\'). 26+13 יורו. ב-9:00.',n:'גן פרפרים, גינות.',e:'שחייה בנבו.',sp:'גן הפרפרים – שעתיים בשקט.'},
+      {d:'17.8',t:'שיט בנבו',z:'zk',m:'שיט (15 יורו). לקונסטנץ.',n:'ארוחה (glutenfrei).',e:'ערב חופשי.',sp:'נשאר עם הורה במירסבורג.'},
+      {d:'18.8',t:'יער השחור',z:'zf',m:'נסיעה (90 דק\').',n:"צ'ק אין. קנייה.",e:'אגם טיטיזי.',sp:'קצב רגוע.'},
+      {d:'19.8',t:'שטיינוואזן פארק',z:'zf',m:'נסיעה (35 דק\'). ב-10:00.',n:'כריכים מהבית.',e:'חזרה. ערב אחרון.',sp:'אזור החיות – שעתיים.'},
+      {d:'20.8',t:'טיסה',z:'zx',m:'לצאת עד 8:00.',n:'מלאנפסה. טיסה 13:00.',e:'—',sp:'—'},
+    ]
+  },
+  p9:{
+    rows:[
+      {d:'16.8',r:'מלאנפסה ← אגם קומו',dr:'1h00m',s:"מנאג'ו",z:'zi'},
+      {d:'17.8',r:"מנאג'ו ← סירה ← בלאג'יו ← סירה ← מנאג'ו",dr:'15m each way',s:"מנאג'ו",z:'zi'},
+      {d:'18.8',r:"מנאג'ו ← בלינצונה ← מירסבורג",dr:'2h00m incl. stop',s:'מירסבורג',z:'zk'},
+      {d:'19.8',r:'מירסבורג ← אי מאינאו ← מירסבורג',dr:'20m each way',s:'מירסבורג',z:'zk'},
+      {d:'20.8',r:'מירסבורג ← סירה ← קונסטנץ ← סירה ← מירסבורג',dr:'40m each way',s:'מירסבורג',z:'zk'},
+      {d:'21.8',r:'מירסבורג ← טיטיזי',dr:'1h30m',s:'טיטיזי',z:'zf'},
+      {d:'22.8',r:'טיטיזי ← שטיינוואזן פארק ← טיטיזי',dr:'35m each way',s:'טיטיזי',z:'zf'},
+      {d:'23.8',r:'טיטיזי ← טריברג ← טיטיזי',dr:'40m each way',s:'טיטיזי',z:'zf'},
+      {d:'24.8',r:'יום חופשי',dr:'—',s:'טיטיזי',z:'zf'},
+      {d:'25.8',r:'טיטיזי ← מלאנפסה',dr:'2h15m depart 0800',s:'— טיסה',z:'zx'},
+    ],
+    pts:[
+      {l:"16–17.8 מנאג'ו",c:'#c8773a'},{l:"17.8 בלאג'יו",c:'#c8773a'},
+      {l:'18–20.8 מירסבורג',c:'#1a4a6b'},{l:'19.8 אי מאינאו',c:'#1a4a6b'},
+      {l:'21–24.8 טיטיזי',c:'#2d5a3d'},{l:'22.8 שטיינוואזן',c:'#2d5a3d'},{l:'23.8 טריברג',c:'#2d5a3d'},
+    ],
+    det:[
+      {d:'16.8',t:'הגעה',z:'zi',m:'נחיתה 15:00. רכב. קנייה.',n:"אגם קומו ~20:30.",e:'ארוחה קלה.',sp:'ערב שקט.'},
+      {d:'17.8',t:"שיט לבלאג'יו",z:'zi',m:'שיט (15 דק\'). לפני 9:00.',n:'סמטאות, גלידה (senza glutine).',e:'ערב על האגם.',sp:"נשאר בפארק מנאג'ו."},
+      {d:'18.8',t:'מעבר לקונסטנץ',z:'zk',m:'בלינצונה. מעבר גבול.',n:'מירסבורג.',e:'קנייה. עיר ישנה.',sp:'יום נסיעה.'},
+      {d:'19.8',t:'אי מאינאו',z:'zk',m:'(20 דק\'). ב-9:00.',n:'גן פרפרים.',e:'שחייה.',sp:'גן הפרפרים – שעתיים.'},
+      {d:'20.8',t:'שיט בנבו',z:'zk',m:'(15 יורו). קונסטנץ.',n:'ארוחה (glutenfrei).',e:'ערב חופשי.',sp:'נשאר במירסבורג.'},
+      {d:'21.8',t:'יער השחור',z:'zf',m:'(90 דק\').',n:"צ'ק אין. קנייה לשלושה ימים.",e:'טיטיזי.',sp:'קצב רגוע.'},
+      {d:'22.8',t:'שטיינוואזן פארק',z:'zf',m:'(35 דק\'). ב-10:00.',n:'כריכים מהבית.',e:'חזרה.',sp:'אזור החיות.'},
+      {d:'23.8',t:'מפלי טריברג',z:'zf',m:"(40 דק'). 5 יורו.",n:'טריברג (glutenfrei).',e:'חזרה.',sp:'מסלול שקט ומישורי.'},
+      {d:'24.8',t:'יום חופשי',z:'zf',m:'אגם, גלידה.',n:'בישול בדירה.',e:'ארוחת ערב חגיגית.',sp:'יום ללא לוח זמנים – אידיאלי.'},
+      {d:'25.8',t:'טיסה',z:'zx',m:'לצאת עד 8:00.',n:'מלאנפסה. טיסה 13:00.',e:'—',sp:'—'},
+    ]
+  }
+};
+
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+let currentProject = null;
+let projData = { chats:{p7:[],p9:[]}, notes:{} };
+let ghConfig = { user:'', repo:'', token:'' };
+let sbClient = null;
+let isMobile = window.innerWidth < 700;
+let activeProjTab = 'existing';
+
+// ════════════════════════════════════════════════
+// PROJECT MODAL
+// ════════════════════════════════════════════════
+function openProjModal() {
+  document.getElementById('proj-modal').classList.add('open');
+  document.getElementById('modal-cancel-btn').style.display = currentProject ? '' : 'none';
+  loadProjList();
+}
+function closeProjModal() {
+  document.getElementById('proj-modal').classList.remove('open');
+}
+function switchProjTab(tab, btn) {
+  activeProjTab = tab;
+  ['existing','new','github'].forEach(t => {
+    document.getElementById('ptab-'+t).style.display = t===tab ? '' : 'none';
+  });
+  document.querySelectorAll('.tab-row button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (tab==='existing') loadProjList();
+}
+
+function confirmProjModal() {
+  if (activeProjTab === 'github') {
+    const u = document.getElementById('gh-user').value.trim();
+    const r = document.getElementById('gh-repo').value.trim();
+    const t = document.getElementById('gh-token').value.trim();
+    if (!u||!r) { alert('יש למלא שם משתמש ושם מאגר'); return; }
+    ghConfig = { user:u, repo:r, token:t };
+    localStorage.setItem('gh_config', JSON.stringify(ghConfig));
+    setGhStatus('ok', '✓ GitHub: '+u+'/'+r);
+    switchProjTab('existing', document.querySelector('.tab-row button'));
+    loadProjList();
+    return;
+  }
+  if (activeProjTab === 'new') {
+    const name = document.getElementById('new-proj-name').value.trim();
+    if (!name) { alert('יש להזין שם פרויקט'); return; }
+    selectProject({ name, created: new Date().toISOString(), chats:{p7:[],p9:[]}, notes:{} });
+    return;
+  }
+  // existing – use selected
+  const sel = document.querySelector('.proj-item.selected');
+  if (!sel) { alert('יש לבחור פרויקט מהרשימה'); return; }
+  const name = sel.dataset.name;
+  loadProjectFromGH(name);
+}
+
+function selectProject(data) {
+  currentProject = data.name;
+  projData = { chats: data.chats||{p7:[],p9:[]}, notes: data.notes||{} };
+  document.getElementById('proj-badge').textContent = '📁 '+currentProject;
+  document.getElementById('header-title').textContent = currentProject;
+  document.getElementById('header-sub').textContent = 'לחץ לשינוי פרויקט';
+  document.getElementById('no-project-msg').style.display = 'none';
+  document.getElementById('alts-content').style.display = 'block';
+  renderChats('p7'); renderChats('p9');
+  closeProjModal();
+}
+
+// ════════════════════════════════════════════════
+// GITHUB API
+// ════════════════════════════════════════════════
+function ghHeaders() {
+  const h = { 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json' };
+  if (ghConfig.token) h['Authorization'] = 'token '+ghConfig.token;
+  return h;
+}
+function ghBase() { return `https://api.github.com/repos/${ghConfig.user}/${ghConfig.repo}/contents/projects/`; }
+
+async function loadProjList() {
+  const el = document.getElementById('proj-list');
+  // load from localStorage first
+  const local = getLocalProjects();
+
+  if (!ghConfig.user || !ghConfig.repo) {
+    if (local.length === 0) {
+      el.innerHTML = '<div class="proj-loading">אין פרויקטים. צור פרויקט חדש או חבר GitHub.</div>';
+    } else {
+      renderProjList(el, local.map(n => ({name:n, source:'local'})));
+    }
+    return;
+  }
+
+  el.innerHTML = '<div class="proj-loading">טוען מ-GitHub...</div>';
+  try {
+    const res = await fetch(ghBase(), { headers: ghHeaders() });
+    if (!res.ok) throw new Error(res.status);
+    const files = await res.json();
+    const projects = files.filter(f => f.name.endsWith('.json'))
+      .map(f => ({ name: f.name.replace('.json',''), sha: f.sha, source:'github' }));
+    // merge with local
+    const localOnly = local.filter(n => !projects.find(p => p.name===n));
+    const all = [...projects, ...localOnly.map(n=>({name:n,source:'local'}))];
+    if (all.length === 0) {
+      el.innerHTML = '<div class="proj-loading">אין פרויקטים. צור פרויקט חדש.</div>';
+    } else {
+      renderProjList(el, all);
+    }
+    setGhStatus('ok', '✓ GitHub: '+ghConfig.user+'/'+ghConfig.repo);
+  } catch(e) {
+    setGhStatus('err', '✗ GitHub: שגיאה');
+    if (local.length > 0) renderProjList(el, local.map(n=>({name:n,source:'local'})));
+    else el.innerHTML = '<div class="proj-loading">שגיאת GitHub. בדוק הגדרות.</div>';
+  }
+}
+
+function renderProjList(el, projects) {
+  el.innerHTML = projects.map(p => `
+    <div class="proj-item" data-name="${esc(p.name)}" onclick="this.parentElement.querySelectorAll('.proj-item').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')">
+      <div>
+        <div class="proj-name">${esc(p.name)}</div>
+        <div class="proj-meta">${p.source==='github'?'☁ GitHub':'💾 מקומי'}</div>
+      </div>
+    </div>`).join('');
+}
+
+async function loadProjectFromGH(name) {
+  const key = 'proj_'+name;
+  // try GitHub first
+  if (ghConfig.user && ghConfig.repo) {
+    try {
+      const res = await fetch(ghBase()+encodeURIComponent(name)+'.json', { headers: ghHeaders() });
+      if (res.ok) {
+        const file = await res.json();
+        const data = JSON.parse(atob(file.content));
+        data.name = name;
+        localStorage.setItem(key, JSON.stringify(data));
+        selectProject(data);
+        return;
+      }
+    } catch(e) {}
+  }
+  // fallback to localStorage
+  const local = localStorage.getItem(key);
+  if (local) { const d=JSON.parse(local); d.name=name; selectProject(d); return; }
+  // new empty project
+  selectProject({ name, chats:{p7:[],p9:[]}, notes:{} });
+}
+
+async function saveToGitHub() {
+  const name = currentProject;
+  if (!name) { alert('לא נבחר פרויקט'); return; }
+  const data = { name, chats: projData.chats, notes: projData.notes, saved: new Date().toISOString() };
+  // always save locally
+  localStorage.setItem('proj_'+name, JSON.stringify(data));
+  // add to local index
+  const idx = getLocalProjects();
+  if (!idx.includes(name)) { idx.push(name); localStorage.setItem('proj_index', JSON.stringify(idx)); }
+
+  if (!ghConfig.user || !ghConfig.repo || !ghConfig.token) {
+    showSaved('נשמר מקומית');
+    return;
+  }
+  try {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const path = ghBase()+encodeURIComponent(name)+'.json';
+    // check if file exists (get sha)
+    let sha = undefined;
+    try {
+      const check = await fetch(path, { headers: ghHeaders() });
+      if (check.ok) { const f=await check.json(); sha=f.sha; }
+    } catch(e){}
+    const body = { message:`Update ${name}`, content };
+    if (sha) body.sha = sha;
+    const res = await fetch(path, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    if (!res.ok) throw new Error(await res.text());
+    showSaved('✓ נשמר ב-GitHub');
+  } catch(e) {
+    showSaved('⚠ נשמר מקומית בלבד');
+  }
+}
+
+function getLocalProjects() {
+  try { return JSON.parse(localStorage.getItem('proj_index')||'[]'); } catch(e){ return []; }
+}
+
+// ════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════
+function renderTable(id, pk) {
+  document.getElementById(id).innerHTML = PLANS[pk].rows.map(r=>`
+    <tr class="${r.z}"><td class="dc">${r.d}</td><td class="rc">${r.r}</td><td class="drc">${r.dr}</td><td class="sc">${r.s}</td></tr>`).join('');
+}
+function renderChips(id, pk) {
+  document.getElementById(id).innerHTML = PLANS[pk].pts.map(p=>
+    `<div class="chip"><div class="dot" style="background:${p.c}"></div>${p.l}</div>`).join('');
+}
+function renderDetail(id, pk) {
+  document.getElementById(id).innerHTML = PLANS[pk].det.map(d=>{
+    const sp = d.sp&&d.sp!=='—'?`<div class="sbox"><strong>פיצול (ילד בן ה-8):</strong> ${d.sp}</div>`:'';
+    return `<div class="dblock ${d.z}">
+      <div class="dtitle"><span class="dbadge">${d.d}</span>${d.t}</div>
+      <div class="trow"><span class="tlabel">בוקר</span><span>${d.m}</span></div>
+      <div class="trow"><span class="tlabel">צהריים</span><span>${d.n}</span></div>
+      <div class="trow"><span class="tlabel">ערב</span><span>${d.e}</span></div>
+      ${sp}</div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════
+// VERSION TOGGLE
+// ════════════════════════════════════════════════
+function setVer(wrapId, ver, btn) {
+  btn.closest('.vbar').querySelectorAll('.vbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(wrapId).classList.toggle('is-old', ver==='old');
+}
+
+// ════════════════════════════════════════════════
+// CHAT
+// ════════════════════════════════════════════════
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtD(iso){ const d=new Date(iso); return d.toLocaleDateString('he-IL')+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}); }
+
+function renderChats(pk) {
+  const id = pk==='p7'?'chat7':'chat9';
+  const msgs = (projData.chats&&projData.chats[pk])||[];
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (!msgs.length){ el.innerHTML='<div class="chat-empty">אין הערות עדיין</div>'; return; }
+  el.innerHTML = msgs.map(m=>`
+    <div class="cmsg">
+      <div class="cmsg-hdr"><span class="cmsg-user">${esc(m.username)}</span><span class="cmsg-date">${fmtD(m.created_at)}</span></div>
+      <div>${esc(m.message)}</div>
+    </div>`).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+async function sendChat(pk) {
+  if (!currentProject){ alert('יש לבחור פרויקט תחילה'); return; }
+  const ui=pk==='p7'?'cu7':'cu9', ti=pk==='p7'?'ct7':'ct9';
+  const username=document.getElementById(ui).value.trim();
+  const message=document.getElementById(ti).value.trim();
+  if (!username||!message){ alert('יש למלא שם ותוכן'); return; }
+  document.cookie='chat_user='+encodeURIComponent(username)+';max-age=31536000;path=/';
+  if (!projData.chats) projData.chats={p7:[],p9:[]};
+  if (!projData.chats[pk]) projData.chats[pk]=[];
+  projData.chats[pk].push({plan_key:pk,username,message,created_at:new Date().toISOString()});
+  renderChats(pk);
+  document.getElementById(ti).value='';
+  await saveToGitHub();
+}
+
+// ════════════════════════════════════════════════
+// VIEW TOGGLE (mobile / PC)
+// ════════════════════════════════════════════════
+function toggleView(btn) {
+  isMobile = !isMobile;
+  document.body.classList.toggle('mobile-view', isMobile);
+  btn.textContent = isMobile ? '🖥 מסך' : '📱 מובייל';
+  localStorage.setItem('view_mode', isMobile?'mobile':'pc');
+}
+
+// ════════════════════════════════════════════════
+// SUPABASE
+// ════════════════════════════════════════════════
+async function saveSupaSettings(){
+  const url=document.getElementById('sb-url').value.trim();
+  const key=document.getElementById('sb-key').value.trim();
+  if(!url||!key){alert('יש למלא URL ו-Key');return;}
+  localStorage.setItem('sb_url',url); localStorage.setItem('sb_key',key);
+  try {
+    if(!window._sbL){await ldScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');window._sbL=true;}
+    sbClient=window.supabase.createClient(url,key);
+    document.getElementById('db-status').className='ok';
+    document.getElementById('db-status').textContent='✓ Supabase מחובר';
+  } catch(e){ document.getElementById('db-status').className='err'; document.getElementById('db-status').textContent='✗ שגיאת Supabase'; }
+}
+
+function ldScript(src){ return new Promise((r,j)=>{ const s=document.createElement('script'); s.src=src; s.onload=r; s.onerror=j; document.head.appendChild(s); }); }
+
+// ════════════════════════════════════════════════
+// NAV + STATUS HELPERS
+// ════════════════════════════════════════════════
+function switchSec(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.mnb').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active'); btn.classList.add('active');
+}
+function setGhStatus(t,m){ const e=document.getElementById('gh-status'); e.className=t; e.textContent=m; }
+function showSaved(msg){
+  const el=document.getElementById('save-indicator');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2200);
+}
+function updateDates(){
+  const now=new Date().toLocaleString('he-IL',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  ['cd7','cd9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent='תאריך: '+now; });
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+function init(){
+  // view mode
+  const savedView = localStorage.getItem('view_mode');
+  if (savedView==='mobile'||(!savedView&&window.innerWidth<700)) {
+    isMobile=true; document.body.classList.add('mobile-view');
+    document.getElementById('view-btn').textContent='🖥 מסך';
+  }
+
+  // gh config
+  const ghSaved=localStorage.getItem('gh_config');
+  if(ghSaved){ try{ ghConfig=JSON.parse(ghSaved); if(ghConfig.user&&ghConfig.repo){ setGhStatus('ok','✓ GitHub: '+ghConfig.user+'/'+ghConfig.repo); document.getElementById('gh-user').value=ghConfig.user; document.getElementById('gh-repo').value=ghConfig.repo; document.getElementById('gh-token').value=ghConfig.token||''; } }catch(e){} }
+
+  // supabase
+  const su=localStorage.getItem('sb_url'),sk=localStorage.getItem('sb_key');
+  if(su&&sk){ document.getElementById('sb-url').value=su; document.getElementById('sb-key').value=sk; }
+
+  // cookie username
+  const cu=(document.cookie.match('(^|;)\\s*chat_user\\s*=\\s*([^;]+)')||[]).pop()||'';
+  if(cu){ ['cu7','cu9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=decodeURIComponent(cu); }); }
+  ['cu7','cu9'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input',function(){ document.cookie='chat_user='+encodeURIComponent(this.value)+';max-age=31536000;path=/'; }); });
+
+  // render static content
+  renderTable('tb7','p7'); renderTable('tb9','p9');
+  renderChips('mc7','p7'); renderChips('mc9','p9');
+  renderDetail('det7','p7'); renderDetail('det9','p9');
+  updateDates(); setInterval(updateDates,30000);
+}
+
+init();
+</script>
+</body>
+</html>
