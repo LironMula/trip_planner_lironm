@@ -174,7 +174,25 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 .sbox{background:#fff8f0;border:1px solid #e8c890;border-radius:7px;padding:7px 10px;font-size:.8rem;margin-top:7px;color:#5a3a10;}
 .sbox strong{color:var(--accent);}
 
-/* chosen candidate */
+/* ── Q&A SUMMARY ── */
+.qa-section{margin-bottom:18px;background:#fff;border-radius:12px;border:1px solid var(--border);overflow:hidden;}
+.qa-section-title{background:linear-gradient(135deg,var(--lake),#0d2f47);color:#fff;padding:10px 16px;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:space-between;}
+.qa-tts-all{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:4px 12px;font-family:'Heebo',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.qa-tts-all:hover{background:rgba(255,255,255,.3);}
+.qa-item{border-bottom:1px solid var(--border);}
+.qa-item:last-child{border-bottom:none;}
+.qa-question{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;gap:10px;transition:background .15s;}
+.qa-question:hover{background:#f8fafc;}
+.qa-q-text{font-weight:700;font-size:.88rem;color:var(--text);flex:1;}
+.qa-controls{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.qa-preview{font-size:.78rem;color:var(--rock);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.qa-toggle{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.75rem;color:var(--rock);cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap;transition:all .2s;}
+.qa-toggle:hover{border-color:var(--lake);color:var(--lake);}
+.qa-tts-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:.82rem;cursor:pointer;transition:all .2s;line-height:1;}
+.qa-tts-btn:hover{background:#eef4fb;border-color:var(--lake);}
+.qa-tts-btn.speaking{background:var(--lake);color:#fff;border-color:var(--lake);}
+.qa-answer{display:none;padding:0 16px 12px 16px;font-size:.85rem;line-height:1.65;color:var(--text);border-top:1px solid var(--border);background:#fafbfc;}
+.qa-answer.open{display:block;}
 .alt-btn.chosen{background:#fef9ec !important;border-right:3px solid var(--accent) !important;}
 .alt-btn.active.chosen{background:#fff3d4 !important;}
 .chosen-star{display:none;color:var(--accent);margin-right:3px;}
@@ -351,6 +369,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               <button class="choose-btn" id="choose-btn-p7" onclick="setChosen('p7')">קבע כמועדף</button>
             </div>
             <div class="alt-body">
+              <div class="qa-section" id="qa-p7"></div>
               <div class="vbar"><span>טבלה:</span>
                 <button class="vbtn active" onclick="setVer('p7t','current',this)">עדכנית</button>
                 <button class="vbtn" onclick="setVer('p7t','old',this)">גרסה קודמת</button>
@@ -405,6 +424,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               <button class="choose-btn" id="choose-btn-p9" onclick="setChosen('p9')">קבע כמועדף</button>
             </div>
             <div class="alt-body">
+              <div class="qa-section" id="qa-p9"></div>
               <div class="vbar"><span>טבלה:</span>
                 <button class="vbtn active" onclick="setVer('p9t','current',this)">עדכנית</button>
                 <button class="vbtn" onclick="setVer('p9t','old',this)">גרסה קודמת</button>
@@ -549,6 +569,14 @@ const PLANS = {
       {d:'18.8',t:'יער השחור',z:'zf',m:'נסיעה (90 דק\').',n:"צ'ק אין. קנייה.",e:'אגם טיטיזי.',sp:'קצב רגוע.'},
       {d:'19.8',t:'שטיינוואזן פארק',z:'zf',m:'נסיעה (35 דק\'). ב-10:00.',n:'כריכים מהבית.',e:'חזרה. ערב אחרון.',sp:'אזור החיות – שעתיים.'},
       {d:'20.8',t:'טיסה',z:'zx',m:'לצאת עד 8:00.',n:'מלאנפסה. טיסה 13:00.',e:'—',sp:'—'},
+    ],
+    qa:[
+      {q:'כמה לילות ולאן?', a:'7 לילות. יוצאים מישראל ב-13 באוגוסט, חוזרים ב-20 באוגוסט. הטיסה יוצאת בשעה 10:45 ומגיעה לשדה מלאנפסה ליד מילאנו. מסלול: אגם קומו שני לילות, אגם קונסטנץ שלושה לילות, יער השחור שניים.'},
+      {q:'מה העלות המשוערת לרכב?', a:'השכרת רכב לכל המסלול ממלאנפסה וחזרה למלאנפסה – ללא תוספת חד-כיוונית. כ-600 עד 900 יורו לשבוע כולל ביטוח CDW מלא. מומלץ להזמין מראש דרך Rentalcars.'},
+      {q:'מה לגבי אוכל ללא גלוטן?', a:'איטליה – חפשו senza glutine. גרמניה – חפשו glutenfrei. בכל סופרמרקט: Esselunga, Conad, Edeka, Rewe יש מדף ייעודי. מותג מוביל: Schär ו-Dr. Schär. במסעדות – ציינו בהזמנה, המודעות גבוהה מאוד.'},
+      {q:'מה מתאים לילדים בגיל 6 עד 10?', a:'אגם טיטיזי: ברווזים, סירות פדלים, גלידה. שטיינוואזן פארק: מגלשות, גשר תלוי, חיות. אי מאינאו: גן פרפרים, גינות, מגרשי משחקים. בלאג'יו: שיט קצר, סמטאות. כל הפעילויות מתאימות לגיל.'},
+      {q:'מה תכנית הפיצול לילד בן ה-8?', a:'בכל אטרקציה עמוסה יש אזור שקט חלופי. שטיינוואזן: אזור החיות שקט לגמרי. אי מאינאו: גן הפרפרים ללא עומס. בלאג'יו: פארק מנאג\'ו שקט לחלופין. תמיד אפשר שהורה אחד נשאר עם הילד.'},
+      {q:'מה מעברי הגבול במסלול?', a:'שני מעברי גבול: איטליה לשווייץ ליד קיאסו – לרוב ללא עצירה. שווייץ לגרמניה ליד קונסטנץ – אוטומטי לחלוטין. דרכון ישראלי ללא ויזה לשתי המדינות.'},
     ]
   },
   p9:{
@@ -620,6 +648,15 @@ const PLANS = {
        n:'החזרת רכב במלאנפסה. Check-in ועלייה לטיסה.',
        e:'—',
        sp:'—'},
+    ],
+    qa:[
+      {q:'כמה לילות ולאן?', a:'10 לילות. יוצאים ב-16 באוגוסט בשעה 15:00, חוזרים ב-26 באוגוסט בשעה 13:00. מסלול: אגם קומו שני לילות, אגם קונסטנץ שלושה לילות, יער השחור ארבעה לילות, ולוגאנו לילה אחד לפני הטיסה.'},
+      {q:'למה לילה אחרון בלוגאנו?', a:'לוגאנו נמצאת בדיוק באמצע הדרך בין יער השחור לשדה מלאנפסה. לינה שם מקצרת את נסיעת יום הטיסה מ-2 שעות ו-15 דקות לשעה ורבע בלבד, ומאפשרת לצאת ב-9:45 במקום ב-8:00.'},
+      {q:'מה העלות המשוערת לרכב?', a:'השכרת רכב לכל המסלול ממלאנפסה וחזרה למלאנפסה – ללא תוספת חד-כיוונית. כ-900 עד 1300 יורו לעשרה ימים כולל ביטוח CDW מלא. מומלץ להשוות בין Hertz, Avis ו-Sixt.'},
+      {q:'מה לגבי אוכל ללא גלוטן?', a:'איטליה – senza glutine, מודעות גבוהה מאוד, חובה בחוק. גרמניה – glutenfrei, מדף ייעודי בכל Edeka ו-Rewe. שווייץ – glutenfrei, Coop ו-Migros מצוינות. מותג מוביל בכולן: Schär ו-Dr. Schär.'},
+      {q:'מה מתאים לילדים בגיל 6 עד 10?', a:'שטיינוואזן פארק: מגלשות, גשר תלוי, חיות. מפלי טריברג: הליכה קלה ביער. אי מאינאו: גן פרפרים ומגרשי משחקים. בלאג\'יו: שיט קצר וסמטאות. אגם טיטיזי: סירות פדלים וגלידה. לידו לוגאנו: שחייה בטוחה.'},
+      {q:'מה תכנית הפיצול לילד בן ה-8?', a:'כל אטרקציה כוללת אזור חלופי שקט. שטיינוואזן: אזור החיות. אי מאינאו: גן הפרפרים – שעות ללא עומס. בלאג\'יו: פארק מנאג\'ו לחלופין. יום 24 ביער השחור הוא יום חופשי לגמרי ללא לוח זמנים – אידיאלי.'},
+      {q:'מה מעברי הגבול במסלול?', a:'שלושה מעברי גבול: איטליה לשווייץ ליד קיאסו – לרוב ללא עצירה. שווייץ לגרמניה ליד קונסטנץ – אוטומטי. גרמניה לשווייץ ליד באזל ביום 25 – אוטומטי. דרכון ישראלי ללא ויזה בכל המדינות.'},
     ]
   }
 };
@@ -697,8 +734,95 @@ function selectProject(data) {
 }
 
 // ════════════════════════════════════════════════
-// CHOSEN CANDIDATE
+// Q&A SUMMARY WITH TEXT-TO-SPEECH
 // ════════════════════════════════════════════════
+let ttsActive = null; // { utterance, btnEl }
+
+function renderQA(containerId, pk) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const items = PLANS[pk].qa || [];
+  if (!items.length) { el.style.display='none'; return; }
+
+  const rows = items.map((item, i) => {
+    const preview = item.a.slice(0, 50) + (item.a.length > 50 ? '...' : '');
+    return `
+      <div class="qa-item">
+        <div class="qa-question" onclick="toggleQA('qa-ans-${pk}-${i}', this)">
+          <span class="qa-q-text">${item.q}</span>
+          <div class="qa-controls">
+            <span class="qa-preview" id="qa-prev-${pk}-${i}">${preview}</span>
+            <button class="qa-tts-btn" id="qa-tts-${pk}-${i}"
+              onclick="event.stopPropagation();speakQA('${pk}',${i})"
+              title="הקרא בעברית">🔊</button>
+            <button class="qa-toggle" id="qa-tog-${pk}-${i}">הרחב</button>
+          </div>
+        </div>
+        <div class="qa-answer" id="qa-ans-${pk}-${i}">${item.a}</div>
+      </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="qa-section-title">
+      <span>📋 תקציר האלטרנטיבה</span>
+      <button class="qa-tts-all" onclick="speakAllQA('${pk}')">🔊 הקרא הכל</button>
+    </div>
+    ${rows}`;
+}
+
+function toggleQA(answerId, questionEl) {
+  const ans = document.getElementById(answerId);
+  const pk = answerId.split('-')[2];
+  const i  = answerId.split('-')[3];
+  const tog = document.getElementById(`qa-tog-${pk}-${i}`);
+  const prev = document.getElementById(`qa-prev-${pk}-${i}`);
+  const isOpen = ans.classList.toggle('open');
+  if (tog)  tog.textContent  = isOpen ? 'כווץ' : 'הרחב';
+  if (prev) prev.style.display = isOpen ? 'none' : '';
+}
+
+function speakQA(pk, idx) {
+  const item = PLANS[pk].qa[idx];
+  if (!item) return;
+  const btn = document.getElementById(`qa-tts-${pk}-${idx}`);
+  const text = item.q + '. ' + item.a;
+  speakText(text, btn);
+}
+
+function speakAllQA(pk) {
+  const items = PLANS[pk].qa || [];
+  if (!items.length) return;
+  const full = items.map(i => i.q + '. ' + i.a).join('. ');
+  speakText(full, null);
+}
+
+function speakText(text, btnEl) {
+  // stop any current speech
+  window.speechSynthesis.cancel();
+  if (ttsActive) {
+    ttsActive.btnEl && ttsActive.btnEl.classList.remove('speaking');
+    ttsActive = null;
+  }
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'he-IL';
+  utter.rate = 0.92;
+
+  // try to find Hebrew voice
+  const voices = window.speechSynthesis.getVoices();
+  const heVoice = voices.find(v => v.lang === 'he-IL' || v.lang === 'he');
+  if (heVoice) utter.voice = heVoice;
+
+  if (btnEl) btnEl.classList.add('speaking');
+  ttsActive = { btnEl };
+
+  utter.onend = utter.onerror = () => {
+    if (btnEl) btnEl.classList.remove('speaking');
+    ttsActive = null;
+  };
+
+  window.speechSynthesis.speak(utter);
+}
 async function setChosen(pk) {
   if (!currentProject) return;
 
@@ -1267,6 +1391,7 @@ function init(){
 
   renderTable('tb7','p7'); renderTable('tb9','p9');
   renderDetail('det7','p7'); renderDetail('det9','p9');
+  renderQA('qa-p7','p7'); renderQA('qa-p9','p9');
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO);
