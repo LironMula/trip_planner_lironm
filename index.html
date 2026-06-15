@@ -215,13 +215,13 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
       <div class="tab-row">
         <button class="active" onclick="switchProjTab('existing',this)">פרויקטים קיימים</button>
         <button onclick="switchProjTab('new',this)">פרויקט חדש</button>
-        <button onclick="switchProjTab('github',this)">GitHub</button>
       </div>
 
       <!-- EXISTING -->
       <div id="ptab-existing">
+        <div style="font-size:.78rem;color:var(--rock);margin-bottom:8px">טוען מ-GitHub...</div>
         <div class="proj-list" id="proj-list">
-          <div class="proj-loading">טוען פרויקטים...</div>
+          <div class="proj-loading">⏳ טוען פרויקטים...</div>
         </div>
       </div>
 
@@ -230,17 +230,6 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
         <label>שם הפרויקט</label>
         <input type="text" id="new-proj-name" placeholder="למשל: אירופה קיץ 2027" maxlength="50"/>
         <div class="hint">שם קצר וברור – ישמש גם כשם הקובץ ב-GitHub</div>
-      </div>
-
-      <!-- GITHUB SETTINGS -->
-      <div id="ptab-github" style="display:none">
-        <label>GitHub Username</label>
-        <input type="text" id="gh-user" placeholder="שם המשתמש שלך"/>
-        <label>Repository Name</label>
-        <input type="text" id="gh-repo" placeholder="trip-planner"/>
-        <label>Personal Access Token (Fine-grained)</label>
-        <input type="password" id="gh-token" placeholder="github_pat_..."/>
-        <div class="hint">נדרשות הרשאות Contents: Read and Write על המאגר בלבד</div>
       </div>
     </div>
     <div class="modal-footer">
@@ -263,7 +252,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
       </div>
     </div>
     <div class="header-controls">
-      <button class="icon-btn" onclick="saveToGitHub()" title="שמור ל-GitHub">💾 שמור</button>
+      <button class="icon-btn" onclick="triggerSave()" title="שמור ל-GitHub">💾 שמור</button>
       <button class="icon-btn active-view" onclick="toggleView(this)" id="view-btn">📱 מובייל</button>
     </div>
   </div>
@@ -279,17 +268,8 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 
 <!-- STATUS -->
 <div class="status-row">
-  <div id="db-status" class="local" onclick="document.getElementById('sbar').classList.toggle('open')">💬 שיחות: מקומי בלבד</div>
-  <div id="gh-status" class="none">📁 GitHub: לא מחובר</div>
-</div>
-<div class="sbar" id="sbar">
-  <label>Supabase URL</label>
-  <input type="text" id="sb-url" placeholder="https://xxxx.supabase.co"/>
-  <label>Supabase Anon Key</label>
-  <input type="text" id="sb-key" placeholder="eyJ..."/>
-  <div class="row">
-    <button class="btn btn-primary btn-sm" onclick="saveSupaSettings()">התחבר</button>
-  </div>
+  <div id="gh-status" class="none">📁 GitHub: מתחבר...</div>
+  <div id="save-status" style="font-size:.75rem;color:var(--rock);"></div>
 </div>
 
 <!-- ═══ ALTERNATIVES ═══ -->
@@ -341,9 +321,14 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
           <div class="chat-msgs" id="chat7"><div class="chat-empty">אין הערות עדיין</div></div>
           <div class="cform">
             <h4>הוסף הערה</h4>
-            <label>שם</label><input type="text" id="cu7" placeholder="השם שלך"/>
-            <label>הערה</label><textarea id="ct7" placeholder="מה על דעתך?"></textarea>
-            <button class="sbtn" onclick="sendChat('p7')">שלח</button>
+            <label>שם (אותיות בלבד, עד 20)</label>
+            <input type="text" id="cu7" placeholder="השם שלך" maxlength="20" oninput="sanitizeUser(this)"/>
+            <label>הערה (עד 1000 תווים)</label>
+            <textarea id="ct7" placeholder="מה על דעתך?" maxlength="1000" oninput="sanitizeMsg(this)"></textarea>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <button class="sbtn" onclick="sendChat('p7')">שלח</button>
+              <span id="chat7-counter" style="font-size:.75rem;color:var(--rock)"></span>
+            </div>
             <div class="cmeta" id="cd7"></div>
           </div>
         </div>
@@ -385,9 +370,14 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
           <div class="chat-msgs" id="chat9"><div class="chat-empty">אין הערות עדיין</div></div>
           <div class="cform">
             <h4>הוסף הערה</h4>
-            <label>שם</label><input type="text" id="cu9" placeholder="השם שלך"/>
-            <label>הערה</label><textarea id="ct9" placeholder="מה על דעתך?"></textarea>
-            <button class="sbtn" onclick="sendChat('p9')">שלח</button>
+            <label>שם (אותיות בלבד, עד 20)</label>
+            <input type="text" id="cu9" placeholder="השם שלך" maxlength="20" oninput="sanitizeUser(this)"/>
+            <label>הערה (עד 1000 תווים)</label>
+            <textarea id="ct9" placeholder="מה על דעתך?" maxlength="1000" oninput="sanitizeMsg(this)"></textarea>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <button class="sbtn" onclick="sendChat('p9')">שלח</button>
+              <span id="chat9-counter" style="font-size:.75rem;color:var(--rock)"></span>
+            </div>
             <div class="cmeta" id="cd9"></div>
           </div>
         </div>
@@ -494,12 +484,20 @@ const PLANS = {
 };
 
 // ════════════════════════════════════════════════
+// CONSTANTS – hardcoded repo, no token needed for reads
+// ════════════════════════════════════════════════
+const GH_USER = 'LironMula';
+const GH_REPO = 'trip_planner_lironm';
+const GH_RAW  = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/projects/`;
+const GH_API  = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects/`;
+const MAX_CHAT = 20;
+
+// ════════════════════════════════════════════════
 // STATE
 // ════════════════════════════════════════════════
 let currentProject = null;
 let projData = { chats:{p7:[],p9:[]}, notes:{} };
-let ghConfig = { user:'', repo:'', token:'' };
-let sbClient = null;
+let ghToken = '';   // only needed for writes
 let isMobile = window.innerWidth < 700;
 let activeProjTab = 'existing';
 
@@ -516,7 +514,7 @@ function closeProjModal() {
 }
 function switchProjTab(tab, btn) {
   activeProjTab = tab;
-  ['existing','new','github'].forEach(t => {
+  ['existing','new'].forEach(t => {
     document.getElementById('ptab-'+t).style.display = t===tab ? '' : 'none';
   });
   document.querySelectorAll('.tab-row button').forEach(b => b.classList.remove('active'));
@@ -525,29 +523,15 @@ function switchProjTab(tab, btn) {
 }
 
 function confirmProjModal() {
-  if (activeProjTab === 'github') {
-    const u = document.getElementById('gh-user').value.trim();
-    const r = document.getElementById('gh-repo').value.trim();
-    const t = document.getElementById('gh-token').value.trim();
-    if (!u||!r) { alert('יש למלא שם משתמש ושם מאגר'); return; }
-    ghConfig = { user:u, repo:r, token:t };
-    localStorage.setItem('gh_config', JSON.stringify(ghConfig));
-    setGhStatus('ok', '✓ GitHub: '+u+'/'+r);
-    switchProjTab('existing', document.querySelector('.tab-row button'));
-    loadProjList();
-    return;
-  }
   if (activeProjTab === 'new') {
     const name = document.getElementById('new-proj-name').value.trim();
     if (!name) { alert('יש להזין שם פרויקט'); return; }
     selectProject({ name, created: new Date().toISOString(), chats:{p7:[],p9:[]}, notes:{} });
     return;
   }
-  // existing – use selected
   const sel = document.querySelector('.proj-item.selected');
   if (!sel) { alert('יש לבחור פרויקט מהרשימה'); return; }
-  const name = sel.dataset.name;
-  loadProjectFromGH(name);
+  loadProjectFromGH(sel.dataset.name);
 }
 
 function selectProject(data) {
@@ -559,124 +543,82 @@ function selectProject(data) {
   document.getElementById('no-project-msg').style.display = 'none';
   document.getElementById('alts-content').style.display = 'block';
   renderChats('p7'); renderChats('p9');
+  updateChatCounters();
   closeProjModal();
 }
 
 // ════════════════════════════════════════════════
-// GITHUB API
+// GITHUB – READ (no token), WRITE (token required)
 // ════════════════════════════════════════════════
-function ghHeaders() {
-  const h = { 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json' };
-  if (ghConfig.token) h['Authorization'] = 'token '+ghConfig.token;
-  return h;
-}
-function ghBase() { return `https://api.github.com/repos/${ghConfig.user}/${ghConfig.repo}/contents/projects/`; }
-
 async function loadProjList() {
   const el = document.getElementById('proj-list');
-  // load from localStorage first
-  const local = getLocalProjects();
-
-  if (!ghConfig.user || !ghConfig.repo) {
-    if (local.length === 0) {
-      el.innerHTML = '<div class="proj-loading">אין פרויקטים. צור פרויקט חדש או חבר GitHub.</div>';
-    } else {
-      renderProjList(el, local.map(n => ({name:n, source:'local'})));
-    }
-    return;
-  }
-
-  el.innerHTML = '<div class="proj-loading">טוען מ-GitHub...</div>';
+  el.innerHTML = '<div class="proj-loading">⏳ טוען מ-GitHub...</div>';
   try {
-    const res = await fetch(ghBase(), { headers: ghHeaders() });
+    // Public API – no token needed
+    const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects`,
+      { headers:{ 'Accept':'application/vnd.github.v3+json' } });
     if (!res.ok) throw new Error(res.status);
     const files = await res.json();
     const projects = files.filter(f => f.name.endsWith('.json'))
-      .map(f => ({ name: f.name.replace('.json',''), sha: f.sha, source:'github' }));
-    // merge with local
-    const localOnly = local.filter(n => !projects.find(p => p.name===n));
-    const all = [...projects, ...localOnly.map(n=>({name:n,source:'local'}))];
-    if (all.length === 0) {
-      el.innerHTML = '<div class="proj-loading">אין פרויקטים. צור פרויקט חדש.</div>';
+      .map(f => f.name.replace('.json',''));
+    if (!projects.length) {
+      el.innerHTML = '<div class="proj-loading">אין פרויקטים עדיין.</div>';
     } else {
-      renderProjList(el, all);
+      el.innerHTML = projects.map(n => `
+        <div class="proj-item" data-name="${esc(n)}"
+          onclick="this.parentElement.querySelectorAll('.proj-item').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')">
+          <div>
+            <div class="proj-name">${esc(n)}</div>
+            <div class="proj-meta">☁ GitHub</div>
+          </div>
+        </div>`).join('');
     }
-    setGhStatus('ok', '✓ GitHub: '+ghConfig.user+'/'+ghConfig.repo);
+    setGhStatus('ok', '✓ '+GH_USER+'/'+GH_REPO);
   } catch(e) {
-    setGhStatus('err', '✗ GitHub: שגיאה');
-    if (local.length > 0) renderProjList(el, local.map(n=>({name:n,source:'local'})));
-    else el.innerHTML = '<div class="proj-loading">שגיאת GitHub. בדוק הגדרות.</div>';
+    el.innerHTML = '<div class="proj-loading">שגיאה בטעינה מ-GitHub.</div>';
+    setGhStatus('err', '✗ שגיאת GitHub');
   }
-}
-
-function renderProjList(el, projects) {
-  el.innerHTML = projects.map(p => `
-    <div class="proj-item" data-name="${esc(p.name)}" onclick="this.parentElement.querySelectorAll('.proj-item').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')">
-      <div>
-        <div class="proj-name">${esc(p.name)}</div>
-        <div class="proj-meta">${p.source==='github'?'☁ GitHub':'💾 מקומי'}</div>
-      </div>
-    </div>`).join('');
 }
 
 async function loadProjectFromGH(name) {
-  const key = 'proj_'+name;
-  // try GitHub first
-  if (ghConfig.user && ghConfig.repo) {
-    try {
-      const res = await fetch(ghBase()+encodeURIComponent(name)+'.json', { headers: ghHeaders() });
-      if (res.ok) {
-        const file = await res.json();
-        const data = JSON.parse(atob(file.content));
-        data.name = name;
-        localStorage.setItem(key, JSON.stringify(data));
-        selectProject(data);
-        return;
-      }
-    } catch(e) {}
+  try {
+    // Raw content – no token needed for public repo
+    const res = await fetch(GH_RAW + encodeURIComponent(name) + '.json?t='+Date.now());
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    data.name = name;
+    selectProject(data);
+  } catch(e) {
+    alert('שגיאה בטעינת הפרויקט: '+e.message);
   }
-  // fallback to localStorage
-  const local = localStorage.getItem(key);
-  if (local) { const d=JSON.parse(local); d.name=name; selectProject(d); return; }
-  // new empty project
-  selectProject({ name, chats:{p7:[],p9:[]}, notes:{} });
 }
 
 async function saveToGitHub() {
   const name = currentProject;
-  if (!name) { alert('לא נבחר פרויקט'); return; }
+  if (!name) return;
   const data = { name, chats: projData.chats, notes: projData.notes, saved: new Date().toISOString() };
-  // always save locally
-  localStorage.setItem('proj_'+name, JSON.stringify(data));
-  // add to local index
-  const idx = getLocalProjects();
-  if (!idx.includes(name)) { idx.push(name); localStorage.setItem('proj_index', JSON.stringify(idx)); }
 
-  if (!ghConfig.user || !ghConfig.repo || !ghConfig.token) {
+  if (!ghToken) {
+    // No token – save locally only (chat messages already in memory)
+    localStorage.setItem('proj_'+name, JSON.stringify(data));
     showSaved('נשמר מקומית');
     return;
   }
   try {
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    const path = ghBase()+encodeURIComponent(name)+'.json';
-    // check if file exists (get sha)
-    let sha = undefined;
-    try {
-      const check = await fetch(path, { headers: ghHeaders() });
-      if (check.ok) { const f=await check.json(); sha=f.sha; }
-    } catch(e){}
+    const path = GH_API + encodeURIComponent(name) + '.json';
+    const headers = { 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json', 'Authorization':'token '+ghToken };
+    let sha;
+    try { const c=await fetch(path,{headers}); if(c.ok){const f=await c.json();sha=f.sha;} } catch(e){}
     const body = { message:`Update ${name}`, content };
     if (sha) body.sha = sha;
-    const res = await fetch(path, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    const res = await fetch(path, { method:'PUT', headers, body: JSON.stringify(body) });
     if (!res.ok) throw new Error(await res.text());
     showSaved('✓ נשמר ב-GitHub');
   } catch(e) {
+    localStorage.setItem('proj_'+name, JSON.stringify(data));
     showSaved('⚠ נשמר מקומית בלבד');
   }
-}
-
-function getLocalProjects() {
-  try { return JSON.parse(localStorage.getItem('proj_index')||'[]'); } catch(e){ return []; }
 }
 
 // ════════════════════════════════════════════════
@@ -712,6 +654,21 @@ function setVer(wrapId, ver, btn) {
 }
 
 // ════════════════════════════════════════════════
+// INPUT SANITIZATION
+// ════════════════════════════════════════════════
+function sanitizeUser(el) {
+  // letters only (any language), max 20
+  el.value = el.value.replace(/[^a-zA-Z\u0590-\u05FF\u0600-\u06FF]/g, '').slice(0,20);
+}
+function sanitizeMsg(el) {
+  // alphanumeric + dashes, replace everything else with underscore, no apostrophes, max 1000
+  el.value = el.value
+    .replace(/'/g, '')          // remove apostrophes entirely
+    .replace(/[^a-zA-Z0-9\u0590-\u05FF\u0600-\u06FF\-\s]/g, '_')
+    .slice(0,1000);
+}
+
+// ════════════════════════════════════════════════
 // CHAT
 // ════════════════════════════════════════════════
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -731,23 +688,56 @@ function renderChats(pk) {
   el.scrollTop = el.scrollHeight;
 }
 
+function updateChatCounters() {
+  ['p7','p9'].forEach(pk => {
+    const msgs = (projData.chats&&projData.chats[pk])||[];
+    const count = msgs.length;
+    const el = document.getElementById('chat'+pk.slice(1)+'-counter');
+    if (!el) return;
+    if (count >= MAX_CHAT) {
+      el.textContent = `השיחה מלאה (${MAX_CHAT}/${MAX_CHAT})`;
+      el.style.color = 'var(--danger)';
+    } else {
+      el.textContent = `${count}/${MAX_CHAT} הערות`;
+      el.style.color = 'var(--rock)';
+    }
+  });
+}
+
 async function sendChat(pk) {
   if (!currentProject){ alert('יש לבחור פרויקט תחילה'); return; }
   const ui=pk==='p7'?'cu7':'cu9', ti=pk==='p7'?'ct7':'ct9';
-  const username=document.getElementById(ui).value.trim();
-  const message=document.getElementById(ti).value.trim();
-  if (!username||!message){ alert('יש למלא שם ותוכן'); return; }
-  document.cookie='chat_user='+encodeURIComponent(username)+';max-age=31536000;path=/';
+  const username = document.getElementById(ui).value.trim();
+  const rawMsg   = document.getElementById(ti).value.trim();
+  if (!username||!rawMsg){ alert('יש למלא שם ותוכן'); return; }
+
+  // enforce limits
   if (!projData.chats) projData.chats={p7:[],p9:[]};
   if (!projData.chats[pk]) projData.chats[pk]=[];
-  projData.chats[pk].push({plan_key:pk,username,message,created_at:new Date().toISOString()});
+  if (projData.chats[pk].length >= MAX_CHAT) {
+    alert(`השיחה הגיעה למגבלה של ${MAX_CHAT} הערות ולא ניתן להוסיף עוד.`);
+    return;
+  }
+
+  // sanitize
+  const cleanUser = username.replace(/[^a-zA-Z\u0590-\u05FF\u0600-\u06FF]/g,'').slice(0,20);
+  const cleanMsg  = rawMsg.replace(/'/g,'').replace(/[^a-zA-Z0-9\u0590-\u05FF\u0600-\u06FF\-\s]/g,'_').slice(0,1000);
+
+  if (!cleanUser){ alert('שם המשתמש חייב להכיל אותיות בלבד'); return; }
+  if (!cleanMsg) { alert('ההודעה ריקה לאחר הסינון'); return; }
+
+  document.cookie='chat_user='+encodeURIComponent(cleanUser)+';max-age=31536000;path=/';
+  projData.chats[pk].push({ plan_key:pk, username:cleanUser, message:cleanMsg, created_at:new Date().toISOString() });
   renderChats(pk);
+  updateChatCounters();
   document.getElementById(ti).value='';
+
+  // save to GitHub only if token is present, otherwise local
   await saveToGitHub();
 }
 
 // ════════════════════════════════════════════════
-// VIEW TOGGLE (mobile / PC)
+// VIEW TOGGLE
 // ════════════════════════════════════════════════
 function toggleView(btn) {
   isMobile = !isMobile;
@@ -757,22 +747,18 @@ function toggleView(btn) {
 }
 
 // ════════════════════════════════════════════════
-// SUPABASE
+// SAVE BUTTON – prompts for token if not set
 // ════════════════════════════════════════════════
-async function saveSupaSettings(){
-  const url=document.getElementById('sb-url').value.trim();
-  const key=document.getElementById('sb-key').value.trim();
-  if(!url||!key){alert('יש למלא URL ו-Key');return;}
-  localStorage.setItem('sb_url',url); localStorage.setItem('sb_key',key);
-  try {
-    if(!window._sbL){await ldScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');window._sbL=true;}
-    sbClient=window.supabase.createClient(url,key);
-    document.getElementById('db-status').className='ok';
-    document.getElementById('db-status').textContent='✓ Supabase מחובר';
-  } catch(e){ document.getElementById('db-status').className='err'; document.getElementById('db-status').textContent='✗ שגיאת Supabase'; }
+async function triggerSave() {
+  if (!currentProject){ alert('לא נבחר פרויקט'); return; }
+  if (!ghToken) {
+    const t = prompt('הזן GitHub token לשמירה (Fine-grained, Contents: Read+Write):');
+    if (!t) return;
+    ghToken = t.trim();
+    // optionally remember in session only (not localStorage for security)
+  }
+  await saveToGitHub();
 }
-
-function ldScript(src){ return new Promise((r,j)=>{ const s=document.createElement('script'); s.src=src; s.onload=r; s.onerror=j; document.head.appendChild(s); }); }
 
 // ════════════════════════════════════════════════
 // NAV + STATUS HELPERS
@@ -797,31 +783,22 @@ function updateDates(){
 // INIT
 // ════════════════════════════════════════════════
 function init(){
-  // view mode
   const savedView = localStorage.getItem('view_mode');
   if (savedView==='mobile'||(!savedView&&window.innerWidth<700)) {
     isMobile=true; document.body.classList.add('mobile-view');
     document.getElementById('view-btn').textContent='🖥 מסך';
   }
 
-  // gh config
-  const ghSaved=localStorage.getItem('gh_config');
-  if(ghSaved){ try{ ghConfig=JSON.parse(ghSaved); if(ghConfig.user&&ghConfig.repo){ setGhStatus('ok','✓ GitHub: '+ghConfig.user+'/'+ghConfig.repo); document.getElementById('gh-user').value=ghConfig.user; document.getElementById('gh-repo').value=ghConfig.repo; document.getElementById('gh-token').value=ghConfig.token||''; } }catch(e){} }
-
-  // supabase
-  const su=localStorage.getItem('sb_url'),sk=localStorage.getItem('sb_key');
-  if(su&&sk){ document.getElementById('sb-url').value=su; document.getElementById('sb-key').value=sk; }
-
   // cookie username
   const cu=(document.cookie.match('(^|;)\\s*chat_user\\s*=\\s*([^;]+)')||[]).pop()||'';
   if(cu){ ['cu7','cu9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=decodeURIComponent(cu); }); }
-  ['cu7','cu9'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input',function(){ document.cookie='chat_user='+encodeURIComponent(this.value)+';max-age=31536000;path=/'; }); });
+  ['cu7','cu9'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input',function(){ sanitizeUser(this); document.cookie='chat_user='+encodeURIComponent(this.value)+';max-age=31536000;path=/'; }); });
 
-  // render static content
   renderTable('tb7','p7'); renderTable('tb9','p9');
   renderChips('mc7','p7'); renderChips('mc9','p9');
   renderDetail('det7','p7'); renderDetail('det9','p9');
   updateDates(); setInterval(updateDates,30000);
+  setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO);
 }
 
 init();
