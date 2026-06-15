@@ -223,7 +223,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 <!-- ═══════════════════════════════════════
      PROJECT MODAL
 ═══════════════════════════════════════ -->
-<div class="modal-bg open" id="proj-modal">
+<div class="modal-bg" id="proj-modal">
   <div class="modal">
     <div class="modal-hdr">
       <h2>📁 בחר פרויקט טיול</h2>
@@ -548,7 +548,10 @@ let activeProjTab = 'existing';
 function openProjModal() {
   document.getElementById('proj-modal').classList.add('open');
   document.getElementById('modal-cancel-btn').style.display = currentProject ? '' : 'none';
-  loadProjList();
+  // only reload if list shows loading/error state (not already populated)
+  const list = document.getElementById('proj-list');
+  const hasItems = list.querySelector('.proj-item');
+  if (!hasItems) loadProjList();
 }
 function closeProjModal() {
   document.getElementById('proj-modal').classList.remove('open');
@@ -937,6 +940,9 @@ function init(){
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO);
+  // open modal on first load and pre-fetch project list
+  loadProjList();
+  document.getElementById('proj-modal').classList.add('open');
 }
 
 init();
