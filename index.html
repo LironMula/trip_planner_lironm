@@ -452,11 +452,41 @@ ALTER TABLE trip_chat ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "all" ON trip_chat FOR ALL USING (true) WITH CHECK (true);</pre>
     <ol start="3"><li>הזן URL ו-anon key בשורת הסטטוס למעלה</li></ol>
   </div>
+
+  <!-- AGENT INSTRUCTIONS BOX -->
+  <div style="margin-top:20px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 22px;">
+    <div style="font-size:.95rem;font-weight:800;margin-bottom:8px">🤖 הוראות לסוכן AI</div>
+    <div style="font-size:.85rem;color:var(--rock);margin-bottom:12px;line-height:1.6">
+      לסוכן AI שרוצה להוסיף פרויקט חדש – כל ההוראות, מבנה ה-JSON, ופקודות ה-API נמצאות בקובץ:
+    </div>
+    <a id="instructions-link"
+       href="https://github.com/LironMula/trip_planner_lironm/blob/main/INSTRUCTIONS.md"
+       target="_blank"
+       style="display:inline-flex;align-items:center;gap:8px;background:var(--lake);color:#fff;padding:9px 18px;border-radius:8px;text-decoration:none;font-size:.88rem;font-weight:700;transition:background .2s">
+      📄 INSTRUCTIONS.md
+    </a>
+    <div style="margin-top:10px;font-size:.78rem;color:var(--rock)">
+      Raw URL (לסוכן):
+      <code id="raw-instructions-url" style="background:#f0f4f8;padding:3px 8px;border-radius:5px;font-size:.76rem;user-select:all">
+        https://raw.githubusercontent.com/LironMula/trip_planner_lironm/main/INSTRUCTIONS.md
+      </code>
+    </div>
+  </div>
 </div>
 
 </main>
-<footer style="text-align:center;color:var(--rock);font-size:.75rem;padding:18px;border-top:1px solid var(--border)">
-  מתכנן טיולים · נבנה עם Claude
+<footer style="text-align:center;color:var(--rock);font-size:.75rem;padding:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
+  <span>מתכנן טיולים · נבנה עם Claude</span>
+  <a href="https://github.com/LironMula/trip_planner_lironm/blob/main/INSTRUCTIONS.md"
+     target="_blank"
+     style="color:var(--lake);text-decoration:none;font-weight:700;font-size:.78rem">
+    🤖 Agent Instructions
+  </a>
+  <a href="https://raw.githubusercontent.com/LironMula/trip_planner_lironm/main/INSTRUCTIONS.md"
+     target="_blank"
+     style="color:var(--rock);text-decoration:none;font-size:.75rem">
+    Raw MD
+  </a>
 </footer>
 
 <script>
