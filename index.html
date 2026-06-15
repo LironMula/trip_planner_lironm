@@ -741,16 +741,15 @@ function renderChosenState() {
 // but not shared between browser tabs/sessions
 // ════════════════════════════════════════════════
 function ensureToken() {
-  // already in memory
   if (ghToken) return Promise.resolve(ghToken);
-  // try sessionStorage (survives F5, not tab close)
-  const stored = sessionStorage.getItem('gh_token');
+  // localStorage persists across tab closes and browser restarts – same as home_planner
+  const stored = localStorage.getItem('gh_token_trip');
   if (stored) { ghToken = stored; return Promise.resolve(ghToken); }
-  // ask user
-  const t = prompt('הזן GitHub token לשמירה ל-GitHub:\n(Fine-grained · Contents: Read+Write · מאגר זה בלבד)');
+  const t = prompt('הזן GitHub token לשמירה ל-GitHub:\n(Fine-grained · Contents: Read+Write · מאגר זה בלבד)\nיישמר בדפדפן – לא תישאל שוב.');
   if (!t || !t.trim()) return Promise.resolve(null);
   ghToken = t.trim();
-  sessionStorage.setItem('gh_token', ghToken);
+  localStorage.setItem('gh_token_trip', ghToken);
+  sessionStorage.setItem('gh_token', ghToken); // keep session copy too
   return Promise.resolve(ghToken);
 }
 
@@ -1184,8 +1183,8 @@ function init(){
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO);
-  // restore token from session if available
-  const storedToken = sessionStorage.getItem('gh_token');
+  // restore token from localStorage (persists forever) or sessionStorage
+  const storedToken = localStorage.getItem('gh_token_trip') || sessionStorage.getItem('gh_token');
   if (storedToken) ghToken = storedToken;
   // open modal on first load and pre-fetch project list
   loadProjList();
