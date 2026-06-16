@@ -761,6 +761,8 @@ function selectProject(data) {
   document.getElementById('header-sub').textContent = 'לחץ לשינוי פרויקט';
   document.getElementById('no-project-msg').style.display = 'none';
   document.getElementById('alts-content').style.display = 'block';
+  // re-render all content for this project (tables, details, QA, maps, labels)
+  renderAltsForProject();
   renderChats('p7'); renderChats('p9');
   updateChatCounters();
   renderChosenState();
@@ -779,7 +781,7 @@ let ttsActive = null; // { utterance, btnEl }
 function renderQA(containerId, pk) {
   const el = document.getElementById(containerId);
   if (!el) return;
-  const items = PLANS[pk].qa || [];
+  const items = getPlans()[pk].qa || [];
   if (!items.length) { el.style.display='none'; return; }
 
   const rows = items.map((item, i) => {
@@ -820,7 +822,7 @@ function toggleQA(answerId, questionEl) {
 }
 
 function speakQA(pk, idx) {
-  const item = PLANS[pk].qa[idx];
+  const item = getPlans()[pk].qa[idx];
   if (!item) return;
   const btn = document.getElementById(`qa-tts-${pk}-${idx}`);
   const text = item.q + '. ' + item.a;
@@ -828,7 +830,7 @@ function speakQA(pk, idx) {
 }
 
 function speakAllQA(pk) {
-  const items = PLANS[pk].qa || [];
+  const items = getPlans()[pk].qa || [];
   if (!items.length) return;
   const full = items.map(i => i.q + '. ' + i.a).join('. ');
   speakText(full, null);
@@ -1273,7 +1275,7 @@ function ldScript(src){ return new Promise((r,j)=>{ const s=document.createEleme
 // RENDER
 // ════════════════════════════════════════════════
 function renderTable(id, pk) {
-  document.getElementById(id).innerHTML = PLANS[pk].rows.map(r=>`
+  document.getElementById(id).innerHTML = getPlans()[pk].rows.map(r=>`
     <tr class="${r.z}"><td class="dc">${r.d}</td><td class="rc">${r.r}</td><td class="drc">${r.dr}</td><td class="sc">${r.s}</td></tr>`).join('');
 }
 function renderDetail(id, pk) {
