@@ -734,7 +734,6 @@ function selectProject(data) {
   document.getElementById('header-sub').textContent = 'לחץ לשינוי פרויקט';
   document.getElementById('no-project-msg').style.display = 'none';
   document.getElementById('alts-content').style.display = 'block';
-  renderAltsForProject();
   renderChats('p7'); renderChats('p9');
   updateChatCounters();
   renderChosenState();
@@ -745,45 +744,6 @@ function selectProject(data) {
   closeProjModal();
 }
 
-
-// ── project-aware resolvers ───────────────────────────────────────────────
-function getPlans()   { return (currentProject||'').includes('peloponnese') ? PLANS_PEL   : PLANS;   }
-function getMapData() { return (currentProject||'').includes('peloponnese') ? MAP_DATA_PEL : MAP_DATA; }
-
-function renderAltsForProject() {
-  const isPel = (currentProject||'').includes('peloponnese');
-  const btns = document.querySelectorAll('.alt-btn');
-  const labels = isPel
-    ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים'],['פלופונס 11 ימים','11 ימים · זוג מבוגרים']]
-    : [['מילאן_7_מילאן','13–20.8 · 7 לילות'],['מילאן_9_מילאן','16–26.8 · 10 לילות']];
-  btns.forEach((btn, i) => {
-    if (!labels[i]) return;
-    btn.innerHTML = `<span class="chosen-star">⭐</span>${labels[i][0]}<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">${labels[i][1]}</span>`;
-  });
-  const panels = [
-    { title: labels[0][0], meta: labels[0][1], bi:'chosen-badge-p7' },
-    { title: labels[1][0], meta: labels[1][1], bi:'chosen-badge-p9' },
-  ];
-  ['p7','p9'].forEach((pk, i) => {
-    const p = panels[i];
-    const tc = document.querySelector(`#panel-${pk} .alt-title`);
-    const mc = document.querySelector(`#panel-${pk} .alt-meta`);
-    if (tc) tc.innerHTML = `<span class="chosen-badge" id="${p.bi}">✓ מועדף</span>${p.title}`;
-    if (mc) mc.textContent = p.meta;
-  });
-  renderTable('tb7','p7'); renderTable('tb9','p9');
-  renderDetail('det7','p7'); renderDetail('det9','p9');
-  renderQA('qa-p7','p7'); renderQA('qa-p9','p9');
-  if (mapInstances.p7) { try { mapInstances.p7.remove(); } catch(e){} delete mapInstances.p7; }
-  if (mapInstances.p9) { try { mapInstances.p9.remove(); } catch(e){} delete mapInstances.p9; }
-  const mp7 = document.getElementById('map-p7');
-  const mp9 = document.getElementById('map-p9');
-  if (mp7) mp7.innerHTML = '';
-  if (mp9) mp9.innerHTML = '';
-  initMaps();
-}
-
 // ════════════════════════════════════════════════
 // Q&A SUMMARY WITH TEXT-TO-SPEECH
 // ════════════════════════════════════════════════
@@ -792,7 +752,7 @@ let ttsActive = null; // { utterance, btnEl }
 function renderQA(containerId, pk) {
   const el = document.getElementById(containerId);
   if (!el) return;
-  const items = getPlans()[pk].qa || [];
+  const items = PLANS[pk].qa || [];
   if (!items.length) { el.style.display='none'; return; }
 
   const rows = items.map((item, i) => {
@@ -833,7 +793,7 @@ function toggleQA(answerId, questionEl) {
 }
 
 function speakQA(pk, idx) {
-  const item = getPlans()[pk].qa[idx];
+  const item = PLANS[pk].qa[idx];
   if (!item) return;
   const btn = document.getElementById(`qa-tts-${pk}-${idx}`);
   const text = item.q + '. ' + item.a;
@@ -841,7 +801,7 @@ function speakQA(pk, idx) {
 }
 
 function speakAllQA(pk) {
-  const items = getPlans()[pk].qa || [];
+  const items = PLANS[pk].qa || [];
   if (!items.length) return;
   const full = items.map(i => i.q + '. ' + i.a).join('. ');
   speakText(full, null);
@@ -1119,7 +1079,7 @@ function switchAlt(pk, btn) {
     const m = mapInstances[pk];
     if (m) {
       m.invalidateSize();
-      const d = getMapData()[pk];
+      const d = MAP_DATA[pk];
       const all = [...d.sleeps.map(s=>[s.lat,s.lng]), ...d.attractions.map(a=>[a.lat,a.lng])];
       m.fitBounds(L.latLngBounds(all), { padding:[40,40] });
     }
@@ -1134,201 +1094,6 @@ function switchAlt(pk, btn) {
 
 // Each sleep has { lat, lng, label, nights:[first,last], color }
 // Each attraction has { lat, lng, label, day, base: 'sleep-label' (matches sleep.label) }
-
-// ── PELOPONNESE PLANS ────────────────────────────────────────────────────
-const PLANS_PEL = {
-  p7: {
-    rows: [
-      { d:'יום 1', r:'אתונה ← נאפפליו', dr:'1h45m', s:'נאפפליו', z:'zn' },
-      { d:'יום 2', r:'אפידאורוס + טירינס', dr:'~1h10m', s:'נאפפליו', z:'zn' },
-      { d:'יום 3', r:'מיקנה + עיר עתיקה', dr:'~1h', s:'נאפפליו', z:'zn' },
-      { d:'יום 4', r:'נאפפליו ← קרדמילי / סטופה (מאני)', dr:'2h30m', s:'סטופה', z:'zm' },
-      { d:'יום 5', r:'אראופולי, מערות דירוס, לימני', dr:'~1h', s:'סטופה', z:'zm' },
-      { d:'יום 6', r:'קרדמילי הישנה – הליכה, ים', dr:'~15min', s:'סטופה', z:'zm' },
-      { d:'יום 7', r:'סטופה ← לוטרקי', dr:'3h', s:'לוטרקי', z:'zl' },
-      { d:'יום 8', r:'לוטרקי ← שדה התעופה', dr:'~1h', s:'—', z:'zl' },
-    ],
-    det: [
-      { d:'יום 1', t:'נחיתה ונסיעה לנאפפליו', z:'zn',
-        m:`נחיתה בשדה התעופה הבינלאומי של אתונה. השכרת רכב קומפקטי אוטומטי.
-נסיעה נוחה של 1.5 שעות לנאפפליו דרך כביש מהיר עם נוף לתעלת קורינתוס.`,
-        n:`הגעה לנאפפליו. צ'ק-אין במלון בוטיק בעיר העתיקה.
-ארוחת צהריים קלה בכיכר סינטגמה.`,
-        e:`טיול רגלי ברחובות העיר העתיקה.
-שקיעה מהטיילת בובולינאס עם נוף למבצר בורצי.
-ארוחת ערב בטברנה עם נוף לנמל.`,
-        sp:'קצב נינוח. אין צורך לפצל.' },
-      { d:'יום 2', t:'אפידאורוס וטירינס', z:'zn',
-        m:`כ-30 דקות לתיאטרון העתיק של אפידאורוס.
-אקוסטיקה יוצאת דופן ומוזיאון מרהיב.`,
-        n:`עצירה קצרה בטירינס – אקרופוליס מיקני.
-ארוחת צהריים בנאפפליו.`,
-        e:`שחייה בחוף ארוואניטיה.
-ארוחת ערב בעיר העתיקה.`,
-        sp:'אתרים נוחים לביקור. משתלב בינוני.' },
-      { d:'יום 3', t:'מיקנה', z:'zn',
-        m:`מיקנה בבוקר מוקדם – שער האריות ומצודת אגממנון.`,
-        n:`ארוחת צהריים. אפשרות ביקור יקב נמיאה.`,
-        e:`עלייה ברכב למצודת פאלאמידי.
-ארוחת ערב חגיגית.`,
-        sp:'ללא עומס.' },
-      { d:'יום 4', t:'נסיעה לאזור מאני', z:'zm',
-        m:`יציאה בבוקר. כביש מהיר מוראס, כ-2.5 שעות.`,
-        n:`הגעה, ארוחת צהריים.`,
-        e:`שחייה ראשונה בחוף סטופה. ארוחת ערב על שפת הים.`,
-        sp:'יום נסיעה – קצב נינוח.' },
-      { d:'יום 5', t:'מערות דירוס ולימני', z:'zm',
-        m:`כ-30 דקות לאראופולי. שיט בסירה במערות דירוס.`,
-        n:`ארוחת צהריים בלימני – כפר דייגים עם מגדלי אבן.`,
-        e:`שחייה. בוזוקי חי בטברנות בקיץ.`,
-        sp:'שיט בסירה נוח לכולם.' },
-      { d:'יום 6', t:'קרדמילי הישנה', z:'zm',
-        m:`הליכה קלה לכנסיית אגיה סופיה. אופניים חשמליים.`,
-        n:`ארוחת צהריים בקרדמילי.`,
-        e:`שחייה בחוף ריצה. ארוחת ערב אחרונה במאני.`,
-        sp:'קצב אישי.' },
-      { d:'יום 7', t:'לוטרקי – מרחצאות תרמיים', z:'zl',
-        m:`נסיעה של 3 שעות ללוטרקי.`,
-        n:`הגעה, ארוחת צהריים לאורך הטיילת הימית.`,
-        e:`מרחץ תרמי – סיום מפנק לטיול. ארוחת ערב קלה.`,
-        sp:'מרחץ תרמי – נוח ומרגיע.' },
-      { d:'יום 8', t:'חזרה לשדה התעופה', z:'zl',
-        m:`נסיעה קצרה כ-1 שעה לשדה התעופה. החזרת רכב.`, n:'—', e:'—',
-        sp:'—' },
-    ],
-    qa: [
-      { q:'מה זה פלופונס ולמה כדאי לטייל בו?',
-        a:`פלופונס הוא חצי-האי הגדול בדרום יוון.
-הוא מציע: אתרים עתיקים מהמפורסמים בעולם (מיקנה, אפידאורוס),
-עיירות ביזנטיות וונציאניות שמורות (נאפפליו),
-חצי-האי ההררי-חופי מאני עם כפרי אבן וחופים שלווים,
-וקצב תיירותי נינוח בהרבה מהאיים המוכרים.` },
-      { q:'האם צריך לשכור רכב?',
-        a:`כן – רכב הוא הכרחי. תחבורה ציבורית בין העיירות מוגבלת.
-רכב קומפקטי אוטומטי עם ביטוח מלא עולה כ-€25–30 ליום בעונת ביניים.
-כדאי להזמין מראש – אוטומטיים נחטפים מהר.` },
-      { q:'מה מומלץ לזוג בני 65?',
-        a:`מסלול עם 3 בסיסי לינה – פחות אריזות.
-הנסיעות הארוכות בכביש מהיר.
-אתרים עתיקים – כדאי בשעות הבוקר לפני החום.
-נעלי הליכה נוחות.` },
-      { q:'אילו פעילויות ספורטיביות מתונות אפשריות?',
-        a:`הליכות: נאפפליו, טיילת ארוואניטיה, קרדמילי הישנה.
-שחייה: ארוואניטיה, סטופה, מרחצאות תרמיים לוטרקי.
-אופניים חשמליים: כביש החוף בין קרדמילי לסטופה.
-שיט בסירה: מערות דירוס.` },
-      { q:'מה מומלץ לערבים?',
-        a:`נאפפליו: טברנות על הטיילת עם נוף למבצר בורצי.
-מאני: טברנות חוף עם דגים טריים ובוזוקי בקיץ.
-לוטרקי: ארוחת ערב רגועה לאורך הטיילת הימית.` },
-      { q:'איפה כדאי ללון?',
-        a:`נאפפליו: מלון בוטיק בעיר העתיקה (למשל Regno di Morea).
-מאני: מלון על קו החוף בסטופה.
-לוטרקי: מלון קרוב למרחצאות.` },
-      { q:'מה העונה האידיאלית?',
-        a:`מאי–יוני וספטמבר–אוקטובר: חם לשחייה, לא קיצוני, פחות תיירים.
-יולי–אוגוסט חמים ועמוסים – כדאי לבקר באתרים עתיקים בבוקר מוקדם.` },
-    ]
-  },
-  p9: {
-    rows: [
-      { d:'יום 1',  r:'אתונה ← נאפפליו', dr:'1h45m', s:'נאפפליו', z:'zn' },
-      { d:'יום 2',  r:'אפידאורוס + טירינס', dr:'~1h10m', s:'נאפפליו', z:'zn' },
-      { d:'יום 3',  r:'מיקנה + עיר עתיקה', dr:'~1h', s:'נאפפליו', z:'zn' },
-      { d:'יום 4',  r:'נאפפליו ← מיסטרס (עצירה) ← מונמבסיה', dr:'3h30m', s:'מונמבסיה', z:'zmo' },
-      { d:'יום 5',  r:'מונמבסיה: עיר עתיקה, גיתיו', dr:'~40min', s:'מונמבסיה', z:'zmo' },
-      { d:'יום 6',  r:'מונמבסיה ← קרדמילי / סטופה', dr:'2h', s:'סטופה', z:'zm' },
-      { d:'יום 7',  r:'מאני: מערות דירוס, לימני', dr:'~1h', s:'סטופה', z:'zm' },
-      { d:'יום 8',  r:'קרדמילי הישנה – הליכה, ים', dr:'~15min', s:'סטופה', z:'zm' },
-      { d:'יום 9',  r:'סטופה ← פילוס / ווידוקיליה', dr:'2h', s:'פילוס', z:'zp' },
-      { d:'יום 10', r:'פילוס: מסיני העתיקה, מתוני', dr:'~1h30m', s:'פילוס', z:'zp' },
-      { d:'יום 11', r:'פילוס ← שדה התעופה אתונה', dr:'4h', s:'—', z:'zp' },
-    ],
-    det: [
-      { d:'יום 1', t:'נחיתה', z:'zn',
-        m:`נחיתה ונסיעה לנאפפליו.`, n:`הגעה, צ'ק-אין.`, e:`טיול בעיר העתיקה, ארוחת ערב.`, sp:'קצב נינוח.' },
-      { d:'יום 2', t:'אפידאורוס וטירינס', z:'zn',
-        m:`אפידאורוס.`, n:`טירינס. צהריים.`, e:`שחייה, ארוחת ערב.`, sp:'משתלב בינוני.' },
-      { d:'יום 3', t:'מיקנה', z:'zn',
-        m:`מיקנה בבוקר.`, n:`יקב.`, e:`פאלאמידי, ארוחת ערב.`, sp:'ללא עומס.' },
-      { d:'יום 4', t:'מיסטרס ומונמבסיה', z:'zmo',
-        m:`עצירה במיסטרס – עיר ביזנטית נטושה ומרשימה על הגבעה.`,
-        n:`ארוחת צהריים בדרך.`,
-        e:`הגעה למונמבסיה. טיול ראשון, ארוחת ערב.`,
-        sp:'הליכה מתונה.' },
-      { d:'יום 5', t:'מונמבסיה וגיתיו', z:'zmo',
-        m:`הליכה בעיר העתיקה עד האקרופוליס.`,
-        n:`ארוחת צהריים עם נוף לים.`,
-        e:`גיתיו – מאכלי ים, אווירת דייגים.`,
-        sp:'הליכה עם מעקות.' },
-      { d:'יום 6', t:'מונמבסיה ← מאני', z:'zm',
-        m:`עצירה בלימני הציורי.`,
-        n:`ארוחת צהריים באראופולי.`,
-        e:`הגעה לסטופה, שחייה, ארוחת ערב.`,
-        sp:'יום נסיעה.' },
-      { d:'יום 7', t:'מערות דירוס ולימני', z:'zm',
-        m:`שיט במערות דירוס.`,
-        n:`ארוחת צהריים בלימני.`,
-        e:`שחייה, בוזוקי.`,
-        sp:'שיט נוח.' },
-      { d:'יום 8', t:'קרדמילי הישנה', z:'zm',
-        m:`הליכה קלה, אופניים.`, n:`ארוחת צהריים.`, e:`שחייה, ארוחת ערב אחרונה.`, sp:'קצב אישי.' },
-      { d:'יום 9', t:'פילוס וווידוקיליה', z:'zp',
-        m:`2 שעות לפילוס.`,
-        n:`ווידוקיליה – מפרץ חולי בצורת סהר, שחייה.`,
-        e:`ארוחת ערב בפילוס.`,
-        sp:`אחד החופים היפים ביוון.` },
-      { d:'יום 10', t:'מסיני העתיקה ומתוני', z:'zp',
-        m:`מסיני העתיקה – אחד האתרים המרשימים בפלופונס.`,
-        n:`טירת מתוני – ונציאנית על פרומונטורי ים.`,
-        e:`שקיעה על מפרץ נבארינו.`,
-        sp:'אתרים נוחים.' },
-      { d:'יום 11', t:'חזרה', z:'zp',
-        m:`4 שעות לשדה התעופה. החזרת רכב.`, n:'—', e:'—', sp:'—' },
-    ],
-    qa: [
-      { q:'מה זה פלופונס ולמה כדאי לטייל בו?',
-        a:`10 ימים מאפשרים לשלב: אתרים עתיקים (מיקנה, אפידאורוס, מסיני),
-יופי ביזנטי (מיסטרס, מונמבסיה), מאני הפראי עם מערות,
-חופים מרהיבים (ווידוקיליה), וחיי ערב יווניים.` },
-      { q:'האם צריך לשכור רכב?',
-        a:`בהחלט כן. כ-€250–350 לתקופה כולל ביטוח מלא.
-אוטומטי – הזמינו מראש.` },
-      { q:'מה מומלץ לזוג בני 65?',
-        a:`4 בסיסי לינה בלבד. נסיעות בכביש מהיר.
-מיסטרס ומונמבסיה – הליכה מתונה עם מעקות.
-אתרים עתיקים בבוקר.` },
-      { q:'מה הפעילויות הספורטיביות המתונות?',
-        a:`הליכות קלות: נאפפליו, מיסטרס, מונמבסיה, קרדמילי.
-שחייה: ארוואניטיה, סטופה, ווידוקיליה.
-אופניים: כביש החוף קרדמילי–סטופה.
-שיט: מערות דירוס.` },
-      { q:'מה מומלץ לערבים?',
-        a:`נאפפליו – טיילת ועיר עתיקה חיה.
-מונמבסיה – ארוחה ברחובות הצרים הציוריים עם נרות.
-מאני – בוזוקי חי.
-פילוס – שקיעה על מפרץ נבארינו.` },
-      { q:'איפה כדאי ללון?',
-        a:`נאפפליו: בוטיק בעיר העתיקה.
-מונמבסיה: לינה בסלע.
-מאני: מלון חוף בסטופה.
-פילוס: מלון עם נוף לים.` },
-      { q:'מה ההבדל בין 8 ל-11 הימים?',
-        a:`11 ימים מוסיפים: מיסטרס, מונמבסיה, ווידוקיליה ומסיני העתיקה.
-לאוהבי היסטוריה עם גמישות – 11 ימים מוציאים הרבה יותר מהאזור.` },
-      { q:'מה מיוחד במונמבסיה?',
-        a:`עיר ביזנטית-ונציאנית שמורה כמעט שלמה על סלע מעל הים.
-אין מכוניות. אווירה קסומה בשקיעה.
-ההליכה עד האקרופוליס אפשרית ומתוגמלת בנוף לא נשכח.` },
-      { q:'האם חוף ווידוקיליה נגיש?',
-        a:`כן. הגישה מהחניה – הליכה קצרה ומישורית.
-מים רגועים ורדודים – אחד החופים היפים ביוון.` },
-      { q:'מה העונה האידיאלית?',
-        a:`מאי–יוני או ספטמבר–אוקטובר: חם, שקט, פחות תיירים.` },
-    ]
-  },
-};
-
 const MAP_DATA = {
   p7: {
     sleeps: [
@@ -1365,50 +1130,6 @@ const MAP_DATA = {
   }
 };
 
-
-// ── PELOPONNESE MAP DATA ────────────────────────────────────────────────
-const MAP_DATA_PEL = {
-  p7: {
-    sleeps: [
-      { lat:37.9362, lng:23.9465, label:'שדה תעופה אתונה', nights:null, color:'#888888' },
-      { lat:37.5652, lng:22.7983, label:'נאפפליו', nights:[1,3], color:'#3a6ea5' },
-      { lat:36.8458, lng:22.2612, label:'סטופה', nights:[4,6], color:'#c8773a' },
-      { lat:37.9806, lng:22.9744, label:'לוטרקי', nights:[7,7], color:'#6aa84f' },
-    ],
-    attractions: [
-      { lat:37.5961, lng:23.0793, label:'אפידאורוס', day:'יום 2', base:'נאפפליו' },
-      { lat:37.5995, lng:22.8003, label:'טירינס', day:'יום 2', base:'נאפפליו' },
-      { lat:37.7309, lng:22.7561, label:'מיקנה', day:'יום 3', base:'נאפפליו' },
-      { lat:36.6660, lng:22.3805, label:'אראופולי', day:'יום 5', base:'סטופה' },
-      { lat:36.6383, lng:22.3807, label:'מערות דירוס', day:'יום 5', base:'סטופה' },
-      { lat:36.6810, lng:22.3783, label:'לימני', day:'יום 5', base:'סטופה' },
-      { lat:36.8870, lng:22.2330, label:'קרדמילי הישנה', day:'יום 6', base:'סטופה' },
-    ]
-  },
-  p9: {
-    sleeps: [
-      { lat:37.9362, lng:23.9465, label:'שדה תעופה אתונה', nights:null, color:'#888888' },
-      { lat:37.5652, lng:22.7983, label:'נאפפליו', nights:[1,3], color:'#3a6ea5' },
-      { lat:36.7317, lng:22.9733, label:'מונמבסיה', nights:[4,5], color:'#7a3a8a' },
-      { lat:36.8458, lng:22.2612, label:'סטופה', nights:[6,8], color:'#c8773a' },
-      { lat:36.9255, lng:21.6947, label:'פילוס', nights:[9,10], color:'#6aa84f' },
-    ],
-    attractions: [
-      { lat:37.5961, lng:23.0793, label:'אפידאורוס', day:'יום 2', base:'נאפפליו' },
-      { lat:37.5995, lng:22.8003, label:'טירינס', day:'יום 2', base:'נאפפליו' },
-      { lat:37.7309, lng:22.7561, label:'מיקנה', day:'יום 3', base:'נאפפליו' },
-      { lat:37.0748, lng:22.3752, label:'מיסטרס', day:'יום 4', base:'מונמבסיה' },
-      { lat:36.7498, lng:22.5563, label:'גיתיו', day:'יום 5', base:'מונמבסיה' },
-      { lat:36.6660, lng:22.3805, label:'אראופולי', day:'יום 6', base:'סטופה' },
-      { lat:36.6383, lng:22.3807, label:'מערות דירוס', day:'יום 7', base:'סטופה' },
-      { lat:36.6810, lng:22.3783, label:'לימני', day:'יום 7', base:'סטופה' },
-      { lat:36.9490, lng:21.6635, label:'ווידוקיליה', day:'יום 9', base:'פילוס' },
-      { lat:37.1762, lng:22.0151, label:'מסיני העתיקה', day:'יום 10', base:'פילוס' },
-      { lat:36.8288, lng:21.7025, label:'טירת מתוני', day:'יום 10', base:'פילוס' },
-    ]
-  }
-};
-
 let leafletLoaded = false;
 const mapInstances = {};
 
@@ -1428,7 +1149,7 @@ async function initMaps() {
 function renderMap(pk) {
   const el = document.getElementById('map-'+pk);
   if (!el || mapInstances[pk]) return;
-  const { sleeps, attractions } = getMapData()[pk];
+  const { sleeps, attractions } = MAP_DATA[pk];
 
   const map = L.map(el, { zoomControl:true, scrollWheelZoom:false });
   mapInstances[pk] = map;
@@ -1525,18 +1246,19 @@ function ldScript(src){ return new Promise((r,j)=>{ const s=document.createEleme
 // RENDER
 // ════════════════════════════════════════════════
 function renderTable(id, pk) {
-  document.getElementById(id).innerHTML = getPlans()[pk].rows.map(r=>`
+  document.getElementById(id).innerHTML = PLANS[pk].rows.map(r=>`
     <tr class="${r.z}"><td class="dc">${r.d}</td><td class="rc">${r.r}</td><td class="drc">${r.dr}</td><td class="sc">${r.s}</td></tr>`).join('');
 }
 function renderDetail(id, pk) {
   document.getElementById(id).innerHTML = getPlans()[pk].det.map(d=>{
-    const sp = d.sp&&d.sp!=='—'?`<div class="sbox"><strong>פיצול (ילד בן ה-8):</strong> ${d.sp}</div>`:'';
+    const hasSp = d.sp && d.sp !== '—' && d.sp.trim() !== '';
+    const spHtml = hasSp ? `<div class="sbox">${esc(d.sp)}</div>` : '';
     return `<div class="dblock ${d.z}">
-      <div class="dtitle"><span class="dbadge">${d.d}</span>${d.t}</div>
-      <div class="trow"><span class="tlabel">בוקר</span><span>${d.m}</span></div>
-      <div class="trow"><span class="tlabel">צהריים</span><span>${d.n}</span></div>
-      <div class="trow"><span class="tlabel">ערב</span><span>${d.e}</span></div>
-      ${sp}</div>`;
+      <div class="dtitle"><span class="dbadge">${esc(d.d)}</span>${esc(d.t)}</div>
+      <div class="trow"><span class="tlabel">בוקר</span><span>${esc(d.m)}</span></div>
+      <div class="trow"><span class="tlabel">צהריים</span><span>${esc(d.n)}</span></div>
+      <div class="trow"><span class="tlabel">ערב</span><span>${esc(d.e)}</span></div>
+      ${spHtml}</div>`;
   }).join('');
 }
 
