@@ -753,6 +753,49 @@ function confirmProjModal() {
   loadProjectFromGH(sel.dataset.name);
 }
 
+
+// ── render sidebar + panels based on current project ────────────────────
+
+// ── project-aware resolvers ───────────────────────────────────────────────
+function getPlans()   { return (currentProject||'').includes('peloponnese') ? PLANS_PEL   : PLANS;   }
+function getMapData() { return (currentProject||'').includes('peloponnese') ? MAP_DATA_PEL : MAP_DATA; }
+
+function renderAltsForProject() {
+  const isPel = (currentProject||'').includes('peloponnese');
+  const btns = document.querySelectorAll('.alt-btn');
+  const labels = isPel
+    ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים'],['פלופונס 11 ימים','11 ימים · זוג מבוגרים']]
+    : [['מילאן_7_מילאן','13–20.8 · 7 לילות'],['מילאן_9_מילאן','16–26.8 · 10 לילות']];
+  btns.forEach((btn, i) => {
+    if (!labels[i]) return;
+    btn.innerHTML = `<span class="chosen-star">⭐</span>${labels[i][0]}<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">${labels[i][1]}</span>`;
+  });
+  const panelMeta = isPel
+    ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים · אתונה הלוך ושוב'],
+       ['פלופונס 11 ימים','11 ימים · זוג מבוגרים · אתונה הלוך ושוב']]
+    : [['מילאן_7_מילאן','13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00'],
+       ['מילאן_9_מילאן','16–26 באוגוסט 2026 · 10 לילות · יוצאים 15:00 · חוזרים 13:00']];
+  ['p7','p9'].forEach((pk, i) => {
+    const tc = document.querySelector(`#panel-${pk} .alt-title`);
+    const mc = document.querySelector(`#panel-${pk} .alt-meta`);
+    const badgeId = `chosen-badge-${pk}`;
+    if (tc) tc.innerHTML = `<span class="chosen-badge" id="${badgeId}">✓ מועדף</span>${panelMeta[i][0]}`;
+    if (mc) mc.textContent = panelMeta[i][1];
+  });
+  // re-render all content
+  renderTable('tb7','p7'); renderTable('tb9','p9');
+  renderDetail('det7','p7'); renderDetail('det9','p9');
+  renderQA('qa-p7','p7'); renderQA('qa-p9','p9');
+  // reset maps
+  ['p7','p9'].forEach(pk => {
+    if (mapInstances[pk]) { try { mapInstances[pk].remove(); } catch(e){} delete mapInstances[pk]; }
+    const mel = document.getElementById('map-'+pk);
+    if (mel) mel.innerHTML = '';
+  });
+  initMaps();
+}
+
 function selectProject(data) {
   currentProject = data.name;
   projData = { chats: data.chats||{p7:[],p9:[]}, notes: data.notes||{}, chosen: data.chosen||null };
