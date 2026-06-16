@@ -108,7 +108,7 @@ const PLANS = {
         m: 'Morning: ...',   // בוקר
         n: 'Noon: ...',      // צהריים
         e: 'Evening: ...',   // ערב
-        sp: 'Split plan for special needs child: ...'
+        sp: 'Optional split plan text (see below) ...'
       },
     ],
     qa: [
@@ -130,6 +130,34 @@ const PLANS = {
 
 **Important — apostrophes in Hebrew text:**
 Hebrew words containing `'` (e.g. בלאג'יו, צ'ק אין) **must** be escaped as `\'` inside single-quoted JS strings, or the entire script will silently break. Use `\'` or switch to backtick strings.
+
+
+### The `sp` field — optional split plans
+
+The `sp` field in each `det` entry is **optional and project-specific**.
+Leave it empty (`''` or `'—'`) if no split plan is needed — it will not appear in the UI.
+
+**When to use it:** Ask the traveler whether any of the following apply:
+- **Bad weather fallback** — "If it rains on day 3, what do we do instead?"
+- **Someone feeling unwell** — an easier/indoor alternative for that day
+- **Mixed group** — part of the group wants a harder activity, others prefer something gentler
+- **Special needs** — a family member with mobility limits, sensory sensitivities, etc.
+
+**Examples:**
+```javascript
+// Bad weather fallback
+sp: 'אם יורד גשם: מוזיאון ארכיאולוגי בנאפפליו – מקורה, 2–3 שעות.'
+
+// Mixed group
+sp: 'מי שלא רוצה לטפס לאקרופוליס: בית קפה בכניסה לעיר התחתית.'
+
+// Special needs child
+sp: 'לילד עם קשיים תחושתיים: אזור החיות הקטן בפארק – שקט ומרווח.'
+```
+
+If the traveler has no special requirements, simply omit `sp` or set it to `'—'`.
+
+---
 
 ### 2b. `MAP_DATA` object — map visuals
 
