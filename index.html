@@ -174,6 +174,11 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 .sbox{background:#fff8f0;border:1px solid #e8c890;border-radius:7px;padding:7px 10px;font-size:.8rem;margin-top:7px;color:#5a3a10;}
 .sbox strong{color:var(--accent);}
 
+/* section headers */
+.section-hdr{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid var(--border);}
+.section-hdr-title{font-size:.95rem;font-weight:800;color:var(--lake);}
+.section-hdr-hint{font-size:.78rem;color:var(--rock);font-style:italic;}
+
 /* ── Q&A SUMMARY ── */
 .qa-section{margin-bottom:18px;background:#fff;border-radius:12px;border:1px solid var(--border);overflow:hidden;}
 .qa-section-title{background:linear-gradient(135deg,var(--lake),#0d2f47);color:#fff;padding:10px 16px;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:space-between;}
@@ -370,6 +375,12 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
             </div>
             <div class="alt-body">
               <div class="qa-section" id="qa-p7"></div>
+
+              <!-- TRIP BRIEF -->
+              <div class="section-hdr">
+                <span class="section-hdr-title">📋 תקציר הטיול</span>
+                <span class="section-hdr-hint">לתכנית יומית מפורטת ומפה — ראה למטה</span>
+              </div>
               <div class="vbar"><span>טבלה:</span>
                 <button class="vbtn active" onclick="setVer('p7t','current',this)">עדכנית</button>
                 <button class="vbtn" onclick="setVer('p7t','old',this)">גרסה קודמת</button>
@@ -379,7 +390,12 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
                 <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th></tr></thead>
                 <tbody id="tb7"></tbody></table></div>
               </div>
-              <div style="margin-top:18px">
+
+              <!-- MAP + DETAIL SECTION -->
+              <div class="section-hdr" style="margin-top:24px">
+                <span class="section-hdr-title">🗺 מפה ותכנית מפורטת</span>
+              </div>
+              <div style="margin-top:10px">
                 <div class="vbar"><span>מפה:</span>
                   <button class="vbtn active" onclick="setVer('p7m','current',this)">עדכנית</button>
                   <button class="vbtn" onclick="setVer('p7m','old',this)">גרסה קודמת</button>
@@ -425,6 +441,12 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
             </div>
             <div class="alt-body">
               <div class="qa-section" id="qa-p9"></div>
+
+              <!-- TRIP BRIEF -->
+              <div class="section-hdr">
+                <span class="section-hdr-title">📋 תקציר הטיול</span>
+                <span class="section-hdr-hint">לתכנית יומית מפורטת ומפה — ראה למטה</span>
+              </div>
               <div class="vbar"><span>טבלה:</span>
                 <button class="vbtn active" onclick="setVer('p9t','current',this)">עדכנית</button>
                 <button class="vbtn" onclick="setVer('p9t','old',this)">גרסה קודמת</button>
@@ -434,7 +456,12 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
                 <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th></tr></thead>
                 <tbody id="tb9"></tbody></table></div>
               </div>
-              <div style="margin-top:18px">
+
+              <!-- MAP + DETAIL SECTION -->
+              <div class="section-hdr" style="margin-top:24px">
+                <span class="section-hdr-title">🗺 מפה ותכנית מפורטת</span>
+              </div>
+              <div style="margin-top:10px">
                 <div class="vbar"><span>מפה:</span>
                   <button class="vbtn active" onclick="setVer('p9m','current',this)">עדכנית</button>
                   <button class="vbtn" onclick="setVer('p9m','old',this)">גרסה קודמת</button>
