@@ -355,6 +355,10 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
           <span class="chosen-star">⭐</span>מילאן_9_מילאן<br>
           <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–26.8 · 10 לילות</span>
         </button>
+        <button class="alt-btn" id="sidebtn-pa3" onclick="switchAlt('pa3',this)">
+          <span class="chosen-star">⭐</span>מילאן_9_פעילויות<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–26.8 · אופניים, סוסים, קונצרט</span>
+        </button>
       </div>
 
       <!-- MAIN CONTENT -->
@@ -492,6 +496,68 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
           </div>
         </div><!-- /panel-p9 -->
 
+
+        <!-- PANEL PA3: מילאן_9_פעילויות -->
+        <div class="alt-panel" id="panel-pa3">
+          <div class="alt-card">
+            <div class="alt-hdr">
+              <div>
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pa3">✓ מועדף</span>
+                  מילאן_9_פעילויות
+                </div>
+                <div class="alt-meta">16–26 באוגוסט 2026 · 10 לילות · אופניים, סוסים, קונצרט, לוגאנו</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pa3" onclick="setChosen('pa3')">קבע כמועדף</button>
+            </div>
+            <div class="alt-body">
+              <div class="qa-section" id="qa-pa3"></div>
+              <div class="section-hdr">
+                <span class="section-hdr-title">📋 תקציר הטיול</span>
+                <span class="section-hdr-hint">לתכנית יומית מפורטת ומפה — ראה למטה</span>
+              </div>
+              <div class="vbar"><span>טבלה:</span>
+                <button class="vbtn active" onclick="setVer('pa3t','current',this)">עדכנית</button>
+                <button class="vbtn" onclick="setVer('pa3t','old',this)">גרסה קודמת</button>
+              </div>
+              <div class="vwrap" id="pa3t">
+                <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+                <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th></tr></thead>
+                <tbody id="tba3"></tbody></table></div>
+              </div>
+              <div class="section-hdr" style="margin-top:24px">
+                <span class="section-hdr-title">🗺 מפה ותכנית מפורטת</span>
+              </div>
+              <div style="margin-top:10px">
+                <div class="vbar"><span>מפה:</span>
+                  <button class="vbtn active" onclick="setVer('pa3m','current',this)">עדכנית</button>
+                  <button class="vbtn" onclick="setVer('pa3m','old',this)">גרסה קודמת</button>
+                </div>
+                <div class="vwrap" id="pa3m">
+                  <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
+                  <div class="map-box" id="map-pa3"></div>
+                </div>
+              </div>
+              <div class="det-sec"><h3>תכנית מפורטת</h3><div id="deta3"></div></div>
+              <div class="chat-sec">
+                <h3>💬 שיחה</h3>
+                <div class="chat-msgs" id="chatpa3"><div class="chat-empty">אין הערות עדיין</div></div>
+                <div class="cform">
+                  <h4>הוסף הערה</h4>
+                  <label>שם (אותיות בלבד, עד 20)</label>
+                  <input type="text" id="cupa3" placeholder="השם שלך" maxlength="20" oninput="sanitizeUser(this)"/>
+                  <label>הערה (עד 1000 תווים)</label>
+                  <textarea id="ctpa3" placeholder="מה על דעתך?" maxlength="1000" oninput="sanitizeMsg(this)"></textarea>
+                  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                    <button class="sbtn" onclick="sendChat('pa3')">שלח</button>
+                    <span id="chatpa3-counter" style="font-size:.75rem;color:var(--rock)"></span>
+                  </div>
+                  <div class="cmeta" id="cdpa3"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /panel-pa3 -->
       </div><!-- /alts-main -->
     </div><!-- /alts-layout -->
   </div><!-- /alts-content -->
@@ -954,16 +1020,169 @@ const MAP_DATA_PEL = {
   }
 };
 
+
+// ── ALTERNATIVE 3: מילאן_9_פעילויות ─────────────────────────────────────
+// Based on p9 (10 nights) but replaces Steinwasen + free day
+// with: e-bike tour, horse riding, Festivalsommer concert, EdTech note
+const PLANS_ALT3 = {
+  rows: [
+    { d:'16.8', r:'מלאנפסה ← אגם קומו', dr:'1h00m', s:"מנאג'ו", z:'zi' },
+    { d:'17.8', r:"מנאג'ו ← סירה ← בלאג'יו ← סירה ← מנאג'ו", dr:'15m each way', s:"מנאג'ו", z:'zi' },
+    { d:'18.8', r:"מנאג'ו ← בלינצונה ← מירסבורג", dr:'2h00m incl. stop', s:'מירסבורג', z:'zk' },
+    { d:'19.8', r:'מירסבורג ← אי מאינאו ← מירסבורג', dr:'20m each way', s:'מירסבורג', z:'zk' },
+    { d:'20.8', r:'מירסבורג ← סירה ← קונסטנץ ← סירה ← מירסבורג', dr:'40m each way', s:'מירסבורג', z:'zk' },
+    { d:'21.8', r:'מירסבורג ← טיטיזי', dr:'1h30m', s:'טיטיזי', z:'zf' },
+    { d:'22.8', r:'טיטיזי ← רכיבת אופניים ← חזרה', dr:'circular ~20km', s:'טיטיזי', z:'zf' },
+    { d:'23.8', r:'טיטיזי ← חוות Pegasus ← טיטיזי', dr:'25m each way', s:'טיטיזי', z:'zf' },
+    { d:'24.8', r:'טיטיזי ← קונצרט Festivalsommer ← חזרה', dr:'30–40m each way', s:'טיטיזי', z:'zf' },
+    { d:'25.8', r:'טיטיזי ← לוגאנו', dr:'1h15m', s:'לוגאנו', z:'zk' },
+    { d:'26.8', r:'לוגאנו ← מלאנפסה', dr:'1h15m depart 0945', s:'— טיסה', z:'zx' },
+  ],
+  det: [
+    { d:'16.8', t:'הגעה לאגם קומו', z:'zi',
+      m:`נחיתה מלאנפסה 15:00. השכרת רכב. קנייה קצרה (senza glutine).`,
+      n:`אגם קומו ~20:30. צ'ק אין.`,
+      e:'ארוחה קלה ושינה.' },
+    { d:'17.8', t:"שיט לבלאג'יו", z:'zi',
+      m:`שיט ממנאג'ו (15 דק', 5 יורו). לפני 9:00.`,
+      n:'סמטאות, גלידה (senza glutine).',
+      e:'ערב על האגם.' },
+    { d:'18.8', t:'מעבר לאגם קונסטנץ', z:'zk',
+      m:`עצירה בבלינצונה (25 דק'). מעבר גבול קיאסו.`,
+      n:'הגעה למירסבורג.',
+      e:'קנייה (glutenfrei). עיר ישנה.' },
+    { d:'19.8', t:'אי מאינאו', z:'zk',
+      m:`נסיעה (20 דק'). ב-9:00. כניסה 26+13 יורו.`,
+      n:'גן פרפרים, גינות.',
+      e:'שחייה בנבו.' },
+    { d:'20.8', t:'שיט בנבו', z:'zk',
+      m:'שיט קווי (15 יורו). לקונסטנץ.',
+      n:'ארוחה (glutenfrei).',
+      e:'ערב חופשי.' },
+    { d:'21.8', t:'מעבר ליער השחור', z:'zf',
+      m:`נסיעה מערבה לטיטיזי (90 דק').`,
+      n:`הגעה, צ'ק אין. קנייה ל-4 ימים (Edeka — מוצרי glutenfrei).`,
+      e:'הליכה ראשונה באגם טיטיזי, גלידה.' },
+    { d:'22.8', t:'טיול אופניים משפחתי — Ski-Hirt', z:'zf',
+      m:`השכרת אופניים ב-Ski-Hirt, Titiseestr. 28 — פתוח 10:00–17:00.
+מחיר: כ-25–35 יורו לאדם ליום. יש אופני ג'וניור לילדים ועגלות גרירה לתינוקות.
+מסלול מומלץ: טיטיזי → הינטרצרטן → שלוחה → חזרה, כ-20 ק"מ שטוח-מתגלגל.
+אפשרות קלה: מסלול אגם טיטיזי בלבד (8 ק"מ) מתאים לכל הגילאים.`,
+      n:`ארוחת צהריים בהינטרצרטן — חפשו "glutenfrei" בתפריט.`,
+      e:`החזרת אופניים עד 17:00. ערב על האגם.`,
+      sp:`מסלול האגם (8 ק"מ) שטוח לחלוטין — מתאים גם לרוכבים צעירים. ילד בן 8 יכול לרכוב עצמאית.` },
+    { d:'23.8', t:'רכיבה על סוסים — חוות Pegasus', z:'zf',
+      m:`נסיעה לחוות Pegasus, אזור הוכשוורצוולד — כ-25 דקות מטיטיזי.
+רכיבות מודרכות ביער השחור, פעילויות ייעודיות לילדים בקיץ.
+חלופה קרובה: עגלות סוסים בטיטיזי — Ms. Laubis, טל: 07651/933150.
+מסלולים אישיים לפי בקשה, יוצאים מהחוף הציבורי.`,
+      n:`ארוחת צהריים בחזרה לטיטיזי.`,
+      e:`שחייה, סירות פדלים (12 יורו לחצי שעה), ערב חופשי.` },
+    { d:'24.8', t:'קונצרט Festivalsommer Schwarzwald', z:'zf',
+      m:`Festivalsommer Schwarzwald — פסטיבל הקיץ של יער השחור.
+תאריכים: 13 אוגוסט–13 ספטמבר 2026 — בדיוק בזמן הטיול.
+ילדים עד גיל 16 כניסה חינם. משפחות — 50% הנחה על כרטיסים נוספים.
+הופעות בכנסיות ישנות, חצרות, ומגדלים — אווירה ייחודית.
+מרחק: בדרך כלל 30–40 דקות מטיטיזי, תלוי מיקום ההופעה.
+כדאי לבדוק תוכנייה ב-www.schwarzwald-tourismus.info/festivalsommer
+ולהזמין כרטיסים מראש.`,
+      n:`ארוחת צהריים ביום חופשי. אריזת מזוודות בנחת.`,
+      e:`הופעה — בדרך כלל 20:00. לחזור לטיטיזי לאחר מכן.`,
+      sp:`הופעות משפחתיות — ילדים חינם. כדאי לבחור הופעה קצרה (60–90 דקות) עם ג'אז, קלאסיקה קלה או מוזיקת עולם.` },
+    { d:'25.8', t:'מעבר ללוגאנו', z:'zk',
+      m:`לצאת מטיטיזי בשעה 9:00. נסיעה ללוגאנו: 1:15 שעות.`,
+      n:`צ'ק אין. לידו לוגאנו: חוף ציבורי, שחייה, מגרש משחקים. קנייה: Coop או Migros (glutenfrei).`,
+      e:`פיאצה דלה ריפורמה — ארוחת ערב (senza glutine).` },
+    { d:'26.8', t:'טיסה חזרה', z:'zx',
+      m:`לצאת מלוגאנו ב-9:45. נסיעה למלאנפסה: 1:15 שעות.`,
+      n:'הגעה לשדה. החזרת רכב. טיסה 13:00.',
+      e:'—' },
+  ],
+  qa: [
+    { q:'מה שונה באלטרנטיבה הזו לעומת מילאן_9_מילאן?',
+      a:`במקום שטיינוואזן פארק ויום חופשי באגם, שלושת הימים ביער השחור מוחלפים ב:
+יום רכיבת אופניים מודרכת (Ski-Hirt, טיטיזי),
+יום רכיבה על סוסים (חוות Pegasus / עגלות טיטיזי),
+וקונצרט ערב של Festivalsommer Schwarzwald.
+כל שאר המסלול זהה לחלוטין.` },
+    { q:'מה Festivalsommer Schwarzwald?',
+      a:`פסטיבל תרבות קיץ ביער השחור, 13 אוגוסט–13 ספטמבר 2026.
+הופעות של מוזיקה קלאסית, ג'אז, ומוזיקת עולם במיקומים ייחודיים —
+כנסיות ישנות, חצרות, מגדלים. ילדים עד 16 — כניסה חינם.
+תאריכים מתאימים בדיוק לימי 21–25.8 שאנחנו בטיטיזי.` },
+    { q:'רכיבת האופניים — האם מתאימה לילדים?',
+      a:`כן. Ski-Hirt בטיטיזי מכיר ביותר בפנייה לו מראש (1-3 ימים).
+יש אופני ג'וניור, עגלות גרירה לתינוקות, ואופניים חשמליים למבוגרים.
+מסלול האגם (8 ק"מ, שטוח) — מתאים לגיל 6 ומעלה.
+מסלול הינטרצרטן (20 ק"מ) — לרוכבים בגיל 10+ בכושר סביר.` },
+    { q:'הרכיבה על סוסים — האם מתאימה לילדים?',
+      a:`חוות Pegasus מציעה פעילויות ייעודיות לילדים בקיץ כולל רכיבה מודרכת.
+חובה קורס מבוא קצר לפני הרכיבה — לומדים על הסוס, לא רק עולים עליו.
+חלופה: עגלות הסוסים של Ms. Laubis בטיטיזי — נינוחות יותר, ללא דרישת ניסיון.` },
+    { q:'מה לגבי כנס EdTech / AI בחינוך?',
+      a:`הכנסים הגדולים אינם בתאריכי הטיול (אוגוסט).
+הקרוב ביותר: Online Educa Berlin, 2–4 דצמבר 2026 — כנס מוביל ב-AI ולמידה דיגיטלית, אינטרקונטיננטל ברלין.
+AIET 2026 (AI in Education Technology) — זגרב, 29–31 יולי, לפני הטיול.
+הצעה: ניתן לשלב את הטיסה חזרה דרך ברלין בדצמבר לכנס Online Educa כהוצאה מוכרת.` },
+    { q:'האם ניתן לדרוש חלק מהטיול כהוצאה עסקית (מיה)?',
+      a:`הקונצרט עצמו — פחות ישים. אך ניתן לתעד ביקור ב-Festivalsommer
+כחלק מחשיפה לחינוך אמנותי וחדשנות תרבותית.
+הכי חזק לצורך הוצאה מוכרת: Online Educa Berlin (דצמבר) — כנס מקצועי ברור.
+ניתן לתכנן ביקור ברלין נפרד בדצמבר בשילוב הכנס.` },
+    { q:'האם הוספת הפעילויות מייקרת משמעותית?',
+      a:`רכיבת אופניים: כ-€100–140 למשפחה (4 אופניים יום).
+רכיבה על סוסים: כ-€20–35 לאדם לשעה.
+קונצרט Festivalsommer: מבוגרים כ-€15–35 לכרטיס, ילדים חינם.
+סה"כ תוספת: כ-€200–300 לעומת האלטרנטיבה הרגילה.` },
+  ]
+};
+
+const MAP_DATA_ALT3 = {
+  pa3: {
+    sleeps: [
+      { lat:45.6227, lng:8.7282, label:'מלאנפסה',  nights:null,   color:'#888888' },
+      { lat:46.022,  lng:9.239,  label:"מנאג'ו",    nights:[1,2],  color:'#c8773a' },
+      { lat:47.694,  lng:9.273,  label:'מירסבורג',  nights:[3,5],  color:'#1a4a6b' },
+      { lat:47.895,  lng:8.144,  label:'טיטיזי',    nights:[6,9],  color:'#2d5a3d' },
+      { lat:46.004,  lng:8.951,  label:'לוגאנו',    nights:[10,10],color:'#1a6b5a' },
+      { lat:45.6227, lng:8.7282, label:'מלאנפסה חזרה', nights:null, color:'#888888' },
+    ],
+    attractions: [
+      { lat:45.977,  lng:9.262,  label:"בלאג'יו",         day:'17.8',  base:"מנאג'ו"  },
+      { lat:46.194,  lng:9.024,  label:'בלינצונה',         day:'18.8',  base:"מנאג'ו"  },
+      { lat:47.706,  lng:9.196,  label:'אי מאינאו',        day:'19.8',  base:'מירסבורג' },
+      { lat:47.706,  lng:9.196,  label:'שיט קונסטנץ',      day:'20.8',  base:'מירסבורג' },
+      { lat:47.895,  lng:8.144,  label:'Ski-Hirt אופניים',  day:'22.8',  base:'טיטיזי'  },
+      { lat:47.870,  lng:7.980,  label:'חוות Pegasus סוסים',day:'23.8',  base:'טיטיזי'  },
+      { lat:47.910,  lng:8.100,  label:'קונצרט Festivalsommer',day:'24.8',base:'טיטיזי'  },
+      { lat:46.017,  lng:8.960,  label:'לידו לוגאנו',       day:'25.8',  base:'לוגאנו'  },
+    ]
+  }
+};
+
+
+// Append pa3 to PLANS after definition
+(function() {
+  if (typeof PLANS_ALT3 !== 'undefined') {
+    PLANS.pa3 = PLANS_ALT3.pa3;
+    MAP_DATA.pa3 = MAP_DATA_ALT3.pa3;
+  }
+})();
+
 // ── project-aware resolvers ───────────────────────────────────────────────
-function getPlans()   { return (currentProject||'').includes('peloponnese') ? PLANS_PEL   : PLANS;   }
+function getPlans()   {
+  const cp = currentProject || '';
+  if (cp.includes('peloponnese')) return PLANS_PEL;
+  return PLANS;
+}
 function getMapData() { return (currentProject||'').includes('peloponnese') ? MAP_DATA_PEL : MAP_DATA; }
 
 function renderAltsForProject() {
   const isPel = (currentProject||'').includes('peloponnese');
   const btns = document.querySelectorAll('.alt-btn');
   const labels = isPel
-    ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים'],['פלופונס 11 ימים','11 ימים · זוג מבוגרים']]
-    : [['מילאן_7_מילאן','13–20.8 · 7 לילות'],['מילאן_9_מילאן','16–26.8 · 10 לילות']];
+    ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים'],['פלופונס 11 ימים','11 ימים · זוג מבוגרים'],null]
+    : [['מילאן_7_מילאן','13–20.8 · 7 לילות'],['מילאן_9_מילאן','16–26.8 · 10 לילות'],['מילאן_9_פעילויות','16–26.8 · אופניים, סוסים, קונצרט']];
   btns.forEach((btn, i) => {
     if (!labels[i]) return;
     btn.innerHTML = `<span class="chosen-star">⭐</span>${labels[i][0]}<br>
@@ -971,10 +1190,11 @@ function renderAltsForProject() {
   });
   const panelMeta = isPel
     ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים · אתונה הלוך ושוב'],
-       ['פלופונס 11 ימים','11 ימים · זוג מבוגרים · אתונה הלוך ושוב']]
+       ['פלופונס 11 ימים','11 ימים · זוג מבוגרים · אתונה הלוך ושוב'],null]
     : [['מילאן_7_מילאן','13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00'],
-       ['מילאן_9_מילאן','16–26 באוגוסט 2026 · 10 לילות · יוצאים 15:00 · חוזרים 13:00']];
-  ['p7','p9'].forEach((pk, i) => {
+       ['מילאן_9_מילאן','16–26 באוגוסט 2026 · 10 לילות · יוצאים 15:00 · חוזרים 13:00'],
+       ['מילאן_9_פעילויות','16–26 באוגוסט 2026 · 10 לילות · אופניים, סוסים, קונצרט, לוגאנו']];
+  ['p7','p9','pa3'].forEach((pk, i) => {
     const tc = document.querySelector(`#panel-${pk} .alt-title`);
     const mc = document.querySelector(`#panel-${pk} .alt-meta`);
     const badgeId = `chosen-badge-${pk}`;
@@ -982,11 +1202,11 @@ function renderAltsForProject() {
     if (mc) mc.textContent = panelMeta[i][1];
   });
   // re-render all content
-  renderTable('tb7','p7'); renderTable('tb9','p9');
-  renderDetail('det7','p7'); renderDetail('det9','p9');
-  renderQA('qa-p7','p7'); renderQA('qa-p9','p9');
+  renderTable('tb7','p7'); renderTable('tb9','p9'); renderTable('tba3','pa3');
+  renderDetail('det7','p7'); renderDetail('det9','p9'); renderDetail('deta3','pa3');
+  renderQA('qa-p7','p7'); renderQA('qa-p9','p9'); renderQA('qa-pa3','pa3');
   // reset maps
-  ['p7','p9'].forEach(pk => {
+  ['p7','p9','pa3'].forEach(pk => {
     if (mapInstances[pk]) { try { mapInstances[pk].remove(); } catch(e){} delete mapInstances[pk]; }
     const mel = document.getElementById('map-'+pk);
     if (mel) mel.innerHTML = '';
@@ -996,7 +1216,7 @@ function renderAltsForProject() {
 
 function selectProject(data) {
   currentProject = data.name;
-  projData = { chats: data.chats||{p7:[],p9:[]}, notes: data.notes||{}, chosen: data.chosen||null };
+  projData = { chats: data.chats||{p7:[],p9:[],pa3:[]}, notes: data.notes||{}, chosen: data.chosen||null };
   document.getElementById('proj-badge').textContent = '📁 '+currentProject;
   document.getElementById('header-title').textContent = currentProject;
   document.getElementById('header-sub').textContent = 'לחץ לשינוי פרויקט';
@@ -1125,7 +1345,7 @@ async function setChosen(pk) {
 
 function renderChosenState() {
   const chosen = projData.chosen;
-  ['p7','p9'].forEach(pk => {
+  ['p7','p9','pa3'].forEach(pk => {
     const sideBtn   = document.getElementById('sidebtn-' + pk);
     const badge     = document.getElementById('chosen-badge-' + pk);
     const chooseBtn = document.getElementById('choose-btn-' + pk);
@@ -1720,7 +1940,7 @@ function showSaved(msg){
 }
 function updateDates(){
   const now=new Date().toLocaleString('he-IL',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  ['cd7','cd9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent='תאריך: '+now; });
+  ['cd7','cd9','cdpa3'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent='תאריך: '+now; });
 }
 
 // ════════════════════════════════════════════════
@@ -1738,9 +1958,9 @@ function init(){
   if(cu){ ['cu7','cu9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=decodeURIComponent(cu); }); }
   ['cu7','cu9'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input',function(){ sanitizeUser(this); document.cookie='chat_user='+encodeURIComponent(this.value)+';max-age=31536000;path=/'; }); });
 
-  renderTable('tb7','p7'); renderTable('tb9','p9');
-  renderDetail('det7','p7'); renderDetail('det9','p9');
-  renderQA('qa-p7','p7'); renderQA('qa-p9','p9');
+  renderTable('tb7','p7'); renderTable('tb9','p9'); renderTable('tba3','pa3');
+  renderDetail('det7','p7'); renderDetail('det9','p9'); renderDetail('deta3','pa3');
+  renderQA('qa-p7','p7'); renderQA('qa-p9','p9'); renderQA('qa-pa3','pa3');
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO);
