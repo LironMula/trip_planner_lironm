@@ -734,6 +734,16 @@ const PLANS = {
         e:'—' },
     ],
     qa: [
+      { q:'היכן מומלץ ללון — המלצות ספציפיות?',
+        a:`אגם קומו — מנאג'יו, 2 לילות:
+גראנד הוטל מנאג'יו — 4 כוכבים על שפת האגם, בריכה, ארוחת בוקר מפוארת. מושלם למשפחות.
+אפרטמנט נייקול — דירה נוחה 3 דקות מהסירה, מרפסת, מזגן. מצוין לחמישה אנשים.
+אגם קונסטנץ — מירסבורג, 3 לילות:
+בוטיק הוטל 3 שטובן — בלב העיר הישנה, ציון 9.4, ארוחת בוקר כלולה. רחוב הכנסייה 7.
+לנדהוטל פישרהאוס — בית כפרי עם בריכה ודירות משפחתיות. קצת מחוץ לעיר.
+יער השחור — טיטיזי, 2 לילות:
+מריטים טיטיזי — 4 כוכבים על האגם, בולינג, בריכה, ציון 8.8. המלצה ראשונה למשפחות.
+שטוב טיטיזי — דירות חדשות ממש ליד האגם, מטבח, מרפסת עם נוף ליער. מאפשר בישול עצמי.` },
       { q:'מה המבט-על של המסלול — כמה ימים בכל מקום?',
         a:`סה"כ 7 לילות בין 17–25 אוגוסט:
 • אגם קומו — 2 לילות (17–19.8) בבסיס מנאג'ו: שיט, בלאג'יו, חוף
@@ -875,6 +885,19 @@ Granita סיציליאנית — מחית פרי קפוא טבעי.
         e:'—' },
     ],
     qa: [
+      { q:'היכן מומלץ ללון — המלצות ספציפיות?',
+        a:`אגם קומו — מנאג'יו, 2 לילות:
+גראנד הוטל מנאג'יו — 4 כוכבים על שפת האגם, בריכה, ארוחת בוקר מפוארת. מושלם למשפחות.
+אפרטמנט נייקול — דירה נוחה 3 דקות מהסירה, מרפסת, מזגן. מצוין לחמישה אנשים.
+אגם קונסטנץ — מירסבורג, 3 לילות:
+בוטיק הוטל 3 שטובן — בלב העיר הישנה, ציון 9.4, ארוחת בוקר כלולה. רחוב הכנסייה 7.
+הוטל זה-הוף — ישירות על הטיילת, נוף לאגם קונסטנץ, מסעדת דגים מצוינת.
+יער השחור — טיטיזי, 3 לילות:
+מריטים טיטיזי — 4 כוכבים על האגם, בולינג, בריכה, ציון 8.8. המלצה ראשונה למשפחות.
+שטוב טיטיזי — דירות חדשות ממש ליד האגם, מטבח, מרפסת עם נוף ליער. מאפשר בישול עצמי.
+לוגאנו, לילה אחד:
+לוגנודנטה בוטיק הוטל — בוטיק במרכז לוגאנו, 10 דקות ללידו, ציון גבוה.
+אפרטמנט לידו לוגאנו — דירה קרובה לחוף, נוח לצאת בבוקר לשדה התעופה.` },
       { q:'מה המבט-על של המסלול — כמה ימים בכל מקום?',
         a:`סה"כ 8 לילות בין 20–29 אוגוסט:
 • אגם קומו — 2 לילות (20–22.8) בבסיס מנאג'ו: שיט, בלאג'יו, חוף
@@ -1151,6 +1174,61 @@ if (window.speechSynthesis.onvoiceschanged !== undefined) {
   window.speechSynthesis.onvoiceschanged = loadVoices;
 }
 
+function toHebrewOnly(text) {
+  return text
+    .replace(/Ski[-\s]?Hirt/gi,       'סקי הירט')
+    .replace(/Pegasus/gi,              'פגסוס')
+    .replace(/Festivalsommer/gi,       'פסטיבל זומר')
+    .replace(/Schwarzwald/gi,          'שוורצוולד')
+    .replace(/Mainau/gi,               'מאינאו')
+    .replace(/Steinwasen/gi,           'שטיינוואזן')
+    .replace(/Hinterzarten/gi,         'הינטרצרטן')
+    .replace(/Bellagio/gi,             "בלאג'יו")
+    .replace(/Menaggio/gi,             "מנאג'יו")
+    .replace(/Meersburg/gi,            'מירסבורג')
+    .replace(/Titisee/gi,              'טיטיזי')
+    .replace(/Lugano/gi,               'לוגאנו')
+    .replace(/Konstanz/gi,             'קונסטנץ')
+    .replace(/Malpensa|MXP/gi,         'מלאנפסה')
+    .replace(/TLV/g,               'תל אביב')
+    .replace(/Wizz\s?Air/gi,           'ויז אייר')
+    .replace(/Edeka/gi,                'אדקה')
+    .replace(/Rewe/gi,             'רווה')
+    .replace(/Reformhaus/gi,           'רפורמהאוס')
+    .replace(/Biltong/gi,              'בילטונג')
+    .replace(/Trockenfleisch/gi,       'טרוקנפלייש')
+    .replace(/Wurst/gi,                'ווּרסט')
+    .replace(/Sahne/gi,                'שמנת')
+    .replace(/Sorbet/gi,               'סורבה')
+    .replace(/Granita/gi,              'גרניטה')
+    .replace(/Frullato/gi,             'פרולאטו')
+    .replace(/glutenfrei/gi,           'ללא גלוטן')
+    .replace(/senza glutine/gi,        'ללא גלוטן')
+    .replace(/ohne Zucker/gi,          'ללא סוכר')
+    .replace(/senza zucchero[^\s]*/gi,'ללא סוכר')
+    .replace(/low[-\s]?carb/gi,       'דל פחמימות')
+    .replace(/keto/gi,             'קטו')
+    .replace(/paleo/gi,            'פליאו')
+    .replace(/CDW/gi,                  'ביטוח')
+    .replace(/Booking\.com/gi,        'בוקינג')
+    .replace(/Airbnb/gi,               'אייר בי אנד בי')
+    .replace(/stuub/gi,                'שטוב')
+    .replace(/JUFA/gi,                 'יופה')
+    .replace(/Maritim/gi,              'מריטים')
+    .replace(/Fischerhaus/gi,          'פישרהאוס')
+    .replace(/Seehof/gi,               'זה-הוף')
+    .replace(/Kirchstr\./gi,          'קירכשטראסה')
+    .replace(/www\.[a-z.]+/gi,        '')
+    .replace(/https?:\/\/[^\s]*/gi, '')
+    .replace(/\+\d[\d\s\-]*/g,    '')
+    .replace(/€\d+/g,                 'יורו')
+    .replace(/\$\d+/g,               'דולר')
+    .replace(/[a-zA-Z]+/g,             '')
+    .replace(/[€$✈🎟🚲🐴🥩🥤🍦🛒]/g, '')
+    .replace(/\s{2,}/g,               ' ')
+    .trim();
+}
+
 function speakText(text, btnEl) {
   window.speechSynthesis.cancel();
   if (ttsActive) {
@@ -1159,34 +1237,24 @@ function speakText(text, btnEl) {
   }
 
   function doSpeak() {
-    const utter = new SpeechSynthesisUtterance(text);
+    const clean = toHebrewOnly(text);
+    const utter = new SpeechSynthesisUtterance(clean);
     utter.lang = 'he-IL';
-    utter.rate = 0.9;
-
-    // find Hebrew voice — try multiple patterns
+    utter.rate = 0.88;
     const voices = window.speechSynthesis.getVoices();
     const heVoice = voices.find(v => v.lang === 'he-IL')
                  || voices.find(v => v.lang === 'he')
                  || voices.find(v => v.lang.startsWith('he'));
-    if (heVoice) {
-      utter.voice = heVoice;
-    } else {
-      // no Hebrew voice found — lang tag alone will trigger Hebrew on most devices
-      console.warn('No Hebrew voice found. Available:', voices.map(v=>v.lang).join(', '));
-    }
-
+    if (heVoice) utter.voice = heVoice;
     if (btnEl) btnEl.classList.add('speaking');
     ttsActive = { btnEl };
-
     utter.onend = utter.onerror = () => {
       if (btnEl) btnEl.classList.remove('speaking');
       ttsActive = null;
     };
-
     window.speechSynthesis.speak(utter);
   }
 
-  // voices may not be loaded yet — wait up to 1s
   const voices = window.speechSynthesis.getVoices();
   if (voices.length > 0) {
     doSpeak();
@@ -1195,10 +1263,10 @@ function speakText(text, btnEl) {
       window.speechSynthesis.onvoiceschanged = null;
       doSpeak();
     };
-    // fallback: try anyway after 500ms
-    setTimeout(() => { if (ttsActive === null) doSpeak(); }, 500);
+    setTimeout(() => { if (!ttsActive) doSpeak(); }, 300);
   }
 }
+
 async function setChosen(pk) {
   if (!currentProject) return;
 
