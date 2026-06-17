@@ -1231,16 +1231,34 @@ function showTokenDialog() {
 // ════════════════════════════════════════════════
 async function loadProjList() {
   const el = document.getElementById('proj-list');
-  // ensure token is loaded from storage
+  // load token from storage
   if (!ghToken) {
     const saved = localStorage.getItem('gh_token_trip') || sessionStorage.getItem('gh_token');
     if (saved) ghToken = saved;
   }
-  // if still no token, ask user — repo is private
+  // private repo: if no token, show inline prompt inside dialog (not a separate modal)
   if (!ghToken) {
-    el.innerHTML = '<div class="proj-loading">🔑 נדרש טוקן GitHub לטעינת פרויקטים</div>';
-    const tok = await ensureToken();
-    if (!tok) { el.innerHTML = '<div class="proj-loading">⚠ לא ניתן לטעון ללא טוקן</div>'; return; }
+    el.innerHTML = `<div style="padding:12px;font-size:.85rem;color:#5a3a10;background:#fff8f0;border-radius:8px;border:1px solid #e8c890">
+      <strong>🔑 המאגר פרטי — נדרש טוקן GitHub</strong><br><br>
+      <input id="inline-token-input" type="password" placeholder="github_pat_..."
+        style="width:100%;font-family:monospace;font-size:.82rem;padding:7px 10px;border:1px solid #ccc;border-radius:6px;margin-bottom:8px;direction:ltr"/>
+      <button onclick="(async()=>{
+        const t=document.getElementById('inline-token-input').value.trim();
+        if(!t){return;}
+        ghToken=t;
+        localStorage.setItem('gh_token_trip',t);
+        sessionStorage.setItem('gh_token',t);
+        await loadProjList();
+      })()" style="background:#1a4a6b;color:#fff;border:none;padding:7px 18px;border-radius:6px;font-family:Heebo,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;width:100%">
+        התחבר וטען פרויקטים
+      </button>
+      <div style="margin-top:8px;font-size:.75rem;color:#888">
+        <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" style="color:#1a4a6b">
+          לחץ כאן ליצירת טוקן ב-GitHub
+        </a>
+      </div>
+    </div>`;
+    return;
   }
   el.innerHTML = '<div class="proj-loading">⏳ טוען מ-GitHub...</div>';
   try {
@@ -1710,9 +1728,9 @@ function init(){
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   if (ghToken) {
-    setGhStatus('ok', '✓ '+GH_USER+'/'+GH_REPO);
+    setGhStatus('ok', '✓ GitHub מחובר');
   } else {
-    setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO+' — לחץ שמור להתחברות');
+    setGhStatus('none', '🔑 GitHub — טוקן נדרש');
   }
   // restore token FIRST — must happen before openProjModal loads projects
   const storedToken = localStorage.getItem('gh_token_trip') || sessionStorage.getItem('gh_token');
