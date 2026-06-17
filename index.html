@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מתכנן טיולים</title>
+<title>מתכנן טיולים v4</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;900&display=swap');
 :root{
@@ -355,10 +355,6 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
         <button class="alt-btn" id="sidebtn-p9" onclick="switchAlt('p9',this)">
           <span class="chosen-star">⭐</span>מילאן_9_פעילויות<br>
           <span style="font-size:.72rem;font-weight:400;color:var(--rock)">20–29.8 · 8 לילות · $1,678</span>
-        </button>
-        <button class="alt-btn" id="sidebtn-pa3" onclick="switchAlt('pa3',this)">
-          <span class="chosen-star">⭐</span>מילאן_8_פעילויות<br>
-          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">20–29.8 · 8 לילות · אופניים, סוסים, קונצרט</span>
         </button>
       </div>
 
@@ -1231,10 +1227,11 @@ function showTokenDialog() {
 // ════════════════════════════════════════════════
 async function loadProjList() {
   const el = document.getElementById('proj-list');
-  // load token from storage
+  // load token from all possible sources
   if (!ghToken) {
-    const saved = localStorage.getItem('gh_token_trip') || sessionStorage.getItem('gh_token');
-    if (saved) ghToken = saved;
+    ghToken = localStorage.getItem('gh_token_trip')
+           || sessionStorage.getItem('gh_token')
+           || '';
   }
   // private repo: if no token, show inline prompt inside dialog (not a separate modal)
   if (!ghToken) {
