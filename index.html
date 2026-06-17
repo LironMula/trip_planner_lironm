@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מתכנן טיולים v5-debug</title>
+<title>מתכנן טיולים v6</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;900&display=swap');
 :root{
@@ -1320,32 +1320,21 @@ async function loadProjList() {
 }
 
 async function loadProjectFromGH(name) {
-  // validate name before using in URL
   if (!validateProjectName(name)) { alert('שם פרויקט לא תקין'); return; }
   try {
-    const tok2 = ghToken || localStorage.getItem('gh_token_trip') || '';
-    const projHdrs = {};
-    if (tok2) projHdrs['Authorization'] = 'token ' + tok2;
-    const rawUrl = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects/${encodeURIComponent(name)}.json`;
-    const res = await fetch(rawUrl, { headers: { 'Accept':'application/vnd.github.v3+json', ...projHdrs } });
-    if (!res.ok) throw new Error(res.status);
+    const tok = ghToken || localStorage.getItem('gh_token_trip') || '';
+    const hdrs = { 'Accept':'application/vnd.github.v3+json' };
+    if (tok) hdrs['Authorization'] = 'token ' + tok;
+    const url = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects/${encodeURIComponent(name)}.json`;
+    const res = await fetch(url, { headers: hdrs });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const fileData = await res.json();
-    const projContent = JSON.parse(atob(fileData.content));
-    if (!res.ok) throw new Error(res.status);
-    const raw = await res.json();
-    // sanitize all chat entries loaded from GitHub
-    const data = {
-      name:   String(raw.name || name).slice(0,50),
-      chosen: ['p7','p9',null].includes(raw.chosen) ? raw.chosen : null,
-      notes:  {},
-      chats: {
-        p7: Array.isArray(raw.chats?.p7) ? raw.chats.p7.slice(0,MAX_CHAT).map(sanitizeChatEntry) : [],
-        p9: Array.isArray(raw.chats?.p9) ? raw.chats.p9.slice(0,MAX_CHAT).map(sanitizeChatEntry) : [],
-      }
-    };
+    const raw = atob(fileData.content.replace(/\n/g,''));
+    const data = JSON.parse(raw);
+    data.name = name;
     selectProject(data);
   } catch(e) {
-    alert('שגיאה בטעינת הפרויקט: '+esc(e.message));
+    alert('שגיאה בטעינת הפרויקט: ' + esc(e.message));
   }
 }
 
