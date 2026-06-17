@@ -894,6 +894,458 @@ const MAP_DATA = {
   }
 };
 
+function openProjModal() {
+  const modal = document.getElementById('proj-modal');
+  if (!modal) return;
+  modal.classList.add('open');
+  const cancelBtn = document.getElementById('modal-cancel-btn');
+  if (cancelBtn) cancelBtn.style.display = currentProject ? '' : 'none';
+  // reload list fresh every time (cheap API call, ensures up-to-date)
+  loadProjList();
+}
+function closeProjModal() {
+  document.getElementById('proj-modal').classList.remove('open');
+}
+function switchProjTab(tab, btn) {
+  activeProjTab = tab;
+  ['existing','new'].forEach(t => {
+    document.getElementById('ptab-'+t).style.display = t===tab ? '' : 'none';
+  });
+  document.querySelectorAll('.tab-row button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (tab==='existing') loadProjList();
+}
+
+function confirmProjModal() {
+  if (activeProjTab === 'new') {
+    const name = document.getElementById('new-proj-name').value.trim();
+    if (!name) { alert('יש להזין שם פרויקט'); return; }
+    if (!validateProjectName(name)) {
+      alert('שם הפרויקט יכול להכיל אותיות, ספרות, מקף ורווח בלבד (עד 50 תווים)');
+      return;
+    }
+    selectProject({ name, created: new Date().toISOString(), chats:{p7:[],p9:[]}, notes:{}, chosen:null });
+    return;
+  }
+  const sel = document.querySelector('.proj-item.selected');
+  if (!sel) { alert('יש לבחור פרויקט מהרשימה'); return; }
+  loadProjectFromGH(sel.dataset.name);
+}
+
+
+// ── render sidebar + panels based on current project ────────────────────
+
+// ── project-aware resolvers ───────────────────────────────────────────────
+function getPlans()   { return (currentProject||'').includes('peloponnese') ? PLANS_PEL   : PLANS;   }
+function getMapData() { return (currentProject||'').includes('peloponnese') ? MAP_DATA_PEL : MAP_DATA; }
+
+function renderAltsForProject() {
+  const isPel = (currentProject||'').includes('peloponnese');
+  const btns = document.querySelectorAll('.alt-btn');
+  const labels = isPel
+    ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים'],['פלופונס 11 ימים','11 ימים · זוג מבוגרים']]
+    : [['מילאן_7_מילאן','13–20.8 · 7 לילות'],['מילאן_9_מילאן','16–26.8 · 10 לילות']];
+  btns.forEach((btn, i) => {
+    if (!labels[i]) return;
+    btn.innerHTML = `<span class="chosen-star">⭐</span>${labels[i][0]}<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">${labels[i][1]}</span>`;
+  });
+  const panelMeta = isPel
+    ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים · אתונה הלוך ושוב'],
+       ['פלופונס 11 ימים','11 ימים · זוג מבוגרים · אתונה הלוך ושוב']]
+    : [['מילאן_7_מילאן','13–20 באוגוסט 2026 · 7 לילות · יוצאים 10:45 · חוזרים 13:00'],
+       ['מילאן_9_מילאן','16–26 באוגוסט 2026 · 10 לילות · יוצאים 15:00 · חוזרים 13:00']];
+  ['p7','p9'].forEach((pk, i) => {
+    const tc = document.querySelector(`#panel-${pk} .alt-title`);
+    const mc = document.querySelector(`#panel-${pk} .alt-meta`);
+    const badgeId = `chosen-badge-${pk}`;
+    if (tc) tc.innerHTML = `<span class="chosen-badge" id="${badgeId}">✓ מועדף</span>${panelMeta[i][0]}`;
+    if (mc) mc.textContent = panelMeta[i][1];
+  });
+  // re-render all content
+  renderTable('tb7','p7'); renderTable('tb9','p9');
+  renderDetail('det7','p7'); renderDetail('det9','p9');
+  renderQA('qa-p7','p7'); renderQA('qa-p9','p9');
+  // reset maps
+  ['p7','p9'].forEach(pk => {
+    if (mapInstances[pk]) { try { mapInstances[pk].remove(); } catch(e){} delete mapInstances[pk]; }
+    const mel = document.getElementById('map-'+pk);
+    if (mel) mel.innerHTML = '';
+  });
+  initMaps();
+}
+
+function selectProject(data) {
+  currentProject = data.name;
+  projData = { chats: data.chats||{p7:[],p9:[]}, notes: data.notes||{}, chosen: data.chosen||null };
+  document.getElementById('proj-badge').textContent = '📁 '+currentProject;
+  document.getElementById('header-title').textContent = currentProject;
+  document.getElementById('header-sub').textContent = 'לחץ לשינוי פרויקט';
+  document.getElementById('no-project-msg').style.display = 'none';
+  document.getElementById('alts-content').style.display = 'block';
+  // re-render all content for this project (tables, details, QA, maps, labels)
+  renderAltsForProject();
+  renderChats('p7'); renderChats('p9');
+  updateChatCounters();
+  renderChosenState();
+  // open chosen alternative first if set
+  const startAlt = projData.chosen || 'p7';
+  const startBtn = document.getElementById('sidebtn-' + startAlt);
+  if (startBtn) switchAlt(startAlt, startBtn);
+  closeProjModal();
+}
+
+// ════════════════════════════════════════════════
+// Q&A SUMMARY WITH TEXT-TO-SPEECH
+// ════════════════════════════════════════════════
+let ttsActive = null; // { utterance, btnEl }
+
+function renderQA(containerId, pk) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const items = getPlans()[pk].qa || [];
+  if (!items.length) { el.style.display='none'; return; }
+
+  const rows = items.map((item, i) => {
+    const preview = item.a.slice(0, 50) + (item.a.length > 50 ? '...' : '');
+    return `
+      <div class="qa-item">
+        <div class="qa-question" onclick="toggleQA('qa-ans-${pk}-${i}', this)">
+          <span class="qa-q-text">${item.q}</span>
+          <div class="qa-controls">
+            <span class="qa-preview" id="qa-prev-${pk}-${i}">${preview}</span>
+            <button class="qa-tts-btn" id="qa-tts-${pk}-${i}"
+              onclick="event.stopPropagation();speakQA('${pk}',${i})"
+              title="הקרא בעברית">🔊</button>
+            <button class="qa-toggle" id="qa-tog-${pk}-${i}">הרחב</button>
+          </div>
+        </div>
+        <div class="qa-answer" id="qa-ans-${pk}-${i}">${item.a}</div>
+      </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="qa-section-title">
+      <span>📋 תקציר האלטרנטיבה</span>
+      <button class="qa-tts-all" onclick="speakAllQA('${pk}')">🔊 הקרא הכל</button>
+    </div>
+    ${rows}`;
+}
+
+function toggleQA(answerId, questionEl) {
+  const ans = document.getElementById(answerId);
+  const pk = answerId.split('-')[2];
+  const i  = answerId.split('-')[3];
+  const tog = document.getElementById(`qa-tog-${pk}-${i}`);
+  const prev = document.getElementById(`qa-prev-${pk}-${i}`);
+  const isOpen = ans.classList.toggle('open');
+  if (tog)  tog.textContent  = isOpen ? 'כווץ' : 'הרחב';
+  if (prev) prev.style.display = isOpen ? 'none' : '';
+}
+
+function speakQA(pk, idx) {
+  const item = getPlans()[pk].qa[idx];
+  if (!item) return;
+  const btn = document.getElementById(`qa-tts-${pk}-${idx}`);
+  const text = item.q + '. ' + item.a;
+  speakText(text, btn);
+}
+
+function speakAllQA(pk) {
+  const items = getPlans()[pk].qa || [];
+  if (!items.length) return;
+  const full = items.map(i => i.q + '. ' + i.a).join('. ');
+  speakText(full, null);
+}
+
+function speakText(text, btnEl) {
+  // stop any current speech
+  window.speechSynthesis.cancel();
+  if (ttsActive) {
+    ttsActive.btnEl && ttsActive.btnEl.classList.remove('speaking');
+    ttsActive = null;
+  }
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'he-IL';
+  utter.rate = 0.92;
+
+  // try to find Hebrew voice
+  const voices = window.speechSynthesis.getVoices();
+  const heVoice = voices.find(v => v.lang === 'he-IL' || v.lang === 'he');
+  if (heVoice) utter.voice = heVoice;
+
+  if (btnEl) btnEl.classList.add('speaking');
+  ttsActive = { btnEl };
+
+  utter.onend = utter.onerror = () => {
+    if (btnEl) btnEl.classList.remove('speaking');
+    ttsActive = null;
+  };
+
+  window.speechSynthesis.speak(utter);
+}
+async function setChosen(pk) {
+  if (!currentProject) return;
+
+  // toggle
+  projData.chosen = (projData.chosen === pk) ? null : pk;
+  renderChosenState();
+
+  // must save to GitHub – get token if we don't have one
+  const token = await ensureToken();
+  if (!token) {
+    // rolled back – user cancelled
+    projData.chosen = (projData.chosen === pk) ? null : pk;
+    renderChosenState();
+    showSaved('⚠ לא נשמר – נדרש טוקן');
+    return;
+  }
+  await saveToGitHub();
+}
+
+function renderChosenState() {
+  const chosen = projData.chosen;
+  ['p7','p9'].forEach(pk => {
+    const sideBtn   = document.getElementById('sidebtn-' + pk);
+    const badge     = document.getElementById('chosen-badge-' + pk);
+    const chooseBtn = document.getElementById('choose-btn-' + pk);
+    if (!sideBtn) return;
+    const isChosen = chosen === pk;
+    sideBtn.classList.toggle('chosen', isChosen);
+    if (badge)     badge.classList.toggle('visible', isChosen);
+    if (chooseBtn) {
+      chooseBtn.classList.toggle('is-chosen', isChosen);
+      chooseBtn.textContent = isChosen ? 'מועדף ✓' : 'קבע כמועדף';
+    }
+  });
+}
+
+// ════════════════════════════════════════════════
+// TOKEN MANAGEMENT
+// stored in sessionStorage so it survives page reload
+// but not shared between browser tabs/sessions
+// ════════════════════════════════════════════════
+function ensureToken() {
+  if (ghToken) return Promise.resolve(ghToken);
+  const stored = localStorage.getItem('gh_token_trip');
+  if (stored) { ghToken = stored; return Promise.resolve(ghToken); }
+  // show custom token dialog instead of prompt
+  return showTokenDialog();
+}
+
+function showTokenDialog() {
+  return new Promise(resolve => {
+    // create modal if not exists
+    let modal = document.getElementById('token-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'token-modal';
+      modal.style.cssText = `
+        display:flex;position:fixed;inset:0;background:rgba(10,20,40,.7);
+        z-index:2000;align-items:center;justify-content:center;`;
+      modal.innerHTML = `
+        <div style="background:#fff;border-radius:14px;width:92%;max-width:500px;
+          box-shadow:0 8px 40px rgba(0,0,0,.25);overflow:hidden;font-family:Heebo,sans-serif;">
+          <div style="background:linear-gradient(135deg,#1a4a6b,#0d2f47);color:#fff;padding:20px 24px 16px;">
+            <div style="font-size:1.1rem;font-weight:900;margin-bottom:4px">🔑 GitHub Token נדרש לשמירה</div>
+            <div style="font-size:.8rem;opacity:.75">ישמר בדפדפן – לא תישאל שוב</div>
+          </div>
+          <div style="padding:20px 24px;">
+            <div style="background:#f0f7ff;border:1px solid #c0d8f0;border-radius:9px;padding:14px 16px;margin-bottom:16px;font-size:.83rem;line-height:1.8;">
+              <strong style="display:block;margin-bottom:6px">כיצד לקבל טוקן – 3 שלבים:</strong>
+              <ol style="padding-right:18px;margin:0;">
+                <li>לחץ על הלינק למטה ← <strong>Generate new token</strong></li>
+                <li>תחת <strong>Repository access</strong> ← בחר <strong>Only selected repositories</strong> ← בחר <code style="background:#e8f0f8;padding:1px 5px;border-radius:4px">trip_planner_lironm</code></li>
+                <li>תחת <strong>Permissions → Repository permissions → Contents</strong> ← בחר <strong>Read and write</strong> ← לחץ <strong>Generate token</strong></li>
+              </ol>
+              <a href="https://github.com/settings/personal-access-tokens/new?description=trip-planner&expiration=365"
+                 target="_blank"
+                 style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+                   background:#1a4a6b;color:#fff;padding:7px 14px;border-radius:7px;
+                   text-decoration:none;font-size:.82rem;font-weight:700;">
+                🔗 פתח את דף יצירת הטוקן ב-GitHub
+              </a>
+            </div>
+            <label style="display:block;font-size:.8rem;font-weight:700;color:#6b7280;margin-bottom:5px">
+              הדבק את הטוקן כאן:
+            </label>
+            <input id="token-input" type="password"
+              placeholder="github_pat_..."
+              style="width:100%;font-family:monospace;font-size:.85rem;padding:9px 12px;
+                border:1px solid #d1dce8;border-radius:8px;margin-bottom:6px;direction:ltr;" />
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+              <input type="checkbox" id="token-show" style="cursor:pointer">
+              <label for="token-show" style="font-size:.78rem;color:#6b7280;cursor:pointer">הצג טוקן</label>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+              <button id="token-cancel"
+                style="background:none;border:1px solid #d1dce8;border-radius:8px;padding:8px 20px;
+                  font-family:Heebo,sans-serif;font-size:.88rem;cursor:pointer;color:#6b7280;">
+                ביטול
+              </button>
+              <button id="token-confirm"
+                style="background:#1a4a6b;color:#fff;border:none;border-radius:8px;padding:8px 22px;
+                  font-family:Heebo,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;">
+                שמור והתחבר
+              </button>
+            </div>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+    }
+
+    const input    = document.getElementById('token-input');
+    const confirm  = document.getElementById('token-confirm');
+    const cancel   = document.getElementById('token-cancel');
+    const showCb   = document.getElementById('token-show');
+
+    input.value = '';
+    modal.style.display = 'flex';
+    setTimeout(() => input.focus(), 100);
+
+    showCb.onchange = () => { input.type = showCb.checked ? 'text' : 'password'; };
+
+    const close = (val) => {
+      modal.style.display = 'none';
+      confirm.onclick = null; cancel.onclick = null;
+      resolve(val || null);
+    };
+
+    confirm.onclick = () => {
+      const t = input.value.trim();
+      if (!t) { input.style.borderColor='#b94040'; input.focus(); return; }
+      ghToken = t;
+      localStorage.setItem('gh_token_trip', t);
+      sessionStorage.setItem('gh_token', t);
+      close(t);
+    };
+    cancel.onclick = () => close(null);
+
+    input.onkeydown = (e) => { if (e.key === 'Enter') confirm.onclick(); };
+  });
+}
+
+// ════════════════════════════════════════════════
+// GITHUB – READ (no token), WRITE (token required)
+// ════════════════════════════════════════════════
+async function loadProjList() {
+  const el = document.getElementById('proj-list');
+  el.innerHTML = '<div class="proj-loading">⏳ טוען מ-GitHub...</div>';
+  try {
+    // Public API – no token needed
+    const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects`,
+      { headers:{ 'Accept':'application/vnd.github.v3+json' } });
+    if (!res.ok) throw new Error(res.status);
+    const files = await res.json();
+    const projects = files.filter(f => f.name.endsWith('.json'))
+      .map(f => f.name.replace('.json',''))
+      .filter(n => validateProjectName(n)); // reject names with injection chars
+    if (!projects.length) {
+      el.innerHTML = '<div class="proj-loading">אין פרויקטים עדיין.</div>';
+    } else {
+      el.innerHTML = projects.map(n => `
+        <div class="proj-item" data-name="${esc(n)}"
+          onclick="this.parentElement.querySelectorAll(\'.proj-item\').forEach(x=>x.classList.remove(\'selected\'));this.classList.add(\'selected\')">
+          <div>
+            <div class="proj-name">${esc(n)}</div>
+            <div class="proj-meta">☁ GitHub</div>
+          </div>
+        </div>`).join('');
+    }
+    setGhStatus('ok', '✓ '+GH_USER+'/'+GH_REPO);
+  } catch(e) {
+    el.innerHTML = '<div class="proj-loading">שגיאה בטעינה מ-GitHub.</div>';
+    setGhStatus('err', '✗ שגיאת GitHub');
+  }
+}
+
+async function loadProjectFromGH(name) {
+  // validate name before using in URL
+  if (!validateProjectName(name)) { alert('שם פרויקט לא תקין'); return; }
+  try {
+    const res = await fetch(GH_RAW + encodeURIComponent(name) + '.json?t='+Date.now());
+    if (!res.ok) throw new Error(res.status);
+    const raw = await res.json();
+    // sanitize all chat entries loaded from GitHub
+    const data = {
+      name:   String(raw.name || name).slice(0,50),
+      chosen: ['p7','p9',null].includes(raw.chosen) ? raw.chosen : null,
+      notes:  {},
+      chats: {
+        p7: Array.isArray(raw.chats?.p7) ? raw.chats.p7.slice(0,MAX_CHAT).map(sanitizeChatEntry) : [],
+        p9: Array.isArray(raw.chats?.p9) ? raw.chats.p9.slice(0,MAX_CHAT).map(sanitizeChatEntry) : [],
+      }
+    };
+    selectProject(data);
+  } catch(e) {
+    alert('שגיאה בטעינת הפרויקט: '+esc(e.message));
+  }
+}
+
+async function triggerSave() {
+  if (!currentProject){ alert('לא נבחר פרויקט'); return; }
+  const token = await ensureToken();
+  if (!token) { showSaved('⚠ לא נשמר – נדרש טוקן'); return; }
+  await saveToGitHub();
+}
+
+async function saveToGitHub() {
+  const name = currentProject;
+  if (!name) return;
+  const data = { name, chats: projData.chats, notes: projData.notes, chosen: projData.chosen||null, saved: new Date().toISOString() };
+
+  // always save locally as backup
+  localStorage.setItem('proj_'+name, JSON.stringify(data));
+
+  const token = ghToken || sessionStorage.getItem('gh_token');
+  if (!token) { showSaved('נשמר מקומית'); return; }
+  ghToken = token;
+
+  try {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const path = GH_API + encodeURIComponent(name) + '.json';
+    const headers = { 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json', 'Authorization':'token '+token };
+    let sha;
+    try { const c=await fetch(path,{headers}); if(c.ok){const f=await c.json();sha=f.sha;} } catch(e){}
+    const body = { message:`Update ${name}`, content };
+    if (sha) body.sha = sha;
+    const res = await fetch(path, { method:'PUT', headers, body: JSON.stringify(body) });
+    if (!res.ok) throw new Error(await res.text());
+    showSaved('✓ נשמר ב-GitHub');
+  } catch(e) {
+    showSaved('⚠ שגיאת GitHub – נשמר מקומית');
+  }
+}
+
+// ════════════════════════════════════════════════
+// ALTERNATIVE SWITCHER (sidebar)
+// ════════════════════════════════════════════════
+function switchAlt(pk, btn) {
+  document.querySelectorAll('.alt-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-'+pk).classList.add('active');
+  btn.classList.add('active');
+  setTimeout(() => {
+    const m = mapInstances[pk];
+    if (m) {
+      m.invalidateSize();
+      const d = MAP_DATA[pk];
+      const all = [...d.sleeps.map(s=>[s.lat,s.lng]), ...d.attractions.map(a=>[a.lat,a.lng])];
+      m.fitBounds(L.latLngBounds(all), { padding:[40,40] });
+    }
+  }, 50);
+}
+
+// ════════════════════════════════════════════════
+// MAPS – OpenStreetMap via Leaflet
+// sleep locations: large connected dots, show night range
+// attractions: numbered 1,2,3... per plan, color-coded wire from their base sleep location
+// ════════════════════════════════════════════════
+
+// Each sleep has { lat, lng, label, nights:[first,last], color }
+// Each attraction has { lat, lng, label, day, base: 'sleep-label' (matches sleep.label) }
+
 let leafletLoaded = false;
 const mapInstances = {};
 
