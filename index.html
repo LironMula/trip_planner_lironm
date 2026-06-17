@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מתכנן טיולים v4</title>
+<title>מתכנן טיולים v5-debug</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;900&display=swap');
 :root{
@@ -253,6 +253,14 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
   .mnb{padding:11px 10px;font-size:.82rem;}
   body.mobile-view .trow{grid-template-columns:55px 1fr;}
 }
+
+#debug-panel{position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;color:#e0e8f0;
+  font-family:monospace;font-size:12px;padding:8px 12px;z-index:9999;
+  max-height:180px;overflow-y:auto;direction:ltr;text-align:left;display:none;}
+#debug-panel.visible{display:block;}
+#debug-toggle{position:fixed;bottom:0;right:0;background:#c8773a;color:#fff;
+  border:none;padding:5px 12px;font-size:12px;cursor:pointer;z-index:10000;
+  font-family:monospace;}
 </style>
 </head>
 <body>
@@ -1738,5 +1746,49 @@ function init(){
 
 init();
 </script>
+
+<button id="debug-toggle" onclick="document.getElementById('debug-panel').classList.toggle('visible')">🐛 Debug</button>
+<div id="debug-panel" id="debug-panel"></div>
+<script>
+(function(){
+  const panel = document.getElementById('debug-panel');
+  function log(type, msg) {
+    const line = document.createElement('div');
+    line.style.color = type==='error'?'#ff6b6b':type==='warn'?'#ffd93d':'#6bcb77';
+    line.textContent = '['+type.toUpperCase()+'] ' + msg;
+    panel.appendChild(line);
+    panel.scrollTop = panel.scrollHeight;
+    panel.classList.add('visible');
+  }
+  window.onerror = function(msg,src,line,col,err){
+    log('error', msg + ' @ line '+line);
+    return false;
+  };
+  window.addEventListener('unhandledrejection', function(e){
+    log('error', 'Promise: ' + (e.reason?.message || e.reason || 'unknown'));
+  });
+  // Patch fetch to log calls
+  const origFetch = window.fetch;
+  window.fetch = function(url, opts){
+    log('info', 'fetch: '+url.toString().substring(0,80));
+    return origFetch.apply(this, arguments).then(r=>{
+      log(r.ok?'info':'error', 'response: '+r.status+' '+url.toString().substring(0,60));
+      return r;
+    }).catch(e=>{
+      log('error', 'fetch failed: '+e.message);
+      throw e;
+    });
+  };
+  // Log localStorage token presence
+  const tok = localStorage.getItem('gh_token_trip');
+  log('info', 'token in storage: '+(tok ? tok.substring(0,20)+'...' : 'NONE'));
+  log('info', 'page loaded, waiting for init...');
+  setTimeout(()=>{
+    log('info', 'ghToken in memory: '+(typeof ghToken!=='undefined'?(ghToken?ghToken.substring(0,20)+'...':'EMPTY'):'UNDEFINED'));
+    log('info', 'modal open: '+(document.getElementById('proj-modal')?.classList.contains('open')?'YES':'NO'));
+  }, 500);
+})();
+</script>
+
 </body>
 </html>
