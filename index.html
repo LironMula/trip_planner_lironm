@@ -1233,9 +1233,12 @@ async function loadProjList() {
   const el = document.getElementById('proj-list');
   el.innerHTML = '<div class="proj-loading">⏳ טוען מ-GitHub...</div>';
   try {
-    // Public API – no token needed
+    // Use token if available (needed for private repos)
+    const tok = ghToken || localStorage.getItem('gh_token_trip') || '';
+    const fetchHdrs = { 'Accept':'application/vnd.github.v3+json' };
+    if (tok) fetchHdrs['Authorization'] = 'token ' + tok;
     const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects`,
-      { headers:{ 'Accept':'application/vnd.github.v3+json' } });
+      { headers: fetchHdrs });
     if (!res.ok) throw new Error(res.status);
     const files = await res.json();
     const projects = files.filter(f => f.name.endsWith('.json'))
@@ -1264,7 +1267,14 @@ async function loadProjectFromGH(name) {
   // validate name before using in URL
   if (!validateProjectName(name)) { alert('שם פרויקט לא תקין'); return; }
   try {
-    const res = await fetch(GH_RAW + encodeURIComponent(name) + '.json?t='+Date.now());
+    const tok2 = ghToken || localStorage.getItem('gh_token_trip') || '';
+    const projHdrs = {};
+    if (tok2) projHdrs['Authorization'] = 'token ' + tok2;
+    const rawUrl = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects/${encodeURIComponent(name)}.json`;
+    const res = await fetch(rawUrl, { headers: { 'Accept':'application/vnd.github.v3+json', ...projHdrs } });
+    if (!res.ok) throw new Error(res.status);
+    const fileData = await res.json();
+    const projContent = JSON.parse(atob(fileData.content));
     if (!res.ok) throw new Error(res.status);
     const raw = await res.json();
     // sanitize all chat entries loaded from GitHub
