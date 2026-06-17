@@ -637,12 +637,6 @@ CREATE POLICY "all" ON trip_chat FOR ALL USING (true) WITH CHECK (true);</pre>
 // ════════════════════════════════════════════════
 // PLAN DATA
 // ════════════════════════════════════════════════
-
-// ══════════════════════════════════════════════════════════════════════════
-// SUMMER 2026 PLANS — 2 alternatives, activity-blend style
-// p7 = מילאן_7_פעילויות  17–25.8  7 nights  $289×5=$1,445
-// p9 = מילאן_9_פעילויות  20–29.8  8 nights  $336×5=$1,678
-// ══════════════════════════════════════════════════════════════════════════
 const PLANS = {
   p7: {
     rows: [
@@ -1016,18 +1010,8 @@ function ldScript(src){ return new Promise((r,j)=>{ const s=document.createEleme
 // RENDER
 // ════════════════════════════════════════════════
 function renderTable(id, pk) {
-  const rows = getPlans()[pk].rows;
-  const hasAct  = rows.some(r => r.act);
-  const hasCost = rows.some(r => r.cost);
-  document.getElementById(id).innerHTML = rows.map(r=>`
-    <tr class="${r.z}">
-      <td class="dc">${esc(r.d)}</td>
-      <td class="rc">${esc(r.r)}</td>
-      <td class="drc">${esc(r.dr)}</td>
-      <td class="sc">${esc(r.s)}</td>
-      ${hasAct  ? `<td class="act-cell">${esc(r.act||'')}</td>` : ''}
-      ${hasCost ? `<td class="act-cell" style="color:var(--accent);font-weight:700">${esc(r.cost||'')}</td>` : ''}
-    </tr>`).join('');
+  document.getElementById(id).innerHTML = getPlans()[pk].rows.map(r=>`
+    <tr class="${r.z}"><td class="dc">${r.d}</td><td class="rc">${r.r}</td><td class="drc">${r.dr}</td><td class="sc">${r.s}</td></tr>`).join('');
 }
 function renderDetail(id, pk) {
   document.getElementById(id).innerHTML = getPlans()[pk].det.map(d=>{
@@ -1230,7 +1214,7 @@ function showSaved(msg){
 }
 function updateDates(){
   const now=new Date().toLocaleString('he-IL',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  ['cd7','cd9','cdpa3'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent='תאריך: '+now; });
+  ['cd7','cd9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent='תאריך: '+now; });
 }
 
 // ════════════════════════════════════════════════
@@ -1248,9 +1232,9 @@ function init(){
   if(cu){ ['cu7','cu9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=decodeURIComponent(cu); }); }
   ['cu7','cu9'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input',function(){ sanitizeUser(this); document.cookie='chat_user='+encodeURIComponent(this.value)+';max-age=31536000;path=/'; }); });
 
-  renderTable('tb7','p7'); renderTable('tb9','p9'); renderTable('tba3','pa3');
-  renderDetail('det7','p7'); renderDetail('det9','p9'); renderDetail('deta3','pa3');
-  renderQA('qa-p7','p7'); renderQA('qa-p9','p9'); renderQA('qa-pa3','pa3');
+  renderTable('tb7','p7'); renderTable('tb9','p9');
+  renderDetail('det7','p7'); renderDetail('det9','p9');
+  renderQA('qa-p7','p7'); renderQA('qa-p9','p9');
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO);
