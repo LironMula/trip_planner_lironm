@@ -638,6 +638,25 @@ CREATE POLICY "all" ON trip_chat FOR ALL USING (true) WITH CHECK (true);</pre>
 </footer>
 
 <script>
+
+// ════════════════════════════════════════════════
+// CONSTANTS
+// ════════════════════════════════════════════════
+const GH_USER = 'LironMula';
+const GH_REPO = 'trip_planner_lironm';
+const GH_RAW  = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/projects/`;
+const GH_API  = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects/`;
+const MAX_CHAT = 20;
+
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+let currentProject = null;
+let projData = { chats:{p7:[],p9:[],pa3:[]}, notes:{}, chosen:null };
+let ghToken = '';
+let isMobile = window.innerWidth < 700;
+let activeProjTab = 'existing';
+
 // ════════════════════════════════════════════════
 // PLAN DATA
 // ════════════════════════════════════════════════
