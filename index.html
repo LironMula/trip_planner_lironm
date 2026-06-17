@@ -734,6 +734,24 @@ const PLANS = {
         e:'—' },
     ],
     qa: [
+      { q:'מה המבט-על של המסלול — כמה ימים בכל מקום?',
+        a:`סה"כ 7 לילות בין 17–25 אוגוסט:
+• אגם קומו — 2 לילות (17–19.8) בבסיס מנאג'ו: שיט, בלאג'יו, חוף
+• אגם קונסטנץ — 3 לילות (19–22.8) בבסיס מירסבורג: אי מאינאו, שיט נבו, קונסטנץ
+• יער השחור — 2 לילות (22–25.8) בבסיס טיטיזי: אופניים, סוסים
+המסלול עובר 3 מדינות: איטליה, שווייץ, גרמניה — עם 2 מעברי גבול קלים.` },
+      { q:'מה מזג האוויר הצפוי בתאריכי הטיול?',
+        a:`אגם קומו (אוגוסט): חם ולח, 26–32°C ביום. שמש רוב הזמן, עלול להיות רעם בצהריים.
+אגם קונסטנץ (אוגוסט): נעים, 23–28°C. ימים שמשיים, לעיתים ענן.
+יער השחור (אוגוסט): 18–24°C. נחמד, ירוק, לפעמים גשם קצר. הביאו שכבה קלה לערב.
+כלל האצבע: בוקר תמיד יפה — פעילויות חיצוניות מוקדם. אחה"צ — לפעמים גשם קצר.
+לא קיץ ישראלי — הרבה יותר נעים ונסבל.` },
+      { q:'מה זה יער השחור ולמה ללכת לשם?',
+        a:`יער השחור (שוורצוולד) הוא אזור הרים מכוסה יערות אורן בדרום-מערב גרמניה.
+ידוע בנופים עוצרי נשימה, אגמי הרים, כפרים ציוריים, ושקט.
+מפורסם בזכות: טוריסטיקה קלה ובינונית, שעוני קוקייה, עוגת שחורה (Schwarzwälder Kirschtorte).
+למשפחות: אחד האזורים הידידותיים ביותר לילדים באירופה — פארקים, אגמים, מגלשות, חיות.
+הייחוד: שלושה ימים כאן נותנים תחושה של ניתוק מלא ואוויר נקי אחרי ימי האגמים.` },
       { q:'מה זה האלטרנטיבה הזו?',
         a:`7 לילות, 17–25 אוגוסט 2026.
 יציאה TLV 18:55 → MXP 23:10. חזרה MXP 13:05 → TLV 17:00.
@@ -857,6 +875,25 @@ Granita סיציליאנית — מחית פרי קפוא טבעי.
         e:'—' },
     ],
     qa: [
+      { q:'מה המבט-על של המסלול — כמה ימים בכל מקום?',
+        a:`סה"כ 8 לילות בין 20–29 אוגוסט:
+• אגם קומו — 2 לילות (20–22.8) בבסיס מנאג'ו: שיט, בלאג'יו, חוף
+• אגם קונסטנץ — 3 לילות (22–25.8) בבסיס מירסבורג: אי מאינאו, שיט נבו, קונסטנץ
+• יער השחור — 3 לילות (25–28.8) בבסיס טיטיזי: אופניים, סוסים, קונצרט
+• לוגאנו — לילה אחד (28–29.8): קונצרט + שינה קרוב לשדה
+המסלול עובר 3 מדינות: איטליה, שווייץ, גרמניה — עם 3 מעברי גבול קלים.` },
+      { q:'מה מזג האוויר הצפוי בתאריכי הטיול?',
+        a:`אגם קומו (אוגוסט): חם ולח, 26–32°C ביום. שמש רוב הזמן, עלול להיות רעם בצהריים.
+אגם קונסטנץ (אוגוסט): נעים, 23–28°C. ימים שמשיים, לעיתים ענן.
+יער השחור (אוגוסט): 18–24°C. נחמד, ירוק, לפעמים גשם קצר. הביאו שכבה קלה לערב.
+לוגאנו: דומה לאגם קומו — חם ויפה.
+כלל האצבע: בוקר תמיד יפה — פעילויות חיצוניות מוקדם. לא קיץ ישראלי — הרבה יותר נעים.` },
+      { q:'מה זה יער השחור ולמה ללכת לשם?',
+        a:`יער השחור (שוורצוולד) הוא אזור הרים מכוסה יערות אורן בדרום-מערב גרמניה.
+ידוע בנופים עוצרי נשימה, אגמי הרים, כפרים ציוריים, ושקט.
+מפורסם בזכות: טיולי יער ואופניים, שעוני קוקייה, עוגת שחורה (Schwarzwälder Kirschtorte).
+למשפחות: אחד האזורים הידידותיים ביותר לילדים באירופה — פארקים, אגמים, מגלשות, חיות.
+3 לילות בטיטיזי נותנים תחושת ניתוק מלא ואוויר נקי אחרי ימי האגמים.` },
       { q:'מה זה האלטרנטיבה הזו?',
         a:`8 לילות, 20–29 אוגוסט 2026.
 יציאה TLV 10:45 → MXP 14:05. חזרה MXP 13:05 → TLV 17:00.
@@ -1103,32 +1140,64 @@ function speakAllQA(pk) {
   speakText(full, null);
 }
 
+// pre-load voices as soon as browser is ready
+let ttsVoicesLoaded = false;
+function loadVoices() {
+  const v = window.speechSynthesis.getVoices();
+  if (v.length > 0) ttsVoicesLoaded = true;
+}
+loadVoices();
+if (window.speechSynthesis.onvoiceschanged !== undefined) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
 function speakText(text, btnEl) {
-  // stop any current speech
   window.speechSynthesis.cancel();
   if (ttsActive) {
     ttsActive.btnEl && ttsActive.btnEl.classList.remove('speaking');
     ttsActive = null;
   }
 
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'he-IL';
-  utter.rate = 0.92;
+  function doSpeak() {
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'he-IL';
+    utter.rate = 0.9;
 
-  // try to find Hebrew voice
+    // find Hebrew voice — try multiple patterns
+    const voices = window.speechSynthesis.getVoices();
+    const heVoice = voices.find(v => v.lang === 'he-IL')
+                 || voices.find(v => v.lang === 'he')
+                 || voices.find(v => v.lang.startsWith('he'));
+    if (heVoice) {
+      utter.voice = heVoice;
+    } else {
+      // no Hebrew voice found — lang tag alone will trigger Hebrew on most devices
+      console.warn('No Hebrew voice found. Available:', voices.map(v=>v.lang).join(', '));
+    }
+
+    if (btnEl) btnEl.classList.add('speaking');
+    ttsActive = { btnEl };
+
+    utter.onend = utter.onerror = () => {
+      if (btnEl) btnEl.classList.remove('speaking');
+      ttsActive = null;
+    };
+
+    window.speechSynthesis.speak(utter);
+  }
+
+  // voices may not be loaded yet — wait up to 1s
   const voices = window.speechSynthesis.getVoices();
-  const heVoice = voices.find(v => v.lang === 'he-IL' || v.lang === 'he');
-  if (heVoice) utter.voice = heVoice;
-
-  if (btnEl) btnEl.classList.add('speaking');
-  ttsActive = { btnEl };
-
-  utter.onend = utter.onerror = () => {
-    if (btnEl) btnEl.classList.remove('speaking');
-    ttsActive = null;
-  };
-
-  window.speechSynthesis.speak(utter);
+  if (voices.length > 0) {
+    doSpeak();
+  } else {
+    window.speechSynthesis.onvoiceschanged = () => {
+      window.speechSynthesis.onvoiceschanged = null;
+      doSpeak();
+    };
+    // fallback: try anyway after 500ms
+    setTimeout(() => { if (ttsActive === null) doSpeak(); }, 500);
+  }
 }
 async function setChosen(pk) {
   if (!currentProject) return;
