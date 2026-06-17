@@ -1231,10 +1231,20 @@ function showTokenDialog() {
 // ════════════════════════════════════════════════
 async function loadProjList() {
   const el = document.getElementById('proj-list');
+  // ensure token is loaded from storage
+  if (!ghToken) {
+    const saved = localStorage.getItem('gh_token_trip') || sessionStorage.getItem('gh_token');
+    if (saved) ghToken = saved;
+  }
+  // if still no token, ask user — repo is private
+  if (!ghToken) {
+    el.innerHTML = '<div class="proj-loading">🔑 נדרש טוקן GitHub לטעינת פרויקטים</div>';
+    const tok = await ensureToken();
+    if (!tok) { el.innerHTML = '<div class="proj-loading">⚠ לא ניתן לטעון ללא טוקן</div>'; return; }
+  }
   el.innerHTML = '<div class="proj-loading">⏳ טוען מ-GitHub...</div>';
   try {
-    // Use token if available (needed for private repos)
-    const tok = ghToken || localStorage.getItem('gh_token_trip') || '';
+    const tok = ghToken;
     const fetchHdrs = { 'Accept':'application/vnd.github.v3+json' };
     if (tok) fetchHdrs['Authorization'] = 'token ' + tok;
     const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects`,
@@ -1699,11 +1709,15 @@ function init(){
   renderQA('qa-p7','p7'); renderQA('qa-p9','p9');
   initMaps();
   updateDates(); setInterval(updateDates,30000);
-  setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO);
-  // restore token from localStorage (persists forever) or sessionStorage
+  if (ghToken) {
+    setGhStatus('ok', '✓ '+GH_USER+'/'+GH_REPO);
+  } else {
+    setGhStatus('none', '📁 '+GH_USER+'/'+GH_REPO+' — לחץ שמור להתחברות');
+  }
+  // restore token FIRST — must happen before openProjModal loads projects
   const storedToken = localStorage.getItem('gh_token_trip') || sessionStorage.getItem('gh_token');
-  if (storedToken) ghToken = storedToken;
-  // open project modal after a short delay to ensure DOM is fully ready
+  if (storedToken) { ghToken = storedToken; }
+  // open project modal — token is now ready
   setTimeout(() => openProjModal(), 80);
 }
 
