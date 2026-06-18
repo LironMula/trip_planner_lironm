@@ -113,7 +113,7 @@ body.mobile-view .alt-hdr{padding:8px 4px 6px;}
 .old-label{display:none;background:#888;color:#fff;font-size:.75rem;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:6px;width:fit-content;}
 .vwrap.is-old .old-overlay{display:block;}
 .vwrap.is-old .old-label{display:inline-block;}
-.vwrap.is-old table,.vwrap.is-old .map-box{filter:grayscale(.5) brightness(.97);}
+.vwrap.is-old table,.vwrap.is-old .map-box{filter:grayscale(.5) brightness(.97);height:340px;min-height:200px;}
 
 /* table */
 .tbl-wrap{overflow-x:auto;border-radius:10px;box-shadow:0 1px 8px rgba(0,0,0,.06);-webkit-overflow-scrolling:touch;}
@@ -142,7 +142,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 
 /* alternatives sidebar layout */
 .alts-layout{display:flex;gap:0;align-items:flex-start;margin-top:4px;}
-.alts-sidebar{width:190px;flex-shrink:0;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow:hidden;position:sticky;top:58px;z-index:10;}
+.alts-sidebar{width:190px;flex-shrink:0;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow-y:auto;max-height:calc(100vh - 70px);position:sticky;top:58px;z-index:10;}
 .alts-sidebar-title{background:var(--lake);color:#fff;padding:11px 16px;font-size:.82rem;font-weight:800;}
 .alt-btn{display:block;width:100%;background:none;border:none;border-bottom:1px solid var(--border);font-family:'Heebo',sans-serif;font-size:.86rem;font-weight:600;color:var(--text);padding:12px 16px;cursor:pointer;text-align:right;transition:all .2s;line-height:1.4;}
 .alt-btn:last-child{border-bottom:none;}
@@ -946,66 +946,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
             </div>
           </div>
         </div><!-- /panel-pa3 -->
-      </div><!-- /alts-main -->
-    </div><!-- /alts-layout -->
-  </div><!-- /alts-content -->
-</div><!-- /alternatives -->
-            <div class="cmeta" id="cd9"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div><!-- /alternatives -->
-
-<!-- SETTINGS -->
-<div id="settings-sec" class="section">
-  <div class="guide">
-    <strong style="font-size:.95rem;display:block;margin-bottom:8px">📋 GitHub – שמירת פרויקטים</strong>
-    <ol>
-      <li>צור מאגר ב-GitHub (למשל trip-planner)</li>
-      <li>צור Fine-grained token עם הרשאת Contents: Read and Write</li>
-      <li>פתח את חלון הפרויקט (📁) ולחץ על טאב GitHub</li>
-      <li>הזן שם משתמש, שם מאגר, וטוקן – ולחץ המשך</li>
-    </ol>
-    <strong style="font-size:.95rem;display:block;margin:12px 0 8px">💬 Supabase – שיחות משותפות</strong>
-    <ol>
-      <li>צור חשבון ב-supabase.com</li>
-      <li>צור טבלה:</li>
-    </ol>
-    <pre>CREATE TABLE trip_chat (
-  id BIGSERIAL PRIMARY KEY,
-  proj_key TEXT, plan_key TEXT,
-  username TEXT, message TEXT,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-ALTER TABLE trip_chat ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "all" ON trip_chat FOR ALL USING (true) WITH CHECK (true);</pre>
-    <ol start="3"><li>הזן URL ו-anon key בשורת הסטטוס למעלה</li></ol>
-  </div>
-
-  <!-- AGENT INSTRUCTIONS BOX -->
-  <div style="margin-top:20px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 22px;">
-    <div style="font-size:.95rem;font-weight:800;margin-bottom:8px">🤖 הוראות לסוכן AI</div>
-    <div style="font-size:.85rem;color:var(--rock);margin-bottom:12px;line-height:1.6">
-      לסוכן AI שרוצה להוסיף פרויקט חדש – כל ההוראות, מבנה ה-JSON, ופקודות ה-API נמצאות בקובץ:
-    </div>
-    <a id="instructions-link"
-       href="https://github.com/LironMula/trip_planner_lironm/blob/main/INSTRUCTIONS.md"
-       target="_blank"
-       style="display:inline-flex;align-items:center;gap:8px;background:var(--lake);color:#fff;padding:9px 18px;border-radius:8px;text-decoration:none;font-size:.88rem;font-weight:700;transition:background .2s">
-      📄 INSTRUCTIONS.md
-    </a>
-    <div style="margin-top:10px;font-size:.78rem;color:var(--rock)">
-      Raw URL (לסוכן):
-      <code id="raw-instructions-url" style="background:#f0f4f8;padding:3px 8px;border-radius:5px;font-size:.76rem;user-select:all">
-        https://raw.githubusercontent.com/LironMula/trip_planner_lironm/main/INSTRUCTIONS.md
-      </code>
-    </div>
-  </div>
-</div>
-
-
+      
             <div class="alt-panel" id="panel-pG">
               <div class="alt-hdr">
                 <div class="alt-title">
@@ -1090,6 +1031,66 @@ CREATE POLICY "all" ON trip_chat FOR ALL USING (true) WITH CHECK (true);</pre>
                 <div class="chat-msgs" id="chatI"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
               </div>
             </div>
+
+</div><!-- /alts-main -->
+    </div><!-- /alts-layout -->
+  </div><!-- /alts-content -->
+</div><!-- /alternatives -->
+            <div class="cmeta" id="cd9"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /alternatives -->
+
+<!-- SETTINGS -->
+<div id="settings-sec" class="section">
+  <div class="guide">
+    <strong style="font-size:.95rem;display:block;margin-bottom:8px">📋 GitHub – שמירת פרויקטים</strong>
+    <ol>
+      <li>צור מאגר ב-GitHub (למשל trip-planner)</li>
+      <li>צור Fine-grained token עם הרשאת Contents: Read and Write</li>
+      <li>פתח את חלון הפרויקט (📁) ולחץ על טאב GitHub</li>
+      <li>הזן שם משתמש, שם מאגר, וטוקן – ולחץ המשך</li>
+    </ol>
+    <strong style="font-size:.95rem;display:block;margin:12px 0 8px">💬 Supabase – שיחות משותפות</strong>
+    <ol>
+      <li>צור חשבון ב-supabase.com</li>
+      <li>צור טבלה:</li>
+    </ol>
+    <pre>CREATE TABLE trip_chat (
+  id BIGSERIAL PRIMARY KEY,
+  proj_key TEXT, plan_key TEXT,
+  username TEXT, message TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE trip_chat ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "all" ON trip_chat FOR ALL USING (true) WITH CHECK (true);</pre>
+    <ol start="3"><li>הזן URL ו-anon key בשורת הסטטוס למעלה</li></ol>
+  </div>
+
+  <!-- AGENT INSTRUCTIONS BOX -->
+  <div style="margin-top:20px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 22px;">
+    <div style="font-size:.95rem;font-weight:800;margin-bottom:8px">🤖 הוראות לסוכן AI</div>
+    <div style="font-size:.85rem;color:var(--rock);margin-bottom:12px;line-height:1.6">
+      לסוכן AI שרוצה להוסיף פרויקט חדש – כל ההוראות, מבנה ה-JSON, ופקודות ה-API נמצאות בקובץ:
+    </div>
+    <a id="instructions-link"
+       href="https://github.com/LironMula/trip_planner_lironm/blob/main/INSTRUCTIONS.md"
+       target="_blank"
+       style="display:inline-flex;align-items:center;gap:8px;background:var(--lake);color:#fff;padding:9px 18px;border-radius:8px;text-decoration:none;font-size:.88rem;font-weight:700;transition:background .2s">
+      📄 INSTRUCTIONS.md
+    </a>
+    <div style="margin-top:10px;font-size:.78rem;color:var(--rock)">
+      Raw URL (לסוכן):
+      <code id="raw-instructions-url" style="background:#f0f4f8;padding:3px 8px;border-radius:5px;font-size:.76rem;user-select:all">
+        https://raw.githubusercontent.com/LironMula/trip_planner_lironm/main/INSTRUCTIONS.md
+      </code>
+    </div>
+  </div>
+</div>
+
 </main>
 <footer style="text-align:center;color:var(--rock);font-size:.75rem;padding:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
   <span>מתכנן טיולים · נבנה עם Claude</span>
