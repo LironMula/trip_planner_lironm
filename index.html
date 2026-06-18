@@ -266,14 +266,14 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 /* ── Fullscreen map overlay ─────────────────────────────── */
 #fs-overlay{
   display:none;position:fixed;inset:0;z-index:9999;
-  background:#000;flex-direction:column;
+  background:#000;flex-direction:column;overflow:hidden;
 }
 #fs-overlay.open{display:flex;}
-#fs-map{flex:1;width:100%;position:relative;}
 #fs-topbar{
   display:flex;align-items:center;justify-content:space-between;
   background:#1a2a3a;color:#fff;padding:8px 14px;
   font-family:var(--font);font-size:.9rem;gap:12px;flex-shrink:0;
+  position:relative;z-index:2;
 }
 #fs-title{font-weight:600;flex:1;text-align:right;}
 #fs-close-btn{
@@ -282,6 +282,26 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
   font-family:var(--font);white-space:nowrap;
 }
 #fs-close-btn:hover{background:rgba(255,255,255,.28);}
+/* map wrapper — rotated on mobile portrait */
+#fs-map-wrap{
+  flex:1;position:relative;overflow:hidden;
+}
+#fs-map{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  transform-origin:center center;
+  transition:transform .3s;
+}
+/* Mobile portrait: rotate 90deg so north → landscape wide side */
+@media (max-width:768px) and (orientation:portrait){
+  #fs-map{
+    width:100vh;
+    height:100vw;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) rotate(90deg);
+  }
+}
 .fs-map-btn{
   position:absolute;top:10px;left:10px;z-index:500;
   background:rgba(255,255,255,.92);border:1px solid #ccc;
@@ -1952,10 +1972,12 @@ init();
 
 // ── Fullscreen map ────────────────────────────────────────────────────
 let _fsMap = null;
+let _fsBounds = null;
 
 function openFullscreenMap() {
   const overlay = document.getElementById('fs-overlay');
   const fsContainer = document.getElementById('fs-map');
+  const fsWrap = document.getElementById('fs-map-wrap');
   overlay.classList.add('open');
 
   // Find the currently visible map-box
@@ -2008,7 +2030,10 @@ function openFullscreenMap() {
     _fsMap.setView([46.5, 9], 6);
   }
 
-  setTimeout(() => _fsMap.invalidateSize(), 150);
+  // Invalidate after CSS rotation transition completes
+  setTimeout(() => { _fsMap.invalidateSize(); }, 350);
+  // Re-invalidate once more for safety on mobile
+  setTimeout(() => { _fsMap.invalidateSize(); if (bounds && bounds.length) _fsMap.fitBounds(bounds, {padding:[30,30]}); }, 700);
 }
 
 function closeFullscreenMap() {
@@ -2032,7 +2057,9 @@ document.addEventListener('keydown', e => {
     <button id="fs-close-btn" onclick="closeFullscreenMap()">✕ סגור מסך מלא</button>
     <span id="fs-title">מפה</span>
   </div>
-  <div id="fs-map"></div>
+  <div id="fs-map-wrap">
+    <div id="fs-map"></div>
+  </div>
 </div>
 
 </body>
