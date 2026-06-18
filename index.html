@@ -255,6 +255,13 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 }
 
 
+
+.det-content{flex:1;direction:rtl;}
+.det-bull{padding:3px 18px 3px 0;position:relative;line-height:1.5;}
+.det-bull::before{content:"•";position:absolute;right:0;color:var(--accent);}
+.det-sub{padding:2px 28px 2px 0;position:relative;font-size:.88em;color:var(--lake);line-height:1.45;}
+.det-sub::before{content:"◦";position:absolute;right:10px;color:var(--lake);}
+.det-line{padding:2px 0;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -1662,15 +1669,27 @@ function renderTable(id, pk) {
   document.getElementById(id).innerHTML = getPlans()[pk].rows.map(r=>`
     <tr class="${r.z}"><td class="dc">${r.d}</td><td class="rc">${r.r}</td><td class="drc">${r.dr}</td><td class="sc">${r.s}</td></tr>`).join('');
 }
+// Convert bullet text to styled HTML
+function formatDet(raw) {
+  if (!raw) return '';
+  return raw.split('\n').map(line => {
+    const s = esc(line);
+    if (s.startsWith('◦ '))      return '<div class="det-sub">'  + s.slice(2)  + '</div>';
+    if (s.startsWith('• '))      return '<div class="det-bull">'  + s.slice(2)  + '</div>';
+    if (s.trim() === '')         return '';
+    return '<div class="det-line">' + s + '</div>';
+  }).filter(Boolean).join('');
+}
+
 function renderDetail(id, pk) {
   document.getElementById(id).innerHTML = getPlans()[pk].det.map(d=>{
     const hasSp = d.sp && d.sp !== '—' && d.sp.trim() !== '';
     const spHtml = hasSp ? `<div class="sbox">${esc(d.sp)}</div>` : '';
     return `<div class="dblock ${d.z}">
       <div class="dtitle"><span class="dbadge">${esc(d.d)}</span>${esc(d.t)}</div>
-      <div class="trow"><span class="tlabel">בוקר</span><span>${esc(d.m)}</span></div>
-      <div class="trow"><span class="tlabel">צהריים</span><span>${esc(d.n)}</span></div>
-      <div class="trow"><span class="tlabel">ערב</span><span>${esc(d.e)}</span></div>
+      <div class="trow"><span class="tlabel">בוקר</span><div class="det-content">${formatDet(d.m)}</div></div>
+      <div class="trow"><span class="tlabel">צהריים</span><div class="det-content">${formatDet(d.n)}</div></div>
+      <div class="trow"><span class="tlabel">ערב</span><div class="det-content">${formatDet(d.e)}</div></div>
       ${spHtml}</div>`;
   }).join('');
 }
