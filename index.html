@@ -328,15 +328,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
   transform-origin:center center;
   transition:transform .3s;
 }
-/* Mobile portrait: rotate 90deg so north → landscape wide side */
-@media (max-width:768px) and (orientation:portrait){
-  #fs-overlay #fs-map{
-    width:100svh;
-    height:100svw;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) rotate(-90deg);
-  }
-}
+/* Mobile: no rotation — north always points up */
 .fs-map-btn{
   position:absolute;
   bottom:10px;left:10px;
