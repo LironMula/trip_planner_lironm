@@ -262,6 +262,34 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 .det-sub{padding:2px 28px 2px 0;position:relative;font-size:.88em;color:var(--lake);line-height:1.45;}
 .det-sub::before{content:"◦";position:absolute;right:10px;color:var(--lake);}
 .det-line{padding:2px 0;line-height:1.5;}
+
+/* ── Fullscreen map overlay ─────────────────────────────── */
+#fs-overlay{
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:#000;flex-direction:column;
+}
+#fs-overlay.open{display:flex;}
+#fs-map{flex:1;width:100%;position:relative;}
+#fs-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#1a2a3a;color:#fff;padding:8px 14px;
+  font-family:var(--font);font-size:.9rem;gap:12px;flex-shrink:0;
+}
+#fs-title{font-weight:600;flex:1;text-align:right;}
+#fs-close-btn{
+  background:rgba(255,255,255,.15);border:none;color:#fff;
+  padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85rem;
+  font-family:var(--font);white-space:nowrap;
+}
+#fs-close-btn:hover{background:rgba(255,255,255,.28);}
+.fs-map-btn{
+  position:absolute;top:10px;left:10px;z-index:500;
+  background:rgba(255,255,255,.92);border:1px solid #ccc;
+  border-radius:7px;padding:6px 10px;cursor:pointer;
+  font-size:.8rem;box-shadow:0 2px 6px rgba(0,0,0,.18);
+  white-space:nowrap;
+}
+.fs-map-btn:hover{background:#fff;}
 </style>
 </head>
 <body>
@@ -404,6 +432,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               <!-- MAP + DETAIL SECTION -->
               <div class="section-hdr" style="margin-top:24px">
                 <span class="section-hdr-title">🗺 מפה ותכנית מפורטת</span>
+              <button class="fs-map-btn" onclick="openFullscreenMap()" title="מסך מלא">⛶ מסך מלא</button>
               </div>
               <div style="margin-top:10px">
                 <div class="vbar"><span>מפה:</span>
@@ -470,6 +499,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               <!-- MAP + DETAIL SECTION -->
               <div class="section-hdr" style="margin-top:24px">
                 <span class="section-hdr-title">🗺 מפה ותכנית מפורטת</span>
+              <button class="fs-map-btn" onclick="openFullscreenMap()" title="מסך מלא">⛶ מסך מלא</button>
               </div>
               <div style="margin-top:10px">
                 <div class="vbar"><span>מפה:</span>
@@ -533,6 +563,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               </div>
               <div class="section-hdr" style="margin-top:24px">
                 <span class="section-hdr-title">🗺 מפה ותכנית מפורטת</span>
+              <button class="fs-map-btn" onclick="openFullscreenMap()" title="מסך מלא">⛶ מסך מלא</button>
               </div>
               <div style="margin-top:10px">
                 <div class="vbar"><span>מפה:</span>
@@ -1918,9 +1949,91 @@ function init(){
 }
 
 init();
+
+// ── Fullscreen map ────────────────────────────────────────────────────
+let _fsMap = null;
+
+function openFullscreenMap() {
+  const overlay = document.getElementById('fs-overlay');
+  const fsContainer = document.getElementById('fs-map');
+  overlay.classList.add('open');
+
+  // Find the currently visible map-box
+  const activePanel = document.querySelector('.alt-panel[style*="block"], .alt-panel:not([style*="none"])');
+  let mapBox = null;
+  let title = 'מפה';
+
+  if (activePanel) {
+    mapBox = activePanel.querySelector('.map-box');
+    const badge = activePanel.querySelector('.alt-badge');
+    if (badge) title = badge.textContent.trim();
+  }
+  document.getElementById('fs-title').textContent = title;
+
+  // Init a fresh Leaflet map in the overlay container
+  if (_fsMap) { _fsMap.remove(); _fsMap = null; }
+  fsContainer.innerHTML = '';
+
+  _fsMap = L.map(fsContainer, { zoomControl: true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    maxZoom: 18
+  }).addTo(_fsMap);
+
+  // Copy markers from the current active project map
+  if (currentProject && getMapData()[currentProject]) {
+    const md = getMapData()[currentProject];
+    const bounds = [];
+
+    (md.sleeps || []).forEach(s => {
+      if (!s.lat) return;
+      const m = L.circleMarker([s.lat, s.lng], {
+        radius: 10, fillColor: s.color || '#1a4a6b',
+        color: '#fff', weight: 2, fillOpacity: 0.92
+      }).addTo(_fsMap).bindPopup(`<b>${s.label}</b>`);
+      bounds.push([s.lat, s.lng]);
+    });
+
+    (md.attractions || []).forEach(a => {
+      if (!a.lat) return;
+      L.marker([a.lat, a.lng]).addTo(_fsMap)
+        .bindPopup(`<b>${a.label}</b><br>${a.day || ''}`);
+      bounds.push([a.lat, a.lng]);
+    });
+
+    if (bounds.length) {
+      _fsMap.fitBounds(bounds, { padding: [40, 40] });
+    }
+  } else {
+    _fsMap.setView([46.5, 9], 6);
+  }
+
+  setTimeout(() => _fsMap.invalidateSize(), 150);
+}
+
+function closeFullscreenMap() {
+  document.getElementById('fs-overlay').classList.remove('open');
+  if (_fsMap) { _fsMap.remove(); _fsMap = null; }
+}
+
+// Close on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeFullscreenMap();
+});
+
 </script>
 
 
+
+
+<!-- FULLSCREEN MAP OVERLAY -->
+<div id="fs-overlay">
+  <div id="fs-topbar">
+    <button id="fs-close-btn" onclick="closeFullscreenMap()">✕ סגור מסך מלא</button>
+    <span id="fs-title">מפה</span>
+  </div>
+  <div id="fs-map"></div>
+</div>
 
 </body>
 </html>
