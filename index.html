@@ -1605,8 +1605,8 @@ function renderMap(pk) {
   const map = L.map(el, { zoomControl:true, scrollWheelZoom:false });
   mapInstances[pk] = map;
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution:'© OpenStreetMap', maxZoom:18
+  L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png?lang=en', {
+    attribution:'© OpenStreetMap contributors, © Wikimedia', maxZoom:18
   }).addTo(map);
 
   // ── 1. Main route: connect sleep locations with solid line ──
