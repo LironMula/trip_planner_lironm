@@ -479,15 +479,17 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
           <span class="chosen-star">⭐</span>מילאן_9_לילות<br>
           <span style="font-size:.72rem;font-weight:400;color:var(--rock)">20–29.8 · 9 לילות · $1,678</span>
         </button>
+        <button class="alt-btn" id="sidebtn-pE" onclick="switchAlt('pE',this)">
+          <span class="chosen-star">⭐</span>Relaxed Black Forest<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">20–30.8 · 9 לילות</span>
+        </button>
+        <button class="alt-btn" id="sidebtn-pF" onclick="switchAlt('pF',this)">
+          <span class="chosen-star">⭐</span>Swiss Lakes Finale<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">21–29.8 · 8 לילות</span>
+        </button>
       </div>
-      <div><button class="alt-btn" id="sidebtn-pE" onclick="switchAlt('pE',this)">
-        <span class="chosen-star">⭐</span>Relaxed Black Forest<br>
-        <span style="font-size:.72rem;font-weight:400;color:var(--rock)">20–29.8 · 9 לילות · pE</span>
-      </button></div>
-      <div><button class="alt-btn" id="sidebtn-pF" onclick="switchAlt('pF',this)">
-        <span class="chosen-star">⭐</span>Swiss Lakes Finale<br>
-        <span style="font-size:.72rem;font-weight:400;color:var(--rock)">21–29.8 · 8 לילות · pF</span>
-      </button></div>
+      
+      
 
       <!-- MAIN CONTENT -->
       <div class="alts-main">
@@ -803,7 +805,10 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
             </div>
           </div>
 
-        <!-- pE: Relaxed Black Forest -->
+        </div>
+        </div><!-- /panel-p9 -->
+
+<!-- pE: Relaxed Black Forest -->
         <div class="alt-panel" id="panel-pE">
           <div class="alt-hdr">
             <div class="alt-title-row">
@@ -865,8 +870,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
             <div class="section-hdr"><span class="section-hdr-title">📋 תקציר האלטרנטיבה</span></div>
             <div id="qa-pF"></div>
           </div>
-        </div>
-        </div><!-- /panel-p9 -->
+        
 
 
         <!-- PANEL PA3: מילאן_9_לילות -->
@@ -2075,7 +2079,7 @@ async function setChosen(pk) {
 
 function renderChosenState() {
   const chosen = projData.chosen;
-  ['p8','p9'].forEach(pk => {
+  ['p8','p9','pE','pF'].forEach(pk => {
     const sideBtn   = document.getElementById('sidebtn-' + pk);
     const badge     = document.getElementById('chosen-badge-' + pk);
     const chooseBtn = document.getElementById('choose-btn-' + pk);
