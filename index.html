@@ -414,6 +414,10 @@ body { background: var(--bg, #f0f4f8); }
       <span class="chosen-star">&#x2B50;</span>Alsace Finale<br>
       <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · Titisee+Alsace+BSL</span>
     </button>
+    <button class="alt-btn" id="sidebtn-pK" onclick="switchAlt('pK',this)">
+      <span class="chosen-star">&#x2B50;</span>Gemini Alsace Finale<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · MerkurBahn+Triberg+Alsace</span>
+    </button>
   </div>
 
   <!-- PANELS -->
@@ -645,9 +649,41 @@ body { background: var(--bg, #f0f4f8); }
             </div>
           </div>
         </div>
+
+        <div class="alt-panel" id="panel-pK">
+          <div class="alt-card">
+            <div class="alt-hdr">
+              <div>
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pK">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
+                  Gemini Alsace Finale (J2)
+                </div>
+                <div class="alt-meta">16&#x2013;25.8 &middot; Baden-Baden 2n + Titisee 5n + Alsace 2n &middot; MerkurBergbahn + Triberg en route</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pK" onclick="setChosen('pK')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
+            </div>
+            <div class="alt-body">
+              <div class="qa-section" id="qa-pK"></div>
+              <div class="section-hdr" style="margin-top:16px"><span class="section-hdr-title">&#x1F4CB; &#x05EA;&#x05E7;&#x05E6;&#x05D9;&#x05E8;</span></div>
+              <div class="tbl-wrap"><table><thead><tr>
+                <th>&#x05EA;&#x05D0;&#x05E8;&#x05D9;&#x05DA;</th><th>&#x05E4;&#x05E2;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</th>
+                <th>Drive time</th><th>&#x05DC;&#x05D9;&#x05E0;&#x05D4;</th>
+              </tr></thead><tbody id="tbK"></tbody></table></div>
+              <div class="section-hdr" style="margin-top:24px"><span class="section-hdr-title">&#x1F5FA; &#x05DE;&#x05E4;&#x05D4;</span></div>
+              <div style="margin-top:10px"><div class="vwrap" id="pKm">
+                <div class="map-box" id="map-pK" style="height:340px"></div>
+                <button class="fs-map-btn" onclick="openFS('pK')" title="fullscreen">&#x26F6;</button>
+              </div></div>
+              <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detK"></div></div>
+              <div class="chat-sec">
+                <div class="chat-msgs" id="chatK"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
 </main>
 
-<div id="build-ver">v1.8.0</div>
+<div id="build-ver">v1.9.0</div>
 
 <script>
 // ════════════════════════════════════════════════
