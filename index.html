@@ -14,8 +14,7 @@
   --nav-h:52px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html{overflow-x:hidden;}body{max-width:100vw;overflow-x:hidden;}
-body{font-family:'Heebo',sans-serif;background:var(--snow);color:var(--text);line-height:1.6;font-size:15px;}
+body{font-family:'Heebo',sans-serif;background:var(--snow);color:var(--text);line-height:1.6;font-size:15px;padding:0;margin:0;}
 body.mobile-view{font-size:14px;}
 
 /* ── MODAL OVERLAY ── */
@@ -25,9 +24,7 @@ body.mobile-view{font-size:14px;}
 .modal-hdr{background:linear-gradient(135deg,var(--lake),#0d2f47);color:#fff;padding:20px 24px 16px;}
 .modal-hdr h2{font-size:1.2rem;font-weight:900;}
 .modal-hdr p{font-size:.82rem;opacity:.75;margin-top:3px;}
-.modal-html{overflow-x:hidden;}body{max-width:100vw;overflow-x:hidden;}
-body{padding:20px 24px;}
-.modal-body label{display:block;font-size:.82rem;font-weight:700;color:var(--rock);margin-bottom:4px;margin-top:12px;}
+.modal-.modal-body label{display:block;font-size:.82rem;font-weight:700;color:var(--rock);margin-bottom:4px;margin-top:12px;}
 .modal-body input{width:100%;font-family:'Heebo',sans-serif;font-size:.9rem;padding:9px 12px;border:1px solid var(--border);border-radius:8px;direction:rtl;}
 .modal-body input:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 3px rgba(26,74,107,.12);}
 .modal-body .hint{font-size:.75rem;color:var(--rock);margin-top:3px;}
@@ -74,7 +71,7 @@ body{padding:20px 24px;}
 .mnb.active{color:var(--lake);border-bottom-color:var(--lake);}
 
 /* ── MAIN ── */
-main{max-width:1140px;margin:0 auto;padding:20px 16px 80px;min-width:0;}
+main{max-width:1140px;margin:0 auto;padding:20px 4px 80px;min-width:0;}
 body.mobile-view main{padding:6px 2px 60px;}
 .section{display:none;} .section.active{display:block;}
 
@@ -101,9 +98,9 @@ body.mobile-view main{padding:6px 2px 60px;}
 .alt-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .alt-title{font-size:1.25rem;font-weight:900;color:var(--lake);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .alt-meta{font-size:.82rem;color:var(--rock);margin-top:2px;}
-html{overflow-x:clip;}body{padding:20px 22px;}
-body.mobile-view body{padding:6px 1px;}
-body.mobile-view .alt-hdr{padding:10px 6px 8px;}
+html{overflow-x:clip;}
+
+body.mobile-view .alt-hdr{padding:8px 4px 6px;}
 
 /* version bar */
 .vbar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
@@ -382,6 +379,11 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
   .chat-msgs  { padding-left:2px!important; padding-right:2px!important; }
   .tbl-wrap   { margin-left:0!important; margin-right:0!important; }
 }
+
+/* Build version badge */
+#build-ver{position:fixed;bottom:4px;right:4px;font-size:9px;color:rgba(255,255,255,.35);
+  background:rgba(0,0,0,.18);padding:1px 5px;border-radius:4px;z-index:8000;
+  pointer-events:none;font-family:monospace;letter-spacing:.5px;}
 </style>
 </head>
 <body>
@@ -2135,5 +2137,6 @@ document.addEventListener('keydown', e => {
   </div>
 </div>
 
+<div id="build-ver">v2.6.18-b</div>
 </body>
 </html>
