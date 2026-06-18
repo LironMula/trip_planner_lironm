@@ -14,7 +14,7 @@
   --nav-h:52px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{max-width:100%;overflow-x:hidden;}
+html{overflow-x:hidden;}body{max-width:100vw;overflow-x:hidden;}
 body{font-family:'Heebo',sans-serif;background:var(--snow);color:var(--text);line-height:1.6;font-size:15px;}
 body.mobile-view{font-size:14px;}
 
@@ -25,7 +25,8 @@ body.mobile-view{font-size:14px;}
 .modal-hdr{background:linear-gradient(135deg,var(--lake),#0d2f47);color:#fff;padding:20px 24px 16px;}
 .modal-hdr h2{font-size:1.2rem;font-weight:900;}
 .modal-hdr p{font-size:.82rem;opacity:.75;margin-top:3px;}
-.modal-body{padding:20px 24px;}
+.modal-html{overflow-x:hidden;}body{max-width:100vw;overflow-x:hidden;}
+body{padding:20px 24px;}
 .modal-body label{display:block;font-size:.82rem;font-weight:700;color:var(--rock);margin-bottom:4px;margin-top:12px;}
 .modal-body input{width:100%;font-family:'Heebo',sans-serif;font-size:.9rem;padding:9px 12px;border:1px solid var(--border);border-radius:8px;direction:rtl;}
 .modal-body input:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 3px rgba(26,74,107,.12);}
@@ -100,8 +101,10 @@ body.mobile-view main{padding:12px 8px 60px;}
 .alt-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .alt-title{font-size:1.25rem;font-weight:900;color:var(--lake);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .alt-meta{font-size:.82rem;color:var(--rock);margin-top:2px;}
-.alt-body{padding:20px 22px;}
-body.mobile-view .alt-body{padding:12px 12px;}
+.alt-html{overflow-x:hidden;}body{max-width:100vw;overflow-x:hidden;}
+body{padding:20px 22px;}
+body.mobile-view .alt-html{overflow-x:hidden;}body{max-width:100vw;overflow-x:hidden;}
+body{padding:12px 12px;}
 body.mobile-view .alt-hdr{padding:14px 14px 10px;}
 
 /* version bar */
@@ -305,13 +308,20 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
   }
 }
 .fs-map-btn{
-  position:absolute;top:10px;left:10px;z-index:500;
-  background:rgba(255,255,255,.92);border:1px solid #ccc;
-  border-radius:7px;padding:6px 10px;cursor:pointer;
-  font-size:.8rem;box-shadow:0 2px 6px rgba(0,0,0,.18);
-  white-space:nowrap;
+  position:absolute;
+  bottom:10px;left:10px;
+  z-index:500;
+  background:rgba(26,42,58,.82);
+  color:#fff;
+  border:none;
+  border-radius:7px;
+  padding:7px 12px;
+  cursor:pointer;
+  font-size:1rem;
+  box-shadow:0 2px 8px rgba(0,0,0,.3);
+  line-height:1;
 }
-.fs-map-btn:hover{background:#fff;}
+.fs-map-btn:hover{background:rgba(26,42,58,1);}
 </style>
 </head>
 <body>
@@ -454,7 +464,6 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               <!-- MAP + DETAIL SECTION -->
               <div class="section-hdr" style="margin-top:24px">
                 <span class="section-hdr-title">🗺 מפה ותכנית מפורטת</span>
-              <button class="fs-map-btn" onclick="openFullscreenMap()" title="מסך מלא">⛶ מסך מלא</button>
               </div>
               <div style="margin-top:10px">
                 <div class="vbar"><span>מפה:</span>
@@ -464,6 +473,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
                 <div class="vwrap" id="p7m">
                   <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
                   <div class="map-box" id="map-p7"></div>
+                  <button class="fs-map-btn" onclick="openFullscreenMap('p7')" title="מסך מלא">⛶</button>
                 </div>
               </div>
               <div class="det-sec"><h3>תכנית מפורטת</h3><div id="det7"></div></div>
@@ -521,7 +531,6 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               <!-- MAP + DETAIL SECTION -->
               <div class="section-hdr" style="margin-top:24px">
                 <span class="section-hdr-title">🗺 מפה ותכנית מפורטת</span>
-              <button class="fs-map-btn" onclick="openFullscreenMap()" title="מסך מלא">⛶ מסך מלא</button>
               </div>
               <div style="margin-top:10px">
                 <div class="vbar"><span>מפה:</span>
@@ -531,6 +540,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
                 <div class="vwrap" id="p9m">
                   <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
                   <div class="map-box" id="map-p9"></div>
+                  <button class="fs-map-btn" onclick="openFullscreenMap('p9')" title="מסך מלא">⛶</button>
                 </div>
               </div>
               <div class="det-sec"><h3>תכנית מפורטת</h3><div id="det9"></div></div>
@@ -585,7 +595,6 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               </div>
               <div class="section-hdr" style="margin-top:24px">
                 <span class="section-hdr-title">🗺 מפה ותכנית מפורטת</span>
-              <button class="fs-map-btn" onclick="openFullscreenMap()" title="מסך מלא">⛶ מסך מלא</button>
               </div>
               <div style="margin-top:10px">
                 <div class="vbar"><span>מפה:</span>
