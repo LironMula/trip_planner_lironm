@@ -3158,7 +3158,11 @@ function ldScript(src){ return new Promise((r,j)=>{ const s=document.createEleme
 // RENDER
 // ════════════════════════════════════════════════
 function renderTable(id, pk) {
-  const rows = getPlans()[pk].rows;
+  const plan = getPlans()[pk];
+  if (!plan) { console.error('renderTable: no plan for', pk); return; }
+  const el = document.getElementById(id);
+  if (!el) { console.error('renderTable: no element', id); return; }
+  const rows = plan.rows;
   const hasDayCost = rows.some(r => r.daycost);
   let html = rows.map(r=>`
     <tr class="${r.z}">
@@ -3195,7 +3199,11 @@ function formatDet(raw) {
 }
 
 function renderDetail(id, pk) {
-  document.getElementById(id).innerHTML = getPlans()[pk].det.map(d=>{
+  const el2 = document.getElementById(id);
+  if (!el2) { console.error('renderDetail: no element', id); return; }
+  const plan2 = getPlans()[pk];
+  if (!plan2) { console.error('renderDetail: no plan for', pk); return; }
+  el2.innerHTML = plan2.det.map(d=>{
     const hasSp = d.sp && d.sp !== '—' && d.sp.trim() !== '';
     const spHtml = hasSp ? `<div class="sbox">${esc(d.sp)}</div>` : '';
     return `<div class="dblock ${d.z}">
@@ -3574,6 +3582,6 @@ document.addEventListener('keydown', e => {
   </div>
 </div>
 
-<div id="build-ver">v2.6.18-b</div>
+<div id="build-ver">v2.6.18-c</div>
 </body>
 </html>
