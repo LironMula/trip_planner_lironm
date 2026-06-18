@@ -495,6 +495,10 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
           <span class="chosen-star">⭐</span>Heidelberg+Rust+Forest<br>
           <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · 9 לילות · XML</span>
         </button>
+        <button class="alt-btn" id="sidebtn-pI" onclick="switchAlt('pI',this)">
+          <span class="chosen-star">⭐</span>Star Black Forest<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · 9 לילות · Gemini</span>
+        </button>
       </div>
       
       
@@ -1059,6 +1063,32 @@ CREATE POLICY "all" ON trip_chat FOR ALL USING (true) WITH CHECK (true);</pre>
               <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detH"></div></div>
               <div class="sbar"><div class="section-hdr"><span class="section-hdr-title">&#x1F4CB; &#x05E9;&#x05D0;&#x05DC;&#x05D5;&#x05EA;</span></div><div id="qa-pH"></div></div>
               <div class="chat-sec"><h3>&#x1F4AC; &#x05E9;&#x05D9;&#x05D7;&#x05D4;</h3><div class="chat-msgs" id="chatH"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA; &#x05E2;&#x05D3;&#x05D9;&#x05DF;</div></div></div>
+            </div>
+
+            <div class="alt-panel" id="panel-pI">
+              <div class="alt-hdr">
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pI">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
+                  Star Black Forest (pI) — Gemini
+                </div>
+                <div class="alt-meta">16&#x2013;25.8 2026 &#xB7; 9 &#x05DC;&#x05D9;&#x05DC;&#x05D5;&#x05EA; &#xB7; Baden-Baden 1n + Titisee 8n &#xB7; FRA&#x2192;BSL</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pI" onclick="setChosen('pI')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
+              <div class="section-hdr" style="margin-top:16px"><span class="section-hdr-title">&#x1F4CB; &#x05EA;&#x05E7;&#x05E6;&#x05D9;&#x05E8;</span></div>
+              <div class="tbl-wrap"><table><thead><tr>
+                <th>&#x05EA;&#x05D0;&#x05E8;&#x05D9;&#x05DA;</th><th>&#x05E4;&#x05E2;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</th><th>Drive time</th><th>&#x05DC;&#x05D9;&#x05E0;&#x05D4;</th><th>&#x05E2;&#x05DC;&#x05D5;&#x05EA;</th>
+              </tr></thead><tbody id="tbI"></tbody></table></div>
+              <div class="section-hdr" style="margin-top:24px"><span class="section-hdr-title">&#x1F5FA; &#x05DE;&#x05E4;&#x05D4;</span></div>
+              <div style="margin-top:10px"><div class="vwrap" id="pIm">
+                <div class="old-label">&#x05D2;&#x05E8;&#x05E1;&#x05D4; &#x05DE;&#x05D5;&#x05E7;&#x05D3;&#x05DE;&#x05EA;</div><div class="old-overlay"></div>
+                <div class="map-box" id="map-pI"></div>
+                <button class="fs-map-btn" onclick="openFullscreenMap('pI')" title="&#x05DE;&#x05E1;&#x05DA; &#x05DE;&#x05DC;&#x05D0;">&#x26F6;</button>
+              </div></div>
+              <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detI"></div></div>
+              <div class="sbar"><div class="section-hdr"><span class="section-hdr-title">&#x1F4CB; &#x05E9;&#x05D0;&#x05DC;&#x05D5;&#x05EA;</span></div><div id="qa-pI"></div></div>
+              <div class="chat-sec"><h3>&#x1F4AC; &#x05E9;&#x05D9;&#x05D7;&#x05D4;</h3>
+                <div class="chat-msgs" id="chatI"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
+              </div>
             </div>
 </main>
 <footer style="text-align:center;color:var(--rock);font-size:.75rem;padding:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
@@ -2471,7 +2501,7 @@ function renderAltsForProject() {
   const labels = isPel
     ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים'],['פלופונס 11 ימים','11 ימים · זוג מבוגרים']]
     : [['מילאן_8_לילות','21–29.8 · 8 לילות'],['מילאן_9_לילות','20–29.8 · 9 לילות'],
-       ['Relaxed BF','20–30.8 · 9n'],['Swiss Lakes','21–29.8 · 8n'],['Frankfurt+Basel','16–25.8 · 9n · FRA/BSL'],['Heidelberg+Rust+Forest','16–25.8 · 9n · XML']];
+       ['Relaxed BF','20–30.8 · 9n'],['Swiss Lakes','21–29.8 · 8n'],['Frankfurt+Basel','16–25.8 · 9n · FRA/BSL'],['Heidelberg+Rust+Forest','16–25.8 · 9n · XML'],['Star Black Forest','16–25.8 · 9n · Gemini']];
   btns.forEach((btn, i) => {
     if (!labels[i]) return;
     btn.innerHTML = `<span class="chosen-star">⭐</span>${labels[i][0]}<br>
@@ -2485,8 +2515,9 @@ function renderAltsForProject() {
        ['Relaxed Black Forest','20–30.8 · 9 לילות · יוצאים 10:45 · חוזרים 13:05'],
        ['Swiss Lakes Finale','21–29.8 · 8 לילות · יוצאים 10:45 · חוזרים 13:05'],
        ['Frankfurt+Basel','16–25.8 · 9 לילות · יוצאים FRA 07:10 · חוזרים BSL 19:50'],
-       ['Heidelberg+Rust+Forest','16–25.8 · 9 לילות · יוצאים FRA 07:10 · חוזרים BSL 19:50']];
-  ['p8','p9','pE','pF','pG','pH'].forEach((pk, i) => {
+       ['Heidelberg+Rust+Forest','16–25.8 · 9 לילות · יוצאים FRA 07:10 · חוזרים BSL 19:50'],
+       ['Star Black Forest','16–25.8 · 9 לילות · יוצאים FRA 07:10 · חוזרים BSL 19:50']];
+  ['p8','p9','pE','pF','pG','pH','pI'].forEach((pk, i) => {
     const tc = document.querySelector(`#panel-${pk} .alt-title`);
     const mc = document.querySelector(`#panel-${pk} .alt-meta`);
     const badgeId = `chosen-badge-${pk}`;
@@ -2497,11 +2528,11 @@ function renderAltsForProject() {
   renderTable('tb8','p8'); renderTable('tb9','p9');
   renderDetail('det8','p8'); renderDetail('det9','p9');
   renderQA('qa-p8','p8'); renderQA('qa-p9','p9');
-  renderTable('tbE','pE'); renderTable('tbF','pF'); renderTable('tbG','pG'); renderTable('tbH','pH');
-  renderDetail('detE','pE'); renderDetail('detF','pF'); renderDetail('detG','pG'); renderDetail('detH','pH'); renderDetail('detH','pH');
-  renderQA('qa-pE','pE'); renderQA('qa-pF','pF'); renderQA('qa-pG','pG'); renderQA('qa-pH','pH');
+  renderTable('tbE','pE'); renderTable('tbF','pF'); renderTable('tbG','pG'); renderTable('tbH','pH'); renderTable('tbI','pI');
+  renderDetail('detE','pE'); renderDetail('detF','pF'); renderDetail('detG','pG'); renderDetail('detH','pH'); renderDetail('detI','pI'); renderDetail('detH','pH');
+  renderQA('qa-pE','pE'); renderQA('qa-pF','pF'); renderQA('qa-pG','pG'); renderQA('qa-pH','pH'); renderQA('qa-pI','pI');
   // reset maps
-  ['p8','p9','pE','pF','pG','pH'].forEach(pk => {
+  ['p8','p9','pE','pF','pG','pH','pI'].forEach(pk => {
     if (mapInstances[pk]) { try { mapInstances[pk].remove(); } catch(e){} delete mapInstances[pk]; }
     const mel = document.getElementById('map-'+pk);
     if (mel) mel.innerHTML = '';
@@ -3026,6 +3057,7 @@ async function initMaps() {
   setTimeout(() => renderMap('pF'), 700);
   setTimeout(() => renderMap('pG'), 900);
   setTimeout(() => renderMap('pH'), 1100);
+  setTimeout(() => renderMap('pI'), 1300);
 }
 
 function renderMap(pk) {
