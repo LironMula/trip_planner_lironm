@@ -1818,7 +1818,8 @@ function renderAltsForProject() {
   const btns = document.querySelectorAll('.alt-btn');
   const labels = isPel
     ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים'],['פלופונס 11 ימים','11 ימים · זוג מבוגרים']]
-    : [['מילאן_8_לילות','21–29.8 · 8 לילות'],['מילאן_9_לילות','20–29.8 · 9 לילות']];
+    : [['מילאן_8_לילות','21–29.8 · 8 לילות'],['מילאן_9_לילות','20–29.8 · 9 לילות'],
+       ['Relaxed BF','20–30.8 · 9n'],['Swiss Lakes','21–29.8 · 8n']];
   btns.forEach((btn, i) => {
     if (!labels[i]) return;
     btn.innerHTML = `<span class="chosen-star">⭐</span>${labels[i][0]}<br>
@@ -1828,7 +1829,9 @@ function renderAltsForProject() {
     ? [['פלופונס 8 ימים','8 ימים · זוג מבוגרים · אתונה הלוך ושוב'],
        ['פלופונס 11 ימים','11 ימים · זוג מבוגרים · אתונה הלוך ושוב']]
     : [['מילאן_8_לילות','21–29 אוגוסט 2026 · 8 לילות · יוצאים 10:45 · חוזרים 13:05'],
-       ['מילאן_9_לילות','20–29 אוגוסט 2026 · 9 לילות · יוצאים 10:45 · חוזרים 13:05']];
+       ['מילאן_9_לילות','20–29 אוגוסט 2026 · 9 לילות · יוצאים 10:45 · חוזרים 13:05'],
+       ['Relaxed Black Forest','20–30.8 · 9 לילות · יוצאים 10:45 · חוזרים 13:05'],
+       ['Swiss Lakes Finale','21–29.8 · 8 לילות · יוצאים 10:45 · חוזרים 13:05']];
   ['p8','p9','pE','pF'].forEach((pk, i) => {
     const tc = document.querySelector(`#panel-${pk} .alt-title`);
     const mc = document.querySelector(`#panel-${pk} .alt-meta`);
@@ -2725,9 +2728,9 @@ function init(){
   if(cu){ ['cu7','cu9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=decodeURIComponent(cu); }); }
   ['cu7','cu9'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input',function(){ sanitizeUser(this); document.cookie='chat_user='+encodeURIComponent(this.value)+';max-age=31536000;path=/'; }); });
 
-  renderTable('tb8','p8'); renderTable('tb9','p9');
-  renderDetail('det8','p8'); renderDetail('det9','p9');
-  renderQA('qa-p8','p8'); renderQA('qa-p9','p9');
+  renderTable('tb8','p8'); renderTable('tb9','p9'); renderTable('tbE','pE'); renderTable('tbF','pF');
+  renderDetail('det8','p8'); renderDetail('det9','p9'); renderDetail('detE','pE'); renderDetail('detF','pF');
+  renderQA('qa-p8','p8'); renderQA('qa-p9','p9'); renderQA('qa-pE','pE'); renderQA('qa-pF','pF');
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   if (ghToken) {
