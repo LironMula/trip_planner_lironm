@@ -1975,8 +1975,8 @@ function openFullscreenMap() {
   fsContainer.innerHTML = '';
 
   _fsMap = L.map(fsContainer, { zoomControl: true });
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap',
+  L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png?lang=en', {
+    attribution: '© OpenStreetMap contributors, © Wikimedia',
     maxZoom: 18
   }).addTo(_fsMap);
 
