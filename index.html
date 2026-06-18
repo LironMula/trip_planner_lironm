@@ -3001,9 +3001,17 @@ async function saveToGitHub() {
 // ALTERNATIVE SWITCHER (sidebar)
 // ════════════════════════════════════════════════
 function switchAlt(pk, btn) {
+  console.log('[switchAlt] pk='+pk);
   document.querySelectorAll('.alt-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-'+pk).classList.add('active');
+  const panel = document.getElementById('panel-'+pk);
+  console.log('[switchAlt] panel element:', panel);
+  if (!panel) { console.error('[switchAlt] panel-'+pk+' NOT FOUND in DOM'); return; }
+  panel.classList.add('active');
+  console.log('[switchAlt] panel classes after:', panel.className);
+  console.log('[switchAlt] panel offsetHeight:', panel.offsetHeight);
+  const tbEl = document.getElementById('tb'+pk.slice(1));
+  console.log('[switchAlt] table body (tb'+pk.slice(1)+'):', tbEl, 'innerHTML length:', tbEl ? tbEl.innerHTML.length : 'N/A');
   btn.classList.add('active');
 
   if (typeof L === 'undefined') {
@@ -3184,7 +3192,10 @@ function renderTable(id, pk) {
         מינימום ~${minVal} &nbsp;|&nbsp; ממוצע ~${avgVal} &nbsp;|&nbsp; מקסימום ~${maxVal}
       </td></tr>`;
     }
-  document.getElementById(id).innerHTML = html;
+  const target = document.getElementById(id);
+  if (!target) { console.error('[renderTable] element not found:', id); return; }
+  target.innerHTML = html;
+  console.log('[renderTable] rendered', id, 'rows:', html.length, 'chars');
 }
 // Convert bullet text to styled HTML
 function formatDet(raw) {
@@ -3582,6 +3593,6 @@ document.addEventListener('keydown', e => {
   </div>
 </div>
 
-<div id="build-ver">v2.6.18-c</div>
+<div id="build-ver">v2.6.18-d</div>
 </body>
 </html>
