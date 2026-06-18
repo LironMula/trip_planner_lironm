@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRA/BSL Alternatives Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+body { font-family: Heebo, sans-serif; background: #f0f4f8; margin: 0; padding: 20px; direction: rtl; }
+
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;900&display=swap');
+:root{
+  --lake:#1a4a6b;--forest:#2d5a3d;--snow:#f4f7fa;--rock:#6b7280;
+  --accent:#c8773a;--white:#fff;--text:#1a1a2e;--border:#d1dce8;--danger:#b94040;
+  --zi:#c8773a18;--zk:#1a4a6b18;--zf:#2d5a3d18;
+  --bi:#c8773a;--bk:#1a4a6b;--bf:#2d5a3d;
+  --nav-h:52px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Heebo',sans-serif;background:var(--snow);color:var(--text);line-height:1.6;font-size:15px;padding:0;margin:0;}
+body.mobile-view{font-size:14px;}
+
+/* ── MODAL OVERLAY ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,20,40,.65);z-index:1000;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:#fff;border-radius:16px;width:92%;max-width:520px;box-shadow:0 8px 40px rgba(0,0,0,.22);overflow:hidden;}
+.modal-hdr{background:linear-gradient(135deg,var(--lake),#0d2f47);color:#fff;padding:20px 24px 16px;}
+.modal-hdr h2{font-size:1.2rem;font-weight:900;}
+.modal-hdr p{font-size:.82rem;opacity:.75;margin-top:3px;}
+.modal-.modal-body label{display:block;font-size:.82rem;font-weight:700;color:var(--rock);margin-bottom:4px;margin-top:12px;}
+.modal-body input{width:100%;font-family:'Heebo',sans-serif;font-size:.9rem;padding:9px 12px;border:1px solid var(--border);border-radius:8px;direction:rtl;}
+.modal-body input:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 3px rgba(26,74,107,.12);}
+.modal-body .hint{font-size:.75rem;color:var(--rock);margin-top:3px;}
+.modal-footer{display:flex;gap:10px;padding:16px 24px;border-top:1px solid var(--border);justify-content:flex-end;}
+.btn{font-family:'Heebo',sans-serif;font-size:.9rem;font-weight:700;padding:9px 22px;border-radius:8px;border:none;cursor:pointer;transition:all .2s;}
+.btn-primary{background:var(--lake);color:#fff;} .btn-primary:hover{background:#0d2f47;}
+.btn-accent{background:var(--accent);color:#fff;} .btn-accent:hover{background:#a86330;}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--rock);} .btn-ghost:hover{border-color:var(--lake);color:var(--lake);}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-sm{padding:5px 14px;font-size:.8rem;}
+
+/* project list */
+.proj-list{margin-top:14px;display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;}
+.proj-item{display:flex;align-items:center;justify-content:space-between;background:var(--snow);border:1px solid var(--border);border-radius:9px;padding:10px 14px;cursor:pointer;transition:all .2s;}
+.proj-item:hover{border-color:var(--lake);background:#eef4fb;}
+.proj-item.selected{border-color:var(--lake);background:#ddeaf7;}
+.proj-name{font-weight:700;font-size:.9rem;}
+.proj-meta{font-size:.75rem;color:var(--rock);}
+.proj-actions{display:flex;gap:6px;flex-shrink:0;}
+.proj-loading{text-align:center;padding:20px;color:var(--rock);font-size:.85rem;}
+.tab-row{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.tab-row button{background:none;border:none;font-family:'Heebo',sans-serif;font-size:.88rem;font-weight:600;color:var(--rock);padding:8px 18px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab-row button.active{color:var(--lake);border-bottom-color:var(--lake);}
+
+/* ── HEADER ── */
+.app-header{background:linear-gradient(135deg,var(--lake) 0%,#0d2f47 60%,var(--forest) 100%);color:#fff;padding:20px 20px 16px;position:relative;overflow:hidden;}
+.app-header::before{content:'';position:absolute;top:-50px;left:-50px;width:260px;height:260px;background:radial-gradient(circle,rgba(200,119,58,.15) 0%,transparent 70%);pointer-events:none;}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.header-left{display:flex;align-items:center;gap:12px;}
+.proj-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:5px 12px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.proj-badge:hover{background:rgba(255,255,255,.25);}
+.header-title{font-size:1.4rem;font-weight:900;letter-spacing:-.5px;}
+.header-subtitle{font-size:.8rem;opacity:.7;margin-top:2px;}
+.header-controls{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.icon-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;transition:all .2s;}
+.icon-btn:hover{background:rgba(255,255,255,.28);}
+.icon-btn.active-view{background:rgba(255,255,255,.35);border-color:rgba(255,255,255,.5);}
+
+/* ── NAV ── */
+.main-nav{display:flex;gap:0;background:#fff;border-bottom:2px solid var(--border);padding:0 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto;}
+.main-nav::-webkit-scrollbar{height:0;}
+.mnb{background:none;border:none;font-family:'Heebo',sans-serif;font-size:.9rem;font-weight:600;color:var(--rock);padding:13px 16px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.mnb:hover{color:var(--lake);}
+.mnb.active{color:var(--lake);border-bottom-color:var(--lake);}
+
+/* ── MAIN ── */
+main{max-width:1140px;margin:0 auto;padding:20px 4px 80px;min-width:0;}
+body.mobile-view main{padding:6px 2px 60px;}
+.section{display:none;} .section.active{display:block;}
+
+/* status bar */
+.status-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+#db-status{font-size:.75rem;padding:4px 12px;border-radius:20px;font-weight:600;cursor:pointer;flex-shrink:0;}
+#db-status.ok{background:#e8f5e9;color:#2d5a3d;}
+#db-status.err{background:#fdecea;color:#b94040;}
+#db-status.local{background:#fff8e1;color:#7a5a00;}
+#gh-status{font-size:.75rem;padding:4px 12px;border-radius:20px;font-weight:600;flex-shrink:0;}
+#gh-status.ok{background:#e8f5e9;color:#2d5a3d;}
+#gh-status.none{background:#f0f0f0;color:#888;}
+#gh-status.err{background:#fdecea;color:#b94040;}
+
+/* settings panel */
+.sbar{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px;display:none;}
+.sbar.open{display:block;}
+.sbar label{display:block;font-size:.8rem;font-weight:700;margin-bottom:3px;margin-top:8px;}
+.sbar input{font-family:monospace;font-size:.8rem;padding:6px 10px;border:1px solid var(--border);border-radius:6px;width:100%;max-width:420px;margin-bottom:4px;}
+.sbar .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+
+/* ── ALT CARD ── */
+.alt-card{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.07);min-width:0;overflow:hidden;margin-bottom:40px;overflow:hidden;}
+.alt-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.alt-title{font-size:1.25rem;font-weight:900;color:var(--lake);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.alt-meta{font-size:.82rem;color:var(--rock);margin-top:2px;}
+html{overflow-x:clip;}
+
+body.mobile-view .alt-hdr{padding:8px 4px 6px;}
+
+/* version bar */
+.vbar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.vbar span{font-size:.8rem;color:var(--rock);}
+.vbtn{background:none;border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-family:'Heebo',sans-serif;font-size:.78rem;cursor:pointer;color:var(--rock);transition:all .2s;}
+.vbtn:hover{border-color:var(--lake);color:var(--lake);}
+.vbtn.active{background:var(--lake);color:#fff;border-color:var(--lake);}
+.vwrap{position:relative;}
+.old-overlay{display:none;position:absolute;inset:0;background:rgba(150,150,150,.2);border-radius:10px;pointer-events:none;z-index:5;}
+.old-label{display:none;background:#888;color:#fff;font-size:.75rem;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:6px;width:fit-content;}
+.vwrap.is-old .old-overlay{display:block;}
+.vwrap.is-old .old-label{display:inline-block;}
+.vwrap.is-old table,.vwrap.is-old .map-box{filter:grayscale(.5) brightness(.97);height:340px;min-height:200px;}
+
+/* table */
+.tbl-wrap{overflow-x:auto;border-radius:10px;box-shadow:0 1px 8px rgba(0,0,0,.06);-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:.87rem;}
+thead tr{background:var(--lake);color:#fff;}
+thead th{padding:10px 12px;text-align:right;font-weight:700;font-size:.8rem;white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f0f5fa;}
+tbody td{padding:9px 12px;vertical-align:middle;}
+body.mobile-view table{font-size:.78rem;}
+body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
+.zi{border-right:4px solid var(--bi);background:var(--zi);}
+.zk{border-right:4px solid var(--bk);background:var(--zk);}
+.zf{border-right:4px solid var(--bf);background:var(--zf);}
+.zx{border-right:4px solid #aaa;background:#f7f7f7;color:#999;}
+.dc{font-weight:700;white-space:nowrap;}
+.rc{font-size:.83rem;}
+.drc{font-family:monospace;font-size:.8rem;color:var(--lake);font-weight:700;direction:ltr;text-align:left;white-space:nowrap;}
+.sc{font-weight:700;white-space:nowrap;}
+.act-cell{font-size:.76rem;color:var(--rock);white-space:nowrap;}
+
+/* map */
+.map-box{border-radius:10px;overflow:hidden;margin-top:12px;background:#e8f0f8;position:relative;height:340px;}
+.map-box iframe{width:100%;height:100%;border:none;display:block;}
+
+/* alternatives sidebar layout */
+.alts-layout{display:flex;gap:0;align-items:flex-start;margin-top:4px;}
+.alts-sidebar{width:190px;flex-shrink:0;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);overflow-y:auto;max-height:calc(100vh - 70px);position:sticky;top:58px;z-index:10;}
+.alts-sidebar-title{background:var(--lake);color:#fff;padding:11px 16px;font-size:.82rem;font-weight:800;}
+.alt-btn{display:block;width:100%;background:none;border:none;border-bottom:1px solid var(--border);font-family:'Heebo',sans-serif;font-size:.86rem;font-weight:600;color:var(--text);padding:12px 16px;cursor:pointer;text-align:right;transition:all .2s;line-height:1.4;}
+.alt-btn:last-child{border-bottom:none;}
+.alt-btn:hover{background:#eef4fb;color:var(--lake);}
+.alt-btn.active{background:#ddeaf7;color:var(--lake);border-right:3px solid var(--lake);}
+.alts-main{flex:1;min-width:0;padding-right:12px;overflow:hidden;}
+.alt-panel{display:none;} .alt-panel.active{display:block;width:100%;min-height:100px;}
+@media(max-width:680px){
+  .alts-layout{flex-direction:column;}
+  .alts-sidebar{width:100%;position:static;display:flex;flex-wrap:wrap;border-radius:10px;}
+  .alts-sidebar-title{width:100%;border-radius:0;}
+  .alt-btn{flex:1;min-width:120px;border-bottom:none;border-left:1px solid var(--border);text-align:center;padding:10px 8px;}
+  .alt-btn:last-child{border-left:none;}
+  .alt-btn.active{border-right:none;border-bottom:3px solid var(--lake);}
+  .alts-main{padding-right:0;margin-top:10px;}
+  /* prevent any child from causing overflow */
+  main,
+  .alt-card,
+  .alts-main,
+  .alt-panel,
+  .tbl-wrap,
+  .det-sec,
+  .dblock{max-width:100%;box-sizing:border-box;}
+  /* table scrolls inside its wrapper */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{min-width:460px;}
+  /* Q&A: hide preview on mobile, question takes full width */
+  .qa-preview{display:none;}
+  .qa-question{padding:8px 4px;}
+  .qa-answer{padding:0 4px 8px;}
+  /* det blocks */
+  .dblock{padding:8px 4px;}
+  .trow{flex-direction:column;gap:2px;padding:0;}
+  .trow .tlabel{min-width:unset;width:auto;margin-bottom:2px;}
+  /* ── Minimize all horizontal shoulders ── */
+  .alt-hdr{padding:10px 4px 8px;}
+  .sbar{padding:8px 4px;margin-bottom:8px;}
+  .qa-section-title{padding:8px 4px;}
+  .cform{padding:8px 4px;}
+  .chat-msgs{padding:6px 2px;}
+  .section-hdr{padding:0;margin-bottom:6px;}
+  .dblock{padding:8px 4px;border-radius:7px;}
+  .trow{padding:0 2px;}
+  .alt-card{border-radius:8px;}
+  .alts-sidebar{padding:0;}
+  .alts-sidebar-title{padding:8px 4px;}
+  .alt-btn{padding:8px 4px;}
+  .det-sec{margin-top:14px;}
+  .section-hdr-title{font-size:.88rem;}
+}
+
+/* detail */
+.det-sec{margin-top:22px;}
+.det-sec h3{font-size:.95rem;font-weight:800;color:var(--lake);margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid var(--border);}
+.dblock{margin-bottom:13px;background:var(--snow);border-radius:9px;padding:12px 16px;border-right:3px solid var(--border);}
+.dblock.zi{border-right-color:var(--bi);}
+.dblock.zk{border-right-color:var(--bk);}
+.dblock.zf{border-right-color:var(--bf);}
+.dtitle{font-weight:800;font-size:.9rem;margin-bottom:7px;display:flex;align-items:center;gap:7px;}
+.dbadge{background:var(--lake);color:#fff;font-size:.7rem;padding:2px 7px;border-radius:9px;}
+.trow{display:grid;grid-template-columns:65px 1fr;gap:5px 10px;font-size:.83rem;margin-bottom:3px;}
+.tlabel{color:var(--accent);font-weight:700;}
+.sbox{background:#fff8f0;border:1px solid #e8c890;border-radius:7px;padding:7px 10px;font-size:.8rem;margin-top:7px;color:#5a3a10;}
+.sbox strong{color:var(--accent);}
+
+/* section headers */
+.section-hdr{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px;min-width:0;overflow:hidden;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid var(--border);}
+.section-hdr-title{font-size:.95rem;font-weight:800;color:var(--lake);}
+.section-hdr-hint{font-size:.78rem;color:var(--rock);font-style:italic;}
+
+/* ── Q&A SUMMARY ── */
+.qa-section{margin-bottom:18px;background:#fff;border-radius:12px;border:1px solid var(--border);overflow:hidden;}
+.qa-section-title{background:linear-gradient(135deg,var(--lake),#0d2f47);color:#fff;padding:10px 16px;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:space-between;}
+.qa-tts-all{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:4px 12px;font-family:'Heebo',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.qa-tts-all:hover{background:rgba(255,255,255,.3);}
+.qa-item{border-bottom:1px solid var(--border);}
+.qa-item:last-child{border-bottom:none;}
+.qa-qtext{font-weight:700;font-size:.88rem;flex:1;min-width:0;word-break:break-word;}
+.qa-question{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;gap:8px;min-width:0;}
+.qa-question:hover{background:#f8fafc;}
+.qa-q-text{font-weight:700;font-size:.88rem;color:var(--text);flex:1;}
+.qa-controls{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.qa-preview{font-size:.78rem;color:var(--rock);min-width:80px;max-width:140px;width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;text-align:left;direction:rtl;}
+.qa-toggle{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.75rem;color:var(--rock);cursor:pointer;font-family:'Heebo',sans-serif;white-space:nowrap;transition:all .2s;}
+.qa-toggle:hover{border-color:var(--lake);color:var(--lake);}
+.qa-tts-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:.82rem;cursor:pointer;transition:all .2s;line-height:1;}
+.qa-tts-btn:hover{background:#eef4fb;border-color:var(--lake);}
+.qa-tts-btn.speaking{background:var(--lake);color:#fff;border-color:var(--lake);}
+.qa-answer{display:none;padding:0 16px 12px 16px;font-size:.85rem;line-height:1.65;color:var(--text);border-top:1px solid var(--border);background:#fafbfc;}
+.qa-answer.open{display:block;}
+.alt-btn.chosen{background:#fef9ec !important;border-right:3px solid var(--accent) !important;}
+.alt-btn.active.chosen{background:#fff3d4 !important;}
+.chosen-star{display:none;color:var(--accent);margin-right:3px;}
+.alt-btn.chosen .chosen-star{display:inline;}
+.chosen-badge{display:none;background:var(--accent);color:#fff;font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:10px;}
+.chosen-badge.visible{display:inline-block;}
+.choose-btn{
+  display:inline-block;background:#fff;border:1.5px solid var(--border);
+  color:var(--rock);border-radius:8px;padding:7px 16px;
+  font-family:'Heebo',sans-serif;font-size:.82rem;font-weight:700;
+  cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;
+}
+.choose-btn:hover{border-color:var(--accent);color:var(--accent);background:#fff8f0;}
+.choose-btn.is-chosen{background:var(--accent) !important;color:#fff !important;border-color:var(--accent) !important;}
+
+/* chat */
+.chat-sec{margin-top:22px;}
+.chat-sec h3{font-size:.95rem;font-weight:800;color:var(--lake);margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid var(--border);}
+.chat-msgs{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;max-height:320px;overflow-y:auto;padding-left:3px;}
+.cmsg{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:.85rem;}
+.cmsg-hdr{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.cmsg-user{font-weight:800;color:var(--lake);font-size:.83rem;}
+.cmsg-date{font-size:.73rem;color:var(--rock);}
+.chat-empty{text-align:center;color:var(--rock);font-size:.83rem;padding:20px;background:#fff;border-radius:10px;border:1px dashed var(--border);}
+.cform{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+.cform h4{font-size:.88rem;font-weight:800;margin-bottom:10px;}
+.cform label{display:block;font-size:.78rem;font-weight:700;color:var(--rock);margin-bottom:3px;}
+.cform input,.cform textarea{width:100%;font-family:'Heebo',sans-serif;font-size:.86rem;padding:7px 10px;border:1px solid var(--border);border-radius:7px;color:var(--text);background:var(--snow);margin-bottom:10px;direction:rtl;transition:border .2s;}
+.cform input:focus,.cform textarea:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 3px rgba(26,74,107,.1);}
+.cform textarea{min-height:70px;resize:vertical;}
+.sbtn{background:var(--lake);color:#fff;border:none;padding:8px 22px;border-radius:8px;font-family:'Heebo',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.sbtn:hover{background:#0d2f47;}
+.cmeta{font-size:.75rem;color:var(--rock);margin-top:6px;}
+
+/* legend */
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;margin-bottom:14px;}
+.li{display:flex;align-items:center;gap:5px;}
+.ld{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+
+/* settings section */
+.guide{background:#f0f7ff;border:1px solid #c0d8f0;border-radius:10px;padding:16px 22px;margin-bottom:24px;font-size:.83rem;line-height:1.8;}
+.guide pre{background:#1a1a2e;color:#e0e8f0;padding:12px 14px;border-radius:8px;margin:8px 0;font-size:.76rem;overflow-x:auto;direction:ltr;text-align:left;}
+.guide ol{padding-right:18px;}
+
+/* save indicator */
+.save-indicator{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2d5a3d;color:#fff;padding:8px 20px;border-radius:20px;font-size:.85rem;font-weight:700;z-index:500;box-shadow:0 4px 14px rgba(0,0,0,.2);}
+.save-indicator.show{display:block;}
+
+@media(max-width:600px){
+  .header-title{font-size:1.1rem;}
+  .header-subtitle{display:none;}
+  .mnb{padding:11px 10px;font-size:.82rem;}
+  body.mobile-view .trow{grid-template-columns:55px 1fr;}
+}
+
+
+
+.det-content{flex:1;direction:rtl;}
+.det-bull{padding:3px 18px 3px 0;position:relative;line-height:1.5;}
+.det-bull::before{content:"•";position:absolute;right:0;color:var(--accent);}
+.det-sub{padding:2px 28px 2px 0;position:relative;font-size:.88em;color:var(--lake);line-height:1.45;}
+.det-sub::before{content:"◦";position:absolute;right:10px;color:var(--lake);}
+.det-line{padding:2px 0;line-height:1.5;}
+
+/* ── Fullscreen map overlay ─────────────────────────────── */
+#fs-overlay{
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:#000;flex-direction:column;overflow:hidden;
+}
+#fs-overlay.open{display:flex;}
+#fs-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#1a2a3a;color:#fff;padding:8px 14px;
+  font-family:var(--font);font-size:.9rem;gap:12px;flex-shrink:0;
+  position:relative;z-index:2;
+}
+#fs-title{font-weight:600;flex:1;text-align:right;}
+#fs-close-btn{
+  background:rgba(255,255,255,.15);border:none;color:#fff;
+  padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85rem;
+  font-family:var(--font);white-space:nowrap;
+}
+#fs-close-btn:hover{background:rgba(255,255,255,.28);}
+/* map wrapper — rotated on mobile portrait */
+#fs-map-wrap{
+  flex:1;position:relative;overflow:hidden;
+  min-height:0;
+}
+#fs-overlay #fs-map{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  transform-origin:center center;
+  transition:transform .3s;
+}
+/* Mobile: no rotation — north always points up */
+.fs-map-btn{
+  position:absolute;
+  bottom:10px;left:10px;
+  z-index:500;
+  background:rgba(26,42,58,.82);
+  color:#fff;
+  border:none;
+  border-radius:7px;
+  padding:7px 12px;
+  cursor:pointer;
+  font-size:1rem;
+  box-shadow:0 2px 8px rgba(0,0,0,.3);
+  line-height:1;
+}
+.fs-map-btn:hover{background:rgba(26,42,58,1);}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE PORTRAIT — zero horizontal shoulders
+   ═══════════════════════════════════════════════════ */
+@media (max-width:480px) {
+  html, body { padding-left:0!important; padding-right:0!important; margin-left:0!important; margin-right:0!important; }
+  main        { padding-left:2px!important; padding-right:2px!important; }
+  .app-header { padding-left:8px!important; padding-right:8px!important; }
+  .main-nav   { padding-left:4px!important; padding-right:4px!important; }
+  .alt-card   { margin-left:0!important; margin-right:0!important; border-radius:6px!important; }
+  .alt-hdr    { padding-left:6px!important; padding-right:6px!important; }
+  .alts-sidebar-title { padding-left:6px!important; padding-right:6px!important; }
+  .alt-btn    { padding-left:4px!important; padding-right:4px!important; }
+  .alts-main  { padding-right:0!important; padding-left:0!important; }
+  .section-hdr{ padding-left:0!important; padding-right:0!important; }
+  .qa-section { margin-left:0!important; margin-right:0!important; }
+  .qa-section-title { padding-left:6px!important; padding-right:6px!important; }
+  .qa-question{ padding-left:4px!important; padding-right:4px!important; }
+  .qa-answer  { padding-left:4px!important; padding-right:4px!important; }
+  .dblock     { padding-left:4px!important; padding-right:4px!important; margin-left:0!important; margin-right:0!important; }
+  .trow       { padding-left:0!important; padding-right:0!important; }
+  .det-sec    { margin-left:0!important; margin-right:0!important; }
+  .sbar       { margin-left:0!important; margin-right:0!important; padding-left:6px!important; padding-right:6px!important; }
+  .cform      { padding-left:6px!important; padding-right:6px!important; }
+  .chat-msgs  { padding-left:2px!important; padding-right:2px!important; }
+  .tbl-wrap   { margin-left:0!important; margin-right:0!important; }
+}
+
+/* Build version badge */
+#build-ver{position:fixed;bottom:4px;right:4px;font-size:9px;color:rgba(255,255,255,.35);
+  background:rgba(0,0,0,.18);padding:1px 5px;border-radius:4px;z-index:8000;
+  pointer-events:none;font-family:monospace;letter-spacing:.5px;}
+
+/* Override for test */
+.alts-sidebar { position: sticky; top: 10px; }
+#alts-content { display: block !important; }
+</style>
+</head>
+<body>
+<h2 style="text-align:center; color:#1a4a6b">FRA/BSL Alternatives — Test Page</h2>
+
+<div class="alts-layout">
+  <!-- SIDEBAR -->
+  <div class="alts-sidebar">
+    <div class="alts-sidebar-title">אלטרנטיבות</div>
+    <button class="alt-btn active" id="sidebtn-pG" onclick="switchAlt('pG',this)">
+      <span class="chosen-star">⭐</span>Frankfurt+Basel<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · 9 לילות · FRA/BSL</span>
+    </button>
+    <button class="alt-btn" id="sidebtn-pH" onclick="switchAlt('pH',this)">
+      <span class="chosen-star">⭐</span>Heidelberg+Rust+Forest<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · 9 לילות · XML</span>
+    </button>
+    <button class="alt-btn" id="sidebtn-pI" onclick="switchAlt('pI',this)">
+      <span class="chosen-star">⭐</span>Star Black Forest<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · 9 לילות · Gemini</span>
+    </button>
+  </div>
+
+  <!-- PANELS -->
+  <div class="alts-main" id="alts-content">
+    <div class="alt-panel" id="panel-pG">
+          <div class="alt-card"><div class="alt-body" style="padding:20px 24px">
+              <div class="alt-hdr">
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pG">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
+                  Frankfurt + Basel (pG)
+                </div>
+                <div class="alt-meta">16&#x2013;25 &#x05D0;&#x05D5;&#x05D2;&#x05D5;&#x05E1;&#x05D8; 2026 &#xB7; 9 &#x05DC;&#x05D9;&#x05DC;&#x05D5;&#x05EA; &#xB7; &#x05D9;&#x05E6;&#x05D9;&#x05D0;&#x05D4; FRA 07:10 &#xB7; &#x05D7;&#x05D6;&#x05E8;&#x05D4; BSL 19:50</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pG" onclick="setChosen('pG')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
+              <div class="section-hdr" style="margin-top:16px">
+                <span class="section-hdr-title">&#x1F4CB; &#x05EA;&#x05E7;&#x05E6;&#x05D9;&#x05E8; &#x05D4;&#x05D8;&#x05D9;&#x05D5;&#x05DC;</span>
+                <span class="section-hdr-hint">&#x05D0;&#x05D9;&#x05DF; &#x05D0;&#x05D2;&#x05DD; &#x05E7;&#x05D5;&#x05DE;&#x05D5; &#x2014; &#x05E0;&#x05E1;&#x05D9;&#x05E2;&#x05D4; &#x05D9;&#x05E9;&#x05D9;&#x05E8;&#x05D4; &#x05DC;&#x05D0;&#x05D2;&#x05DD; &#x05E7;&#x05D5;&#x05E0;&#x05E1;&#x05D8;&#x05E0;&#x05E5;</span>
+              </div>
+              <div class="tbl-wrap"><table><thead><tr>
+                <th>&#x05EA;&#x05D0;&#x05E8;&#x05D9;&#x05DA;</th><th>&#x05E4;&#x05E2;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</th><th>Drive time</th><th>&#x05DC;&#x05D9;&#x05E0;&#x05D4;</th><th>&#x05E2;&#x05DC;&#x05D5;&#x05EA; &#x05D9;&#x05D5;&#x05DE;&#x05D9;&#x05EA;</th>
+              </tr></thead><tbody id="tbG"></tbody></table></div>
+              <div class="section-hdr" style="margin-top:24px">
+                <span class="section-hdr-title">&#x1F5FA; &#x05DE;&#x05E4;&#x05D4; &#x05D5;&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</span>
+              </div>
+              <div style="margin-top:10px">
+                <div class="vwrap" id="pGm">
+                  <div class="old-label">&#x05D2;&#x05E8;&#x05E1;&#x05D4; &#x05DE;&#x05D5;&#x05E7;&#x05D3;&#x05DE;&#x05EA;</div><div class="old-overlay"></div>
+                  <div class="map-box" id="map-pG"></div>
+                  <button class="fs-map-btn" onclick="openFullscreenMap('pG')" title="&#x05DE;&#x05E1;&#x05DA; &#x05DE;&#x05DC;&#x05D0;">&#x26F6;</button>
+                </div>
+              </div>
+              <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detG"></div></div>
+              <div class="sbar">
+                <div class="section-hdr"><span class="section-hdr-title">&#x1F4CB; &#x05E9;&#x05D0;&#x05DC;&#x05D5;&#x05EA; &#x05D5;&#x05EA;&#x05E9;&#x05D5;&#x05D1;&#x05D5;&#x05EA;</span></div>
+                <div id="qa-pG"></div>
+              </div>
+              <div class="chat-sec">
+                <h3>&#x1F4AC; &#x05E9;&#x05D9;&#x05D7;&#x05D4;</h3>
+                <div class="chat-msgs" id="chatG"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA; &#x05E2;&#x05D3;&#x05D9;&#x05DF;</div></div>
+              </div>
+                      </div></div>
+        <
+    <div class="alt-panel" id="panel-pH">
+          <div class="alt-card"><div class="alt-body" style="padding:20px 24px">
+              <div class="alt-hdr">
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pH">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
+                  Heidelberg + Rust + Forest (pH)
+                </div>
+                <div class="alt-meta">16&#x2013;25.8 2026 &#xB7; 9 &#x05DC;&#x05D9;&#x05DC;&#x05D5;&#x05EA; &#xB7; FRA&#x2192;Heidelberg&#x2192;Rust&#x2192;Titisee&#x2192;BSL</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pH" onclick="setChosen('pH')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
+              <div class="section-hdr" style="margin-top:16px"><span class="section-hdr-title">&#x1F4CB; &#x05EA;&#x05E7;&#x05E6;&#x05D9;&#x05E8;</span></div>
+              <div class="tbl-wrap"><table><thead><tr><th>&#x05EA;&#x05D0;&#x05E8;&#x05D9;&#x05DA;</th><th>&#x05E4;&#x05E2;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</th><th>Drive time</th><th>&#x05DC;&#x05D9;&#x05E0;&#x05D4;</th><th>&#x05E2;&#x05DC;&#x05D5;&#x05EA; &#x05D9;&#x05D5;&#x05DE;&#x05D9;&#x05EA;</th></tr></thead><tbody id="tbH"></tbody></table></div>
+              <div class="section-hdr" style="margin-top:24px"><span class="section-hdr-title">&#x1F5FA; &#x05DE;&#x05E4;&#x05D4; &#x05D5;&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA;</span></div>
+              <div style="margin-top:10px"><div class="vwrap" id="pHm">
+                <div class="old-label">&#x05D2;&#x05E8;&#x05E1;&#x05D4; &#x05DE;&#x05D5;&#x05E7;&#x05D3;&#x05DE;&#x05EA;</div><div class="old-overlay"></div>
+                <div class="map-box" id="map-pH"></div>
+                <button class="fs-map-btn" onclick="openFullscreenMap('pH')" title="&#x05DE;&#x05E1;&#x05DA; &#x05DE;&#x05DC;&#x05D0;">&#x26F6;</button>
+              </div></div>
+              <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detH"></div></div>
+              <div class="sbar"><div class="section-hdr"><span class="section-hdr-title">&#x1F4CB; &#x05E9;&#x05D0;&#x05DC;&#x05D5;&#x05EA;</span></div><div id="qa-pH"></div></div>
+              <div class="chat-sec"><h3>&#x1F4AC; &#x05E9;&#x05D9;&#x05D7;&#x05D4;</h3><div class="chat-msgs" id="chatH"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA; &#x05E2;&#x05D3;&#x05D9;&#x05DF;</div></div></div>
+                      </div></div>
+        <
+    <div class="alt-panel" id="panel-pI">
+          <div class="alt-card"><div class="alt-body" style="padding:20px 24px">
+              <div class="alt-hdr">
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pI">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
+                  Star Black Forest (pI) — Gemini
+                </div>
+                <div class="alt-meta">16&#x2013;25.8 2026 &#xB7; 9 &#x05DC;&#x05D9;&#x05DC;&#x05D5;&#x05EA; &#xB7; Baden-Baden 1n + Titisee 8n &#xB7; FRA&#x2192;BSL</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pI" onclick="setChosen('pI')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
+              <div class="section-hdr" style="margin-top:16px"><span class="section-hdr-title">&#x1F4CB; &#x05EA;&#x05E7;&#x05E6;&#x05D9;&#x05E8;</span></div>
+              <div class="tbl-wrap"><table><thead><tr>
+                <th>&#x05EA;&#x05D0;&#x05E8;&#x05D9;&#x05DA;</th><th>&#x05E4;&#x05E2;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</th><th>Drive time</th><th>&#x05DC;&#x05D9;&#x05E0;&#x05D4;</th><th>&#x05E2;&#x05DC;&#x05D5;&#x05EA;</th>
+              </tr></thead><tbody id="tbI"></tbody></table></div>
+              <div class="section-hdr" style="margin-top:24px"><span class="section-hdr-title">&#x1F5FA; &#x05DE;&#x05E4;&#x05D4;</span></div>
+              <div style="margin-top:10px"><div class="vwrap" id="pIm">
+                <div class="old-label">&#x05D2;&#x05E8;&#x05E1;&#x05D4; &#x05DE;&#x05D5;&#x05E7;&#x05D3;&#x05DE;&#x05EA;</div><div class="old-overlay"></div>
+                <div class="map-box" id="map-pI"></div>
+                <button class="fs-map-btn" onclick="openFullscreenMap('pI')" title="&#x05DE;&#x05E1;&#x05DA; &#x05DE;&#x05DC;&#x05D0;">&#x26F6;</button>
+              </div></div>
+              <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detI"></div></div>
+              <div class="sbar"><div class="section-hdr"><span class="section-hdr-title">&#x1F4CB; &#x05E9;&#x05D0;&#x05DC;&#x05D5;&#x05EA;</span></div><div id="qa-pI"></div></div>
+              <div class="chat-sec"><h3>&#x1F4AC; &#x05E9;&#x05D9;&#x05D7;&#x05D4;</h3>
+                <div class="chat-msgs" id="chatI"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
+              </div>
+                      </div></div>
+        <
+  </div>
+</div>
+
+<script>
+// ── PLANS ────────────────────────────────────────────────────────────────
+const PLANS = {
+    pG: {
+    rows: [
+      { d:'16.8', r:"TLV 07:10 → FRA 10:30 → מירסבורג", dr:'~3:30h car', s:'מירסבורג', z:'zk', act:'טיסה + הגעה', cost:'', daycost:'✈ $3,000' },
+      { d:'17.8', r:'מירסבורג ← Burg + אי מאינאו', dr:'35m each way', s:'מירסבורג', z:'zk', act:'טירה + גינות', cost:'', daycost:'~$420' },
+      { d:'18.8', r:'מירסבורג ← שיט ← קונסטנץ', dr:'60m door-to-door', s:'מירסבורג', z:'zk', act:'שיט + SEA LIFE', cost:'', daycost:'~$360' },
+      { d:'19.8', r:'מירסבורג → טיטיזי', dr:'~1:40h', s:'טיטיזי', z:'zf', act:'נסיעה + אגם', cost:'', daycost:'~$290' },
+      { d:'20.8', r:'טיטיזי ← אירופה פארק', dr:'1:10–1:25h each way', s:'טיטיזי', z:'zf', act:'פארק שעשועים', cost:'', daycost:'~$580' },
+      { d:'21.8', r:'טיטיזי ← סוסים + Schluchsee', dr:'20–35m local', s:'טיטיזי', z:'zf', act:'סוסים + אגם', cost:'', daycost:'~$350' },
+      { d:'22.8', r:'טיטיזי ← מפלי טריברג', dr:'35–45m each way', s:'טיטיזי', z:'zf', act:'מפלים + יער', cost:'', daycost:'~$220' },
+      { d:'23.8', r:'טיטיזי ← בזל / קולמר', dr:'50–70m each way', s:'טיטיזי', z:'zf', act:'בזל / אלזס', cost:'', daycost:'~$250' },
+      { d:'24.8', r:'טיטיזי → אזור בזל BSL', dr:'~50–65m', s:'אזור BSL', z:'zk', act:'נסיעה + מנוחה', cost:'', daycost:'~$180' },
+      { d:'25.8', r:'BSL EuroAirport → TLV 19:50', dr:'15–25m to BSL', s:'— טיסה', z:'zx', act:'טיסה', cost:'כלול', daycost:'~$60' },
+    ],
+    det: [
+      { d:'16.8', t:'הגעה — FRA → מירסבורג', z:'zk',
+        m:`• [התחלה: 07:10] ✈ טיסה TLV → FRA — ~3:20 שעות.
+• [התחלה: 10:30] 🚗 FRA + השכרת רכב: ~60–75 דק'.
+• [התחלה: 12:00] 🛒 Edeka ליד A5: glutenfrei, Trockenfleisch, פירות.
+• [התחלה: 12:30] 🚗 FRA → מירסבורג: ~302 ק"מ, ~3:15–3:45 שעות (A5 דרום).
+  ⚠ פקק Karlsruhe/Freiburg אפשרי — הוסיפו 30 דק' באוגוסט.`,
+        n:`• ➡ הגעה מירסבורג: ~17:00–17:30. צ'ק אין.`,
+        e:`• [התחלה: 18:00] 🚶 Seepromenade — נוף לאגם.
+• [התחלה: 19:30] 🍽 Restaurant Winzerstube. הזמינו מראש.
+• 🏨 לינה — מירסבורג (3 לילות):
+  ◦ בוטיק הוטל 3 שטובן ציון 9.4 — Kirchstr. 7.
+  ◦ לנדהוטל פישרהאוס — דירות עם גינה ובריכה.` },
+
+      { d:'17.8', t:'Burg Meersburg + אי מאינאו', z:'zk',
+        m:`• [התחלה: 08:45] 🏰 Burg Meersburg — ~90 דק'. ~€15.
+• ➡ נסיעה → מאינאו: ~35 דק'.
+• [התחלה: 11:05] 🌸 אי מאינאו — Flex Ticket מראש. ילדים עד 12 חינם.
+  ◦ 🦋 גן פרפרים: ~40 דק'. 🌹 גינות: ~60 דק'.
+  ◦ 🧩 פלאן B ילד 8: שבילים מוצלים / ספסל.`,
+        n:`• [התחלה: 13:00] 🍽 Schwedenschenke באי. glutenfrei. ~60 דק'.
+• ➡ חזרה: ~35 דק'.`,
+        e:`• [התחלה: 16:30] 🏊 Strandbad Meersburg.
+• [התחלה: 19:30] 🍽 ארוחת ערב.` },
+
+      { d:'18.8', t:'שיט לקונסטנץ + SEA LIFE', z:'zk',
+        m:`• [התחלה: 09:30] 🚢 שיט מירסבורג → קונסטנץ: ~60 דק' מדלת לדלת.
+• [התחלה: 11:00] 🐟 SEA LIFE: ~€20. ~90–120 דק'.
+  ◦ 🧩 פלאן B: הורה עם ילד 8 לטיילת נמל + פסל Imperia.`,
+        n:`• [התחלה: 13:00] 🍽 Hafenhalle ליד הנמל. ~60 דק'.
+• [התחלה: 14:15] 🛍 עיר עתיקה. ~60 דק'.`,
+        e:`• [התחלה: 16:00] 🚢 שיט חזרה: ~60 דק'. הגעה ~17:00.
+• 🛒 Edeka — קנייה לפני מעבר לטיטיזי.
+• 🍽 ארוחת ערב אחרונה במירסבורג.` },
+
+      { d:'19.8', t:'מירסבורג → טיטיזי', z:'zf',
+        m:`• [התחלה: 09:30] 🚗 → טיטיזי: ~96 ק"מ, ~1:40–2:00 שעות.
+• ➡ אופציה: עצירה קצרה בפרייבורג (~20 דק') — Münster, Bächle, קפה.
+• ➡ הגעה: ~12:30–13:00.`,
+        n:`• 🛒 Edeka ל-4 ימים. 🍽 ארוחת צהריים: Seerestaurant או Tannenhof.`,
+        e:`• [התחלה: 16:00] 🚶 מסלול אגם — 6.5 ק"מ, ~2:00 שעות.
+• 🍦 Sorbet — Eiscafé Seeblick.
+• 🏨 לינה — טיטיזי (4 לילות):
+  ◦ מריטים טיטיזי 4★ ציון 8.8.
+  ◦ שטוב טיטיזי — דירות. stuub.de` },
+
+      { d:'20.8', t:'אירופה פארק — Rust', z:'zf',
+        m:`• [התחלה: 07:15] 🚗 → Rust: ~67 ק"מ, ~1:05–1:25 שעות.
+• ➡ הגעה שערים: ~08:30
+• [התחלה: 09:00] 🎢 פתיחת שערים. מבוגר ~€67, ילד ~€56.50.
+  ◦ Voltron Nevera → Arthur → Silver Star.
+  ◦ 🧩 Grimm's Forest, רכבת, תצוגות.
+• ⚠ ללא רולנטיקה.`,
+        n:`• [התחלה: 12:30] 🍽 ארוחת צהריים בפארק. glutenfrei. ~60 דק'.`,
+        e:`• [התחלה: 18:30] 🚗 חזרה → טיטיזי: ~1:10 שעות. הגעה ~20:00.` },
+
+      { d:'21.8', t:'סוסים + Schluchsee', z:'zf',
+        m:`• [התחלה: 09:30] 🐴 חוות סוסים ליד Feldberg: ~20–35 דק'. הזמינו מראש!
+  ◦ קורס מבוא ~20 דק' + רכיבה ~90 דק'. גיל 6+.
+  ◦ 🧩 פלאן B ילד 8: פינוק בע"ח ליד האורוות.`,
+        n:`• [התחלה: 12:30] 🍽 ארוחת צהריים.
+• [התחלה: 14:00] 🌊 Schluchsee — ~15–25 דק'. הליכה שטוחה, סירות פדלים, שחייה.
+  ◦ 🧩 שקט, ירוק — אידיאלי לרגיעה חושית.`,
+        e:`• [התחלה: 16:30] 🚗 חזרה טיטיזי. 🥤 ארטיק: פירות יער + Sahne.
+• 🍽 ארוחת ערב.` },
+
+      { d:'22.8', t:'מפלי טריברג + יום יער', z:'zf',
+        m:`• [התחלה: 09:30] 🚗 → מפלי טריברג: ~35–45 דק'.
+• [התחלה: 10:15] 🌊 מפלי טריברג — שביל תחתון נגיש. ~75–90 דק'.
+  ◦ 🧩 הורה עם ילד 8 בכניסה אם חלקלק.`,
+        n:`• [התחלה: 12:15] 🍽 ארוחת צהריים בטריברג.
+• ⏰ שעוני קוקייה / Black Forest Museum — ~45 דק'.
+• [התחלה: 14:00] 🚗 חזרה טיטיזי: ~40 דק'.`,
+        e:`• [התחלה: 15:30] 🏊 שחייה + סירות פדלים.
+• [התחלה: 19:30] 🍽 ארוחת ערב.` },
+
+      { d:'23.8', t:'בזל / קולמר (אלזס)', z:'zf',
+        m:`• [התחלה: 09:00] 🚗 → בזל/קולמר: ~50–70 ק"מ, ~55–70 דק'.
+• 🏛 בזל: Münster, Marktplatz, נוף לריין מ-3 מדינות.
+• 🌸 קולמר (מומלץ!): Petite Venise — עיר ציורית, תעלות, נפלא לילדים. ~55 ק"מ.`,
+        n:`• [התחלה: 12:30] 🍽 ארוחת צהריים בבזל/קולמר.`,
+        e:`• [התחלה: 15:30] 🚗 חזרה טיטיזי: ~55–70 דק'.
+• [התחלה: 19:30] 🍽 ארוחת ערב + קנייה: שעוני קוקייה, מזכרות.` },
+
+      { d:'24.8', t:'מעבר לאזור Basel — לפני הטיסה', z:'zk',
+        m:`• [התחלה: 10:00] 🚗 → אזור Basel: ~50–70 ק"מ, ~50–65 דק'.
+• ➡ Dreiländereck — נקודת 3 מדינות (גרמניה/שווייץ/צרפת). 15 דק'.
+• [התחלה: 12:00] 🏨 צ'ק אין מוקדם.`,
+        n:`• [התחלה: 12:30] 🍽 ארוחת צהריים.
+• 🛒 Edeka Weil am Rhein — קנייה אחרונה.`,
+        e:`• [התחלה: 15:00] 🌊 Rhine promenade / Dreiländerbrücke.
+• [התחלה: 17:00] 🍫 Lindt/Läderach Basel — שוקולד שווייצי לטיסה!
+• [התחלה: 19:00] 🍽 ארוחת ערב קלה — מוקדם, מנוחה לפני טיסה.
+• 🏨 לינה — אזור Basel/Weil am Rhein:
+  ◦ Ibis Basel Bahnhof — ~15 דק' ל-BSL.
+  ◦ Novotel Freiburg/Basel — צד גרמני.` },
+
+      { d:'25.8', t:'טיסה חזרה — BSL EuroAirport', z:'zx',
+        m:`• [התחלה: 16:00] 🚗 → BSL EuroAirport: ~15–25 דק'.
+  ⚠ החזרת רכב: עקבו אחרי שלטי "Car Rental Return".
+  ⚠ One-Way FRA→BSL — ודאו עמלה מראש (€150–400+).
+• [התחלה: 16:30] 🚗 החזרת רכב + שאטל: ~20 דק'.
+• [התחלה: 16:50] ✈ צ'ק אין + ביטחון: ~2:00 שעות. ✅ עד שער: ~18:50.`,
+        n:`• 🍫 קניות שדה: Läderach, Lindt. ☕ ארוחת ערב קלה.`,
+        e:`• [התחלה: 19:50] ✈ BSL → TLV.
+• ➡ נחיתה TLV: ~00:30+ (חצות).` },
+    ],
+    qa: [
+      { q:'מה הרעיון של pG — Frankfurt + Basel?',
+        a:`9 לילות, 16–25 אוגוסט 2026.
+יציאה: TLV 07:10 → FRA 10:30. חזרה: BSL 19:50 → TLV ~00:30+1.
+✅ יתרון: מגיעים ישירות לאגם קונסטנץ — אין Lake Como, אין נסיעות ארוכות לצפון.
+✅ חוסך ~€1,000–1,500 ו-2 לילות + נסיעות לעומת p8/p9.
+✅ חזרה מ-BSL = 15–25 דק' מהאזור. יום אחרון נוח.
+❌ אין Lake Como — לא רואים את האגם האיטלקי.
+❌ One-Way rental (FRA→BSL): עמלה €150–400+.
+❌ טיסה מוקדמת (07:10) = צריך בשדה ב-05:00.` },
+      { q:'מה ההבדל מ-p8/p9?',
+        a:`p8/p9: MXP → Como → Meersburg → Titisee → Lugano → MXP.
+pG: FRA → Meersburg ישירות → Titisee → Basel.
+pG = ללא Como ו-Lugano, 4 לילות טיטיזי (במקום 3), יום בזל/קולמר.
+pG = פחות עמוס, יותר זמן ביער השחור.` },
+      { q:'BSL — צד גרמני? מה לעשות?',
+        a:`BSL EuroAirport = שדה עם שני צדדים: שווייצי (BSL) וצרפתי (MLH).
+One-Way rental מ-FRA (גרמניה) → BSL (שווייץ).
+⚠ בדקו עם חברת ההשכרה: האם מחזירים בצד שווייצי או גרמני?
+רוב החברות (Sixt, Europcar) = צד שווייצי BSL.
+עמלת One-Way Drop: €150–400 — הזמינו מראש!` },
+      { q:'כמה עולה?',
+        a:`הערכה ל-5 אנשים:
+• טיסות ×5 (TLV-FRA + BSL-TLV): ~$2,500–3,500
+• רכב One-Way FRA→BSL, 9 ימים, SUV 7: €900–1,600 + One-Way €150–400
+• לינה: מירסבורג 3n + טיטיזי 4n + Basel 1n: €1,800–4,200
+• אוכל 9 ימים: €900–1,600
+• פעילויות: ~€900–1,100
+• סה"כ: ~€7,200–12,000 (~$8,000–13,200)` },
+      { q:'קולמר או בזל — מה עדיף ליום 23.8?',
+        a:`קולמר (ממולץ!): Petite Venise — עיר מדהימה, תעלות, בתים צבעוניים. פחות גדול ועמוס.
+בזל: עיר שווייצית תרבותית, Rhine, Münster, מוזיאונים.
+שניהם ~50–70 ק"מ מטיטיזי. אם יש ילדים — קולמר כנראה יותר מרגש.` },
+      { q:'ה-split plan לילד עם צרכים מיוחדים?',
+        a:`כל יום עמוס — תמיד יש פלאן B:
+• SEA LIFE עמוס → טיילת נמל עם הורה.
+• גן פרפרים חם → שבילים מוצלים.
+• אירופה פארק → Grimm Forest, רכבת, תצוגות.
+• סוסים → פינוק בע"ח ליד האורוות.
+• Schluchsee → שקט, ירוק, אידיאלי לרגיעה.` },
+    ]
+  },
+    pH: {
+    rows: [
+      { d:'16.8', r:"TLV 07:10 → FRA → היידלברג", dr:'~1:05h car', s:'היידלברג', z:'zk', act:'טיסה + נחיתה רכה', cost:'', daycost:'✈ $3,000' },
+      { d:'17.8', r:"היידלברג → Baden-Baden → Mummelsee → Rust", dr:'2:45–3:30h total', s:'Rust', z:'zf', act:'נסיעה עם עצירות', cost:'', daycost:'~$220' },
+      { d:'18.8', r:"Rust ← אירופה פארק", dr:'0–15min', s:'Rust', z:'zf', act:'אירופה פארק', cost:'', daycost:'~$580' },
+      { d:'19.8', r:"Rust → טיטיזי (+ Rulantica אופציה)", dr:'1:05–1:25h', s:'טיטיזי', z:'zf', act:'העברה + אגם', cost:'', daycost:'~$200' },
+      { d:'20.8', r:"טיטיזי ← Schluchsee", dr:'30–60min local', s:'טיטיזי', z:'zf', act:'אגמים + שחייה', cost:'', daycost:'~$150' },
+      { d:'21.8', r:"טיטיזי ← טריברג ← Gutach", dr:'2:15–2:45h total', s:'טיטיזי', z:'zf', act:'מפלים + מוזיאון', cost:'', daycost:'~$200' },
+      { d:'22.8', r:"טיטיזי ← סוסים + פרייבורג", dr:'1:30–2:15h total', s:'טיטיזי', z:'zf', act:'סוסים + עיר', cost:'', daycost:'~$250' },
+      { d:'23.8', r:"טיטיזי ← Menzenschwand + St.Blasien", dr:'1:30–2:00h total', s:'טיטיזי', z:'zf', act:'מפל שקט + קתדרלה', cost:'', daycost:'~$150' },
+      { d:'24.8', r:"טיטיזי — יום גמיש", dr:'10–80min local', s:'טיטיזי', z:'zf', act:'Badeparadies / Ravenna / אגם', cost:'', daycost:'~$150' },
+      { d:'25.8', r:"טיטיזי → פרייבורג → BSL 19:50", dr:'1:20–1:50h to BSL', s:'— טיסה', z:'zx', act:'יציאה + BSL', cost:'כלול', daycost:'~$60' },
+    ],
+    det: [
+      { d:'16.8', t:'הגעה FRA — נחיתה רכה בהיידלברג', z:'zk',
+        m:`• [התחלה: 07:10] ✈ טיסה TLV → FRA — ~4:20 שעות.
+• [התחלה: ~10:35] 🚗 FRA + השכרת רכב: ~75–90 דק'.
+• [התחלה: 12:00] 🛒 Edeka: glutenfrei, Schar, פירות, חלבון.
+• [התחלה: 12:10] 🚗 FRA → היידלברג: ~90 ק"מ, ~1:00–1:15 שעות.`,
+        n:`• [התחלה: ~13:15] 🍽 ארוחת צהריים קלה.
+• [התחלה: 14:15] 🏨 צ'ק אין + מנוחה. אל תתכננו אטרקציה גדולה.`,
+        e:`• [התחלה: 16:00] 🚶 Hauptstrasse + Marktplatz + נהר — 90 דק'.
+• [התחלה: 19:00] 🍽 ארוחת ערב ליד המלון — מוקדם לנוח.
+• 🧩 Split: הורה + ילד 8 במלון. הורה + 6,10 → גלידה בעיר.
+• 🏨 לינה — היידלברג:
+  ◦ Hotel Zum Ritter St. Georg — מרכז עיר עתיקה.
+  ◦ ibis Styles Heidelberg — זול יותר, 5 דק' למרכז.` },
+
+      { d:'17.8', t:"היידלברג → Baden-Baden → Mummelsee → Rust", z:'zf',
+        m:`• [התחלה: 09:30] 🚗 → Baden-Baden: ~95 ק"מ, ~1:10–1:20 שעות.
+• [התחלה: 10:45] 🌿 Lichtentaler Allee — גן מוצל, נהר. ~75 דק'. מתאים לילד 8.`,
+        n:`• [התחלה: 12:00] 🍽 ארוחת צהריים Baden-Baden. לא כבד — כביש מפותל אחרי.
+• [התחלה: 13:00] 🚗 → Mummelsee: ~35–45 דק'.
+• [התחלה: 13:45] 🌊 Mummelsee — לולאת אגם + שוקולד + קפה. ~75 דק'.`,
+        e:`• [התחלה: 15:00] 🚗 → Rust: ~80–90 ק"מ, ~1:15–1:30 שעות.
+• [התחלה: 16:30] 🏨 צ'ק אין Rust. 🛒 קנייה: GF, ארוחת בוקר, חטיפים לפארק.
+• [התחלה: 19:30] 🍽 ארוחת ערב. הזמינו מראש!
+• 🏨 לינה — Rust (2 לילות):
+  ◦ Hotel Pfau Ringsheim — 5 דק' לפארק.
+  ◦ Europa-Park Resorts — 0 נסיעה.` },
+
+      { d:'18.8', t:'אירופה פארק — יום מלא', z:'zf',
+        m:`• [התחלה: 07:30] 🍳 ארוחת בוקר. חבילו GF + מים + כובעים.
+• [התחלה: 08:15] 🚶 → Europa-Park: 0–15 דק'. פתיחה 09:00.
+• [התחלה: 09:00] 🎢 ישר ל-Voltron Nevera. מבוגר ~€67, ילד ~€56.50.
+  ◦ 🧩 הורה A + ילדים 10,6: Voltron, Silver Star, Arthur.
+  ◦ 🧩 הורה B + ילד 8: Grimm Forest, רכבת, הצגות.
+  ◦ ⏰ איחוד: 11:00, 12:00, 14:30, 17:00.`,
+        n:`• [התחלה: 12:00] 🍽 ארוחת צהריים מוקדמת. glutenfrei מ-guest services.
+• [התחלה: 13:15] 🛋 הפסקה מתוכננת.`,
+        e:`• [התחלה: 17:00] 🧸 סיבוב קל + מזכרות.
+• [התחלה: 18:15] 🚗 חזרה ללינה — <15 דק'.
+• [התחלה: 19:30] 🍽 ארוחת ערב. הזמינו מראש.
+• ⚠ ללא רולנטיקה — יום פארק מספיק.` },
+
+      { d:'19.8', t:"Rust → טיטיזי (+ Rulantica אופציה)", z:'zf',
+        m:`• [התחלה: 08:30] 🍳 ארוחת בוקר + צ'ק אאוט.
+• אופציה: Rulantica ~3 שעות אם יש כוח. 🧩 ילד 8 → בריכה שקטה.`,
+        n:`• [התחלה: 14:00] 🚗 → טיטיזי: ~85–100 ק"מ, ~1:05–1:25 שעות.
+• ➡ הגעה ~15:30. 🏨 צ'ק אין. 6 לילות — פרקו לגמרי!`,
+        e:`• [התחלה: 16:30] 🛒 קנייה גדולה ל-6 ימים.
+• [התחלה: 18:00] 🚶 הליכת אגם קצרה.
+• [התחלה: 19:30] 🍽 ארוחת דירה — כולם עייפים.
+• 🏨 לינה — טיטיזי/Schluchsee/Hinterzarten (6 לילות):
+  ◦ דירה 2+ חדרים, מטבח, מכונת כביסה, גינה.
+  ◦ Maritim Titisee 4★ — אם תקציב מאפשר.` },
+
+      { d:'20.8', t:'אגמים — טיטיזי + Schluchsee', z:'zf',
+        m:`• [התחלה: 09:45] ⛵ טיטיזי — סירות פדלים. ➡ → Schluchsee: ~20–30 דק'.`,
+        n:`• [התחלה: 11:45] 🌊 Schluchsee — הליכה שטוחה, חוף, מגרש. 🧺 פיקניק GF.
+• [התחלה: 14:00] 🏊 שחייה / מנוחה — יום עוצמה נמוכה.`,
+        e:`• [התחלה: 16:00] 🚗 חזרה טיטיזי.
+• [התחלה: 19:00] 🍽 מסעדה בטיטיזי — הזמינו + glutenfrei.
+• 🧩 הורה B + ילד 8 שפת אגם + גלידה.` },
+
+      { d:'21.8', t:'מפלי טריברג + Vogtsbauernhof', z:'zf',
+        m:`• [התחלה: 09:00] 🚗 → טריברג: ~45–55 דק'.
+• [התחלה: 09:50] 🌊 מפלי טריברג — שביל תחתון. ~85 דק'.
+  ◦ 🧩 הורה B + ילד 8 → נקודת תצפית תחתונה.`,
+        n:`• [התחלה: 11:45] 🚗 → Vogtsbauernhof Gutach: ~20–25 דק'.
+• [התחלה: 12:10] 🧺 פיקניק GF.
+• [התחלה: 13:00] 🏚 Vogtsbauernhof — חוות היסטוריות, בע"ח, טחנות. ~2:30h. מצוין לילדים!`,
+        e:`• [התחלה: 15:30] 🚗 חזרה: ~55–65 דק'. ארוחת דירה.` },
+
+      { d:'22.8', t:'סוסים + פרייבורג', z:'zf',
+        m:`• [התחלה: 09:15] 🚗 → חווה: ~20–40 דק'.
+• [התחלה: 10:00] 🐴 סוסים 30–60 דק' + ברושים.
+  ◦ 🧩 ילד 8: פינוק בע"ח ללא רכיבה.
+• [התחלה: 11:30] 🚗 → פרייבורג: ~35–50 דק'.`,
+        n:`• [התחלה: 12:15] 🍽 ארוחת צהריים פרייבורג — הכי טוב ל-GF.
+• [התחלה: 13:30] 🏛 Münsterplatz, Bächle, שוק, גלידה. ילדים → סירות בBächle.`,
+        e:`• [התחלה: 16:30] 🚗 חזרה: ~30–45 דק'. ארוחת דירה.` },
+
+      { d:'23.8', t:'Menzenschwand + St.Blasien + אגם', z:'zf',
+        m:`• [התחלה: 09:30] 🚗 → Menzenschwand: ~35–45 דק'.
+• [התחלה: 10:10] 🌊 מפל Menzenschwand — שביל קצר, מוצל, שקט. ~80 דק'.
+  ◦ 🧩 פחות עמוס מטריברג — אידיאלי לילד 8.`,
+        n:`• [התחלה: 11:30] 🚗 → St.Blasien: ~20–30 דק'.
+• [התחלה: 12:00] ⛪ קתדרלת St.Blasien — כיפה מרשימה, שקט. ~75 דק'.
+• [התחלה: 13:15] 🍽 ארוחת צהריים.`,
+        e:`• [התחלה: 14:15] 🚗 → Schluchsee: ~20 דק'.
+• [התחלה: 14:45] 🏊 שחייה / סירות / מנוחה.
+• [התחלה: 18:30] 🍽 מסעדה / דירה.` },
+
+      { d:'24.8', t:'יום גמיש — Badeparadies / Ravenna / אגם', z:'zf',
+        m:`• ☁ גשם: Badeparadies Schwarzwald — פארק מים מקורה. 🎟 הזמינו מראש. ~3–4 שעות.
+• ☀ טוב: Ravenna Gorge — הליכה מוצלת, 30 דק' max, ללא כבלים.
+• 🧸 עייפות: מגרש משחקים / מיני גולף / אגם.
+• [התחלה: 14:00] 📦 אריזה חובה — מחר טיסה!`,
+        n:`• [התחלה: 16:30] 🚶 הליכה אחרונה + גלידה + מזכרות.`,
+        e:`• [התחלה: 18:30] 🍽 ארוחת ערב אחרונה ביער — הזמינו + glutenfrei.` },
+
+      { d:'25.8', t:'יציאה → BSL EuroAirport 19:50', z:'zx',
+        m:`• [התחלה: 08:30] 🍳 ארוחת בוקר + צ'ק אאוט.
+• אופציה: בוקר באגם טיטיזי + קפה. יציאה ב-10:30.
+• [התחלה: 10:30] 🚗 → פרייבורג (אופציה ארוחת צהריים): ~35–50 דק'.`,
+        n:`• [התחלה: 12:00] 🍽 ארוחת צהריים פרייבורג — GF אמין.
+• [התחלה: 13:30] ⏰ Münsterplatz / קניות אחרונות.
+• [התחלה: 14:45] 🚗 → BSL German side: ~50–65 דק'.`,
+        e:`• [התחלה: 15:45] ⛽ מילוי דלק.
+• [התחלה: 16:00] 🚗 החזרת רכב + שאטל: ~30 דק'.
+  ⚠ ודאו צד נכון לפי חוזה!
+• [התחלה: 16:50] ✈ צ'ק אין + ביטחון: ~3 שעות. ✅
+• [התחלה: 19:50] ✈ BSL → TLV.
+• 🍫 Läderach / Lindt בשדה.` },
+    ],
+    qa: [
+      { q:'מה הרעיון של pH — Frankfurt+Basel (XML)?',
+        a:`9 לילות, 16–25 אוגוסט 2026.
+✅ נחיתה רכה: היידלברג — 1:05h מ-FRA, לא נסיעה ארוכה ביום הגעה.
+✅ אירופה פארק: 2 לילות Rust — פותחים בפתיחה, 0 נסיעה ביום הפארק.
+✅ 6 לילות טיטיזי — פחות מעברים, יותר שגרה.
+✅ יום הטיסה: טיטיזי→BSL ~1:20–1:50h — אין לינה נוספת.
+חסרון: One-Way FRA→BSL + 3 עצירות מלון.` },
+      { q:'מה ההבדל מ-pG?',
+        a:`pG: FRA → מירסבורג ישיר → טיטיזי 4n → Basel לינה.
+pH: FRA → היידלברג 1n → Rust 2n → טיטיזי 6n → BSL.
+pH = יותר מעברים אך: נחיתה רכה, אירופה פארק בלי נסיעה, 6 ימי יער.` },
+      { q:'Vogtsbauernhof — מה זה?',
+        a:`מוזיאון חוות פתוח ב-Gutach, 20 דק' מטריברג.
+בתי חוות היסטוריים, בעלי חיים, מריחה, הדגמות. פתוח, שטוח, שקט.
+מצוין לילדים 6–10 ולילד 8 — פחות עמוס מאטרקציות גדולות.` },
+      { q:'כמה עולה pH?',
+        a:`הערכה ל-5 אנשים:
+• טיסות: €1,500–3,000
+• רכב One-Way 9 ימים + עמלה: €1,150–2,100
+• לינה (היידלברג+Rust+טיטיזי): €2,400–4,300
+• דלק/חניה: €280–520
+• פעילויות: €850–1,400
+• אוכל: €1,300–2,200
+• סה"כ: €7,330–13,120` },
+    ]
+  },
+    pI: {
+    rows: [
+      { d:'16.8', r:'TLV 07:10 → FRA → Baden-Baden', dr:'~1:45–2:15h car', s:'Baden-Baden', z:'zk', act:'הגעה + Allee', cost:'', daycost:'✈ $3,000' },
+      { d:'17.8', r:'Baden-Baden → Mummelsee → טריברג → בסיס', dr:'2:45–3:30h total', s:'טיטיזי/Lenzkirch', z:'zf', act:'נסיעה ציורית + מפלים', cost:'', daycost:'~$220' },
+      { d:'18.8', r:'יום אגם — טיטיזי, סירות, מיני גולף', dr:'0–30min local', s:'טיטיזי/Lenzkirch', z:'zf', act:'אגם רך אחרי נסיעה', cost:'', daycost:'~$150' },
+      { d:'19.8', r:'טיטיזי ← אירופה פארק ← טיטיזי', dr:'1:00–1:10h each way', s:'טיטיזי/Lenzkirch', z:'zf', act:'אירופה פארק', cost:'', daycost:'~$580' },
+      { d:'20.8', r:'טיטיזי ← Schluchsee ← טיטיזי', dr:'30–60min total', s:'טיטיזי/Lenzkirch', z:'zf', act:'שחייה + שחזור', cost:'', daycost:'~$150' },
+      { d:'21.8', r:'טיטיזי ← סוסים + טודנאו', dr:'1:00–1:45h total', s:'טיטיזי/Lenzkirch', z:'zf', act:'סוסים / טודנאו', cost:'', daycost:'~$250' },
+      { d:'22.8', r:'טיטיזי ← פרייבורג ← טיטיזי', dr:'1:15–1:45h total', s:'טיטיזי/Lenzkirch', z:'zf', act:'עיר + Bächle', cost:'', daycost:'~$220' },
+      { d:'23.8', r:'טיטיזי ← מפלי ריין + Stein am Rhein', dr:'3:00–3:45h total', s:'טיטיזי/Lenzkirch', z:'zf', act:'שווייץ יום טיול', cost:'', daycost:'~$280' },
+      { d:'24.8', r:'טיטיזי ← קולמר (אלזס, צרפת)', dr:'2:15–2:45h total', s:'טיטיזי/Lenzkirch', z:'zf', act:'קולמר / Badeparadies', cost:'', daycost:'~$220' },
+      { d:'25.8', r:'טיטיזי → לוהרר / BSL → TLV 19:50', dr:'1:15–1:45h to BSL', s:'— טיסה', z:'zx', act:'יציאה רגועה', cost:'כלול', daycost:'~$60' },
+    ],
+    det: [
+      { d:'16.8', t:'הגעה FRA → Baden-Baden', z:'zk',
+        m:`• [התחלה: 07:10] ✈ TLV → FRA — ~4:20–4:30 שעות.
+• [התחלה: ~10:40] 🚗 FRA + השכרת רכב: ~60–75 דק' עם ילדים ומזוודות.
+• [התחלה: 11:45] 🚗 FRA → Baden-Baden: ~1:45–2:15 שעות (כולל תנועה + עצירה).
+• 🛒 Edeka/Rewe בדרך: glutenfrei Schar, גבינה, פירות, חטיפים חירום.`,
+        n:`• [התחלה: ~13:30] 🍽 ארוחת צהריים קלה. פשוט אחרי הטיסה.
+• [התחלה: 14:45] 🌿 Lichtentaler Allee — גן מוצל, נהר, שקט. ~90 דק'.
+  ◦ 🧩 אידיאלי לילד 8 אחרי הטיסה — שטוח, ירוק, ללא רעש.`,
+        e:`• [התחלה: 16:15] ⏰ אופציה: עיר העתיקה Baden-Baden + גלידה. ~45 דק'.
+• [התחלה: 17:00] 🏨 צ'ק אין ליד Baden-Baden/Bühl/Sasbachwalden.
+• [התחלה: 18:30] 🍽 ארוחת ערב קלה ליד המלון. מוקדם לנוח.
+• 🧩 Split: אם המשפחה עייפה — דלגו על Baden-Baden. ישירות למלון.
+• 🏨 לינה — Baden-Baden / צפון יער השחור (לילה):
+  ◦ מלון קטן עם חניה ליד Bühl/Sasbachwalden.
+  ◦ Airbnb/דירה עם מטבח לילה אחד.` },
+
+      { d:'17.8', t:'Mummelsee → מפלי טריברג → בסיס כוכב', z:'zf',
+        m:`• [התחלה: 08:30] 🍳 ארוחת בוקר + צ'ק אאוט.
+• [התחלה: 09:30] 🚗 → Mummelsee (B500): ~45–60 דק' נוף.
+• [התחלה: 10:30] 🌊 Mummelsee — לולאת אגם קצרה, תמונות, חנויות. ~75 דק'.
+• [התחלה: 11:45] 🚗 → טריברג: ~60 דק' (כבישים ציוריים).`,
+        n:`• [התחלה: 12:45] 🍽 ארוחת צהריים בטריברג. או פיקניק GF.
+• [התחלה: 14:00] 🌊 מפלי טריברג — שביל תחתון. ~75–90 דק'.
+  ◦ 🧩 הורה + ילד 8 → נקודת תצפית ראשונה + בית קפה.
+• ⏰ אופציה: שעוני קוקייה — 30 דק'.`,
+        e:`• [התחלה: 16:00] 🚗 → בסיס Lenzkirch/טיטיזי: ~60–75 דק'.
+• [התחלה: 17:15] 🏨 צ'ק אין. פריקה מלאה — 8 לילות!
+• [התחלה: 18:30] 🛒 קנייה גדולה: ארוחות בוקר, GF pantry, חטיפים, ארוחות פשוטות.
+• [התחלה: 19:30] 🍽 ארוחת דירה.
+• 🏨 לינה — Lenzkirch/טיטיזי/Hinterzarten (8 לילות):
+  ◦ דירה/וילה: 2+ חדרים, מטבח, כביסה, גינה, חניה.
+  ◦ Hochschwarzwald Card — בדקו הטבות 2026 (כניסה לאטרקציות).` },
+
+      { d:'18.8', t:'יום אגם טיטיזי — רגוע אחרי הנסיעה', z:'zf',
+        m:`• [התחלה: 08:30] 🍳 ארוחת בוקר בדירה. הכינו GF חטיפים.
+• [התחלה: 09:45] 🚶 → טיילת טיטיזי (0–30 דק' נסיעה).
+• [התחלה: 10:15] 🚶 Titisee Promenade — הליכה רגועה, חנויות, ברווזים. ~75 דק'.
+• [התחלה: 11:30] ⛵ סירת פדלים/חשמלית באגם — ~45–60 דק'.`,
+        n:`• [התחלה: 12:30] 🍽 ארוחת צהריים על האגם. GF: דגים/בשר גרילד, תפו"א, סלט.
+• [התחלה: 14:00] ⛳ מיני גולף / מגרש משחקים / אגם — גמיש ורגוע.`,
+        e:`• [התחלה: 15:30] 🚗 חזרה לדירה.
+• [התחלה: 15:30] 🛋 מנוחה + כביסה. גלה סופרמרקט אמין קרוב.
+• [התחלה: 19:00] 🍽 ארוחת דירה — ערב קל לפני אירופה פארק.
+• 🧩 אם טיילת עמוסה: הורה + ילד 8 → ספסל מוצל/חזרה לדירה.` },
+
+      { d:'19.8', t:'אירופה פארק — יום מלא', z:'zf',
+        m:`• [התחלה: 07:00] 🍳 ארוחת בוקר מוקדמת. חבילו: GF + מים + כובעים + אוזניות.
+• [התחלה: 07:30] 🚗 → Europa Park Rust: ~60–70 דק' (לא 50 כמו מטיטיזי ישיר).
+• ➡ הגעה שערים: ~08:40
+• [התחלה: 09:00] 🎢 פתיחת שערים. כרטיסים מראש.
+  ◦ 🧩 Team A: הורה + ילד 10 → Voltron Nevera ישר.
+  ◦ 🧩 Team B: הורה + ילד 8 (ו-6 אם מעדיף) → Arthur, רכבת, Grimm Forest.
+  ◦ ⏰ איחוד: 11:00, 13:00, 15:00, 17:30.`,
+        n:`• [התחלה: 11:00] ⏸ הפסקת חטיף. אזור מוצל.
+• [התחלה: 13:00] 🍽 ארוחת צהריים. glutenfrei מ-guest services.
+• [התחלה: 14:00] 🛋 שעה שקטה חובה: רכבת/סירה/הצגה.
+• [התחלה: 15:00] 🎡 סיבוב שני. 3-4 אטרקציות בלבד.`,
+        e:`• [התחלה: 17:30] 🍽 חטיף/ארוחה קלה לפני יציאה.
+• [התחלה: 18:00] 🚗 חזרה: ~60–70 דק'.
+• [התחלה: 19:15] 🛋 מקלחת, התפרקות, ארוחה קלה.
+• ⚠ ללא רולנטיקה — יום פארק מלא מספיק למשפחה זו.` },
+
+      { d:'20.8', t:'שחזור — Schluchsee', z:'zf',
+        m:`• [התחלה: 09:00] 🍳 ארוחת בוקר איטית. ללא אזעקה אם אפשר.
+• [התחלה: 10:30] 🚗 → Schluchsee: ~30–40 דק'.
+• [התחלה: 11:00] 🌊 Schluchsee — הליכה שטוחה, חוף, מגרש משחקים.`,
+        n:`• [התחלה: 12:30] 🧺 פיקניק GF על שפת האגם.
+• [התחלה: 13:30] 🏊 שחייה / סירות פדלים / מנוחה.`,
+        e:`• [התחלה: 15:00] 🚗 חזרה לדירה.
+• [התחלה: 15:30] 🛋 מנוחה + כביסה + משחקי לוח.
+• [התחלה: 17:30] ⏰ הליכה קצרה אופציה.
+• [התחלה: 19:00] 🍽 מסעדה ב-Titisee/Hinterzarten, או דירה.
+• 🧩 ילד 8 לחוף/פיקניק שקט. הורה + 6,10 → סירות/שחייה.` },
+
+      { d:'21.8', t:'סוסים + טודנאו (לא יחד בעוצמה מלאה)', z:'zf',
+        m:`• [התחלה: 08:30] 🍳 ארוחת בוקר.
+• [התחלה: 09:30] 🚗 → חווה / Todtnau: ~30–45 דק'.
+• אופציה א — סוסים (מומלץ):
+  ◦ [התחלה: 10:00] 🐴 היכרות + רכיבה מוגדרת לילדים. ~2 שעות.
+  ◦ 🧩 ילד 8: ליד האורוות עם הורה אם לא רוצה לרכוב.
+  ◦ [התחלה: 13:15] 🚗 → מפל Todtnau (אם הכל מסתדר): ~15 דק'.
+  ◦ [התחלה: 13:30] 🌊 Todtnau Waterfall — מסלול נגיש. ~75 דק'.`,
+        n:`• [התחלה: 12:00] 🍽 ארוחת צהריים ליד החווה / פיקניק.`,
+        e:`• [התחלה: 15:15] 🚗 חזרה: ~30–45 דק'.
+• [התחלה: 16:00] 🛋 מנוחה + בריכה אם קיימת.
+• [התחלה: 19:00] 🍽 ארוחת דירה.
+• ⚠ אל תשלבו סוסים + Hasenhorn coaster + גשר ביום אחד.` },
+
+      { d:'22.8', t:'פרייבורג — עיר, Bächle, שוק', z:'zf',
+        m:`• [התחלה: 08:30] 🍳 ארוחת בוקר.
+• [התחלה: 09:30] 🚗 → פרייבורג: ~35–45 דק'.
+• [התחלה: 10:15] 🏛 Münsterplatz — קתדרלה, שוק, Bächle תעלות מים.
+  ◦ ילדים: קנו סירת עץ קטנה לBächle — מדהים לגילאים 6–10.`,
+        n:`• [התחלה: 12:15] 🚶 עיר עתיקה — שערי עיר, סמטאות.
+• [התחלה: 12:15] 🍽 ארוחת צהריים. GF: חפשו glutenfrei Freiburg מראש. Italian עם GF pasta טוב.
+• [התחלה: 13:30] 🧸 צעצועים/ספרים/גלידה/שוטטות חופשי.`,
+        e:`• [התחלה: 14:30] ⏰ Colombipark / גן מוצל / מגרש משחקים.
+• [התחלה: 15:15] 🚗 חזרה: ~35–45 דק'.
+• [התחלה: 16:00] 🛋 מנוחה.
+• [התחלה: 19:00] 🍽 מסעדה / דירה.
+• 🧩 אם עמוס: הורה + ילד 8 → בית קפה מוצל ליד הקתדרלה.` },
+
+      { d:'23.8', t:'מפלי ריין + Stein am Rhein (שווייץ)', z:'zf',
+        m:`• [התחלה: 08:00] 🍳 ארוחת בוקר מוקדמת. חבילו דרכונים + GF.
+• [התחלה: 08:45] 🚗 → מפלי ריין: ~1:20–1:40 שעות + גבול.
+• [התחלה: 10:15] 🌊 Rheinfall — נקודות תצפית. סירה אופציה אם תורים קצרים + ילד מסוגל.
+  ◦ 🧩 הורה + ילד 8 → נקודות תצפית/בית קפה. הורה + 6,10 → סירה.`,
+        n:`• [התחלה: 12:00] 🚗 → Stein am Rhein: ~30–45 דק'.
+• [התחלה: 12:45] 🍽 ארוחת צהריים / פיקניק ליד הנהר.
+• [התחלה: 14:00] 🏘 Stein am Rhein — בתים מצוירים, טיילת, גלידה. ~90 דק'.`,
+        e:`• [התחלה: 15:30] 🚗 חזרה: ~1:15–1:30 שעות.
+• [התחלה: 17:00] 🛋 מנוחה.
+• [התחלה: 19:00] 🍽 ארוחת דירה — יום ארוך.
+• 🧩 חלופה קצרה: דלגו מפלי ריין → Vogtsbauernhof Gutach במקום.` },
+
+      { d:'24.8', t:'קולמר (אלזס) / Badeparadies — יום לפני יציאה', z:'zf',
+        m:`• [התחלה: 08:30] 🍳 ארוחת בוקר. החלטה: קולמר (☀) או Badeparadies (☁ גשם).
+• ☀ קולמר:
+  ◦ [התחלה: 09:30] 🚗 → Colmar: ~1:05–1:20 שעות.
+  ◦ [התחלה: 10:45] 🏘 Little Venice / עיר עתיקה. לפני שעות העומס.
+  ◦ 🧩 ילד 8 → ספסל ליד תעלות אם עמוס.
+• ☁ Badeparadies:
+  ◦ 🎟 הזמינו מראש — פארק מים מקורה ב-Titisee עצמו. ~3–4 שעות.`,
+        n:`• [התחלה: 12:15] 🍽 ארוחת צהריים קולמר. צרפת = בדקו GF מראש.
+• [התחלה: 13:30] ⛵ סירה קטנה ב-Little Venice — 20 דק'.`,
+        e:`• [התחלה: 14:30] 🚗 חזרה: ~1:05–1:20 שעות.
+• ⏰ [התחלה: 15:45] 📦 אריזה הדרגתית. אל תשאירו הכל למחר.
+• [התחלה: 19:00] 🍽 ארוחת ערב אחרונה ביער — הזמינו מראש + glutenfrei.` },
+
+      { d:'25.8', t:'יציאה — BSL EuroAirport 19:50', z:'zx',
+        m:`• [התחלה: 08:30] 🍳 ארוחת בוקר + צ'ק אאוט.
+• ⏰ [התחלה: 10:30] אופציה: 30 דק' הליכה קצרה בטיטיזי/Hinterzarten. דלגו אם לא מוכנים.
+• [התחלה: 11:15] 🍽 ארוחת צהריים מוקדמת ליד הבסיס. אל תסמכו על שדה בלבד.`,
+        n:`• [התחלה: 12:15] 🚗 → לוהרר/BSL German side: ~1:15–1:30 שעות. תוסיפו 15 דק' חוצץ.
+• ➡ אופציה: השאירו רכב ב-Lörrach Germany ולקחו מונית ל-BSL (~10 דק') אם חברת ההשכרה לא בשדה.`,
+        e:`• [התחלה: 13:45] ⛽ מילוי דלק + החזרת רכב.
+• [התחלה: 14:45] ⏰ אופציה: בית קפה/גן ליד BSL אם הזמן מאפשר.
+• [התחלה: 16:00] 🚗 שאטל/הליכה לטרמינל.
+• [התחלה: 16:45] ✈ צ'ק אין + ביטחון: ~3 שעות.
+• [התחלה: 17:30] 🍫 Läderach + ארוחה בשדה.
+• [התחלה: 19:50] ✈ BSL → TLV.
+• 🧩 אם לוגיסטיקה מורכבת: הורה A → רכב/דלק/השכרה. הורה B → ילדים בבית קפה.` },
+    ],
+    qa: [
+      { q:'מה הרעיון של pI — Star Black Forest?',
+        a:`הכי פחות מעברי מלון: 1 לילה Baden-Baden + 8 לילות בסיס כוכב אחד.
+16–25 אוגוסט. FRA→BSL.
+כל הטיולים הם יום-טיול מהבסיס.
+✅ שני שינויי מלון בלבד.
+✅ 8 לילות לפרוק — מטבח, כביסה, שגרה.
+✅ Hochschwarzwald Card אפשרי (בדקו 2026).` },
+      { q:'מה ההבדל מ-pG ו-pH?',
+        a:`pG: FRA → מירסבורג → טיטיזי 4n → Basel לינה. 5 אתרים עיקריים.
+pH: FRA → היידלברג → Rust 2n → טיטיזי 6n → BSL.
+pI: FRA → Baden-Baden 1n → בסיס כוכב טיטיזי 8n → BSL.
+pI = הכי פחות לחץ, הכי הרבה לילות במקום אחד.` },
+      { q:'למה Baden-Baden ולא היידלברג?',
+        a:`Baden-Baden קרובה יותר ליער השחור ולבסיס הכוכב.
+Lichtentaler Allee = פעילות ראשונה אידיאלית — שקטה, ירוקה.
+היידלברג = ממזרח יותר, מוסיף 30–45 דק' נסיעה ביום הגעה.` },
+      { q:'מפלי ריין — שווה?',
+        a:`יום ארוך (3–3:45h נסיעה) אבל מרשים מאוד.
+הסירה — אופציה בלבד. הורה + ילד 8 → נקודות תצפית.
+חלופה קצרה: Vogtsbauernhof Gutach — 20 דק' מטריברג, אידיאלי לילדים.` },
+      { q:'קולמר או Badeparadies?',
+        a:`קולמר (☀): Petite Venise — ציורי, כיפי לילדים. ~1:15h נסיעה.
+Badeparadies (☁ גשם): פארק מים מקורה בטיטיזי עצמו — 0 נסיעה!
+שניהם: יום לפני הטיסה — שמרו על אנרגיה.` },
+      { q:'Hochschwarzwald Card — מה זה?',
+        a:`כרטיס הטבות לאזור יער השחור הדרומי.
+בלינות במלונות/דירות מסוימות: כניסה חינמית/מוזלת לאטרקציות.
+בדקו 2026: www.hochschwarzwald.de
+שווה בדיקה לפני הזמנת הלינה.` },
+      { q:'כמה עולה pI?',
+        a:`הערכה ל-5 אנשים (ללא טיסות):
+• לינה (1n Baden-Baden + 8n טיטיזי): €2,600–5,000
+• רכב One-Way FRA→BSL 9 ימים: €900–1,600 + עמלה
+• דלק + חניה + tolls: €250–550
+• קניות GF: €600–1,000
+• מסעדות: €900–1,600
+• פעילויות: €1,200–2,200
+• סה"כ: €7,000–11,200` },
+    ]
+  }
+};
+
+// ── MAP_DATA ─────────────────────────────────────────────────────────────
+const MAP_DATA = {
+    pG: {
+    sleeps: [
+      { lat:50.0379, lng:8.5622, label:'FRA פרנקפורט', nights:null, color:'#888888' },
+      { lat:47.6944, lng:9.2712, label:'מירסבורג', nights:[1,3], color:'#4a90a4' },
+      { lat:47.9049, lng:8.1548, label:'טיטיזי', nights:[4,7], color:'#2f7d4e' },
+      { lat:47.5596, lng:7.5886, label:'Basel/BSL', nights:[8,8], color:'#8a5fbf' },
+      { lat:47.5980, lng:7.5290, label:'BSL EuroAirport', nights:null, color:'#888888' }
+    ],
+    attractions: [
+      { lat:47.6951, lng:9.2719, label:'Burg Meersburg', day:'17.8', base:'מירסבורג' },
+      { lat:47.7048, lng:9.1957, label:'אי מאינאו', day:'17.8', base:'מירסבורג' },
+      { lat:47.6603, lng:9.1758, label:'SEA LIFE קונסטנץ', day:'18.8', base:'מירסבורג' },
+      { lat:47.8170, lng:8.0500, label:'Schluchsee', day:'21.8', base:'טיטיזי' },
+      { lat:48.2660, lng:7.7220, label:'אירופה פארק Rust', day:'20.8', base:'טיטיזי' },
+      { lat:48.1302, lng:8.2322, label:'מפלי טריברג', day:'22.8', base:'טיטיזי' },
+      { lat:47.5574, lng:7.5925, label:'Basel Münster', day:'23.8', base:'Basel/BSL' },
+      { lat:48.0787, lng:7.3584, label:'Colmar קולמר', day:'23.8', base:'Basel/BSL' }
+    ]
+  },
+    pH: {
+    sleeps: [
+      { lat:50.0379, lng:8.5622, label:'FRA Frankfurt', nights:null, color:'#888888' },
+      { lat:49.3988, lng:8.6724, label:'Heidelberg', nights:[1,1], color:'#c8773a' },
+      { lat:48.2672, lng:7.7256, label:'Rust', nights:[2,3], color:'#558b6e' },
+      { lat:47.9029, lng:8.1540, label:'Titisee-Schluchsee', nights:[4,9], color:'#4676a0' },
+      { lat:47.5989, lng:7.5299, label:'BSL EuroAirport', nights:null, color:'#888888' }
+    ],
+    attractions: [
+      { lat:49.4106, lng:8.7157, label:'Heidelberg Altstadt', day:'16.8', base:'Heidelberg' },
+      { lat:48.7606, lng:8.2398, label:'Baden-Baden Allee', day:'17.8', base:'Rust' },
+      { lat:48.5985, lng:8.2010, label:'Mummelsee', day:'17.8', base:'Rust' },
+      { lat:48.2689, lng:7.7200, label:'Europa-Park', day:'18.8', base:'Rust' },
+      { lat:47.8166, lng:8.1779, label:'Schluchsee', day:'20.8', base:'Titisee-Schluchsee' },
+      { lat:48.1301, lng:8.2336, label:'Triberg Waterfalls', day:'21.8', base:'Titisee-Schluchsee' },
+      { lat:48.2709, lng:8.2031, label:'Vogtsbauernhof Gutach', day:'21.8', base:'Titisee-Schluchsee' },
+      { lat:47.9959, lng:7.8522, label:'Freiburg Altstadt', day:'22.8', base:'Titisee-Schluchsee' },
+      { lat:47.8547, lng:8.0912, label:'Menzenschwand', day:'23.8', base:'Titisee-Schluchsee' },
+      { lat:47.7605, lng:8.1286, label:'St.Blasien Cathedral', day:'23.8', base:'Titisee-Schluchsee' },
+      { lat:47.8986, lng:8.1566, label:'Badeparadies', day:'24.8', base:'Titisee-Schluchsee' }
+    ]
+  },
+    pI: {
+    sleeps: [
+      { lat:50.0379, lng:8.5622, label:'Frankfurt Airport', nights:null, color:'#888888' },
+      { lat:48.7606, lng:8.2398, label:'Baden-Baden', nights:[1,1], color:'#b7791f' },
+      { lat:47.8682, lng:8.2021, label:'Lenzkirch / Titisee Star Base', nights:[2,9], color:'#2f855a' },
+      { lat:47.6050, lng:7.5980, label:'Loerrach / Basel German Side', nights:null, color:'#888888' }
+    ],
+    attractions: [
+      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee', day:'16.8', base:'Baden-Baden' },
+      { lat:48.5976, lng:8.2015, label:'Mummelsee', day:'17.8', base:'Baden-Baden' },
+      { lat:48.1301, lng:8.2319, label:'Triberg Waterfalls', day:'17.8', base:'Lenzkirch / Titisee Star Base' },
+      { lat:47.9022, lng:8.1549, label:'Titisee Lake', day:'18.8', base:'Lenzkirch / Titisee Star Base' },
+      { lat:48.2660, lng:7.7220, label:'Europa Park Rust', day:'19.8', base:'Lenzkirch / Titisee Star Base' },
+      { lat:47.8167, lng:8.1833, label:'Schluchsee', day:'20.8', base:'Lenzkirch / Titisee Star Base' },
+      { lat:47.8299, lng:7.9436, label:'Todtnau Waterfall', day:'21.8', base:'Lenzkirch / Titisee Star Base' },
+      { lat:47.9990, lng:7.8421, label:'Freiburg', day:'22.8', base:'Lenzkirch / Titisee Star Base' },
+      { lat:47.6779, lng:8.6159, label:'Rhine Falls', day:'23.8', base:'Lenzkirch / Titisee Star Base' },
+      { lat:48.0794, lng:7.3585, label:'Colmar', day:'24.8', base:'Lenzkirch / Titisee Star Base' }
+    ]
+  }
+};
+
+// ── HELPERS ──────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#x27;').replace(/\//g,'&#x2F;')
+    .replace(/`/g,'&#x60;').replace(/=/g,'&#x3D;');
+}
+
+function formatDet(raw) {
+  if (!raw) return '';
+  return raw.split('\n').map(line => {
+    const s = esc(line);
+    if (s.startsWith('◦ ')) return '<div class="det-sub">'  + s.slice(2) + '</div>';
+    if (s.startsWith('• ')) return '<div class="det-bull">' + s.slice(2) + '</div>';
+    if (s.trim() === '')    return '';
+    return '<div class="det-line">' + s + '</div>';
+  }).filter(Boolean).join('');
+}
+
+// ── RENDER ───────────────────────────────────────────────────────────────
+function renderTable(id, pk) {
+  const plan = PLANS[pk];
+  if (!plan) { console.error('no plan:', pk); return; }
+  const el = document.getElementById(id);
+  if (!el) { console.error('no element:', id); return; }
+  const rows = plan.rows;
+  const hasDayCost = rows.some(r => r.daycost);
+  const html = rows.map(r => `
+    <tr class="${r.z}">
+      <td class="dc">${esc(r.d)}</td>
+      <td class="rc">${esc(r.r)}</td>
+      <td class="drc">${esc(r.dr)}</td>
+      <td class="sc">${esc(r.s)}</td>
+      ${hasDayCost ? `<td class="act-cell" style="font-size:.75rem;color:var(--accent);font-weight:600">${esc(r.daycost||'')}</td>` : ''}
+    </tr>`).join('');
+  el.innerHTML = html;
+  console.log('renderTable', id, el.innerHTML.length);
+}
+
+function renderDetail(id, pk) {
+  const el = document.getElementById(id);
+  if (!el) { console.error('no det element:', id); return; }
+  el.innerHTML = PLANS[pk].det.map(d => `
+    <div class="dblock ${d.z}">
+      <div class="dtitle"><span class="dbadge">${esc(d.d)}</span>${esc(d.t)}</div>
+      <div class="trow"><span class="tlabel">בוקר</span><div class="det-content">${formatDet(d.m)}</div></div>
+      <div class="trow"><span class="tlabel">צהריים</span><div class="det-content">${formatDet(d.n)}</div></div>
+      <div class="trow"><span class="tlabel">ערב</span><div class="det-content">${formatDet(d.e)}</div></div>
+    </div>`).join('');
+  console.log('renderDetail', id, el.innerHTML.length);
+}
+
+function renderQA(id, pk) {
+  const el = document.getElementById(id);
+  if (!el) { console.error('no qa element:', id); return; }
+  const items = PLANS[pk].qa || [];
+  el.innerHTML = items.map((item,i) => `
+    <div class="qa-item">
+      <div class="qa-question" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span>${esc(item.q)}</span>
+      </div>
+      <div class="qa-answer">${esc(item.a)}</div>
+    </div>`).join('');
+}
+
+// ── SWITCH ───────────────────────────────────────────────────────────────
+let leafletLoaded = false;
+const mapInstances = {};
+
+function switchAlt(pk, btn) {
+  document.querySelectorAll('.alt-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-'+pk).classList.add('active');
+  btn.classList.add('active');
+  // lazy map init
+  if (typeof L !== 'undefined' && MAP_DATA[pk] && !mapInstances[pk]) {
+    renderMap(pk);
+  } else if (typeof L === 'undefined') {
+    loadLeaflet().then(() => renderMap(pk));
+  }
+  setTimeout(() => {
+    const m = mapInstances[pk];
+    if (m) {
+      m.invalidateSize();
+      const d = MAP_DATA[pk];
+      const all = [...d.sleeps.map(s=>[s.lat,s.lng]),...d.attractions.map(a=>[a.lat,a.lng])];
+      m.fitBounds(L.latLngBounds(all), {padding:[40,40]});
+    }
+  }, 300);
+}
+
+function loadLeaflet() {
+  if (leafletLoaded) return Promise.resolve();
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  document.head.appendChild(css);
+  return new Promise((res,rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    s.onload = () => { leafletLoaded = true; res(); };
+    s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+function renderMap(pk) {
+  const el = document.getElementById('map-'+pk);
+  if (!el || mapInstances[pk]) return;
+  const { sleeps, attractions } = MAP_DATA[pk];
+  const map = L.map(el, {zoomControl:true, scrollWheelZoom:false});
+  mapInstances[pk] = map;
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution:'© OpenStreetMap contributors, © CARTO', subdomains:'abcd', maxZoom:19
+  }).addTo(map);
+  const allPts = [...sleeps.map(s=>[s.lat,s.lng]),...attractions.map(a=>[a.lat,a.lng])];
+  sleeps.forEach(s => {
+    const size = s.nights ? 44 : 28;
+    const icon = L.divIcon({className:'',
+      html:`<div style="background:${s.color};color:#fff;border-radius:50%;width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.4);font-size:10px;font-weight:900">${s.nights?s.nights[0]+'–'+s.nights[1]:'✈'}</div>`,
+      iconSize:[size,size], iconAnchor:[size/2,size/2]});
+    L.marker([s.lat,s.lng],{icon,zIndexOffset:100}).addTo(map).bindPopup(s.label);
+  });
+  attractions.forEach((a,i) => {
+    const base = sleeps.find(s => s.label === a.base);
+    const color = base ? base.color : '#666';
+    if (base) L.polyline([[base.lat,base.lng],[a.lat,a.lng]],{color,weight:1.8,dashArray:'4 5'}).addTo(map);
+    const icon = L.divIcon({className:'',
+      html:`<div style="background:${color};color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;font-size:11px;font-weight:800">${i+1}</div>`,
+      iconSize:[24,24],iconAnchor:[12,12]});
+    L.marker([a.lat,a.lng],{icon,zIndexOffset:50}).addTo(map).bindPopup(a.label);
+  });
+  setTimeout(() => {
+    map.invalidateSize();
+    map.fitBounds(L.latLngBounds(allPts),{padding:[40,40]});
+  }, 100);
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────
+renderTable('tbG','pG'); renderDetail('detG','pG'); renderQA('qa-pG','pG');
+renderTable('tbH','pH'); renderDetail('detH','pH'); renderQA('qa-pH','pH');
+renderTable('tbI','pI'); renderDetail('detI','pI'); renderQA('qa-pI','pI');
+
+// Activate first panel
+switchAlt('pG', document.getElementById('sidebtn-pG'));
+
+// Load Leaflet and render first map
+loadLeaflet().then(() => renderMap('pG'));
+</script>
+</body>
+</html>
