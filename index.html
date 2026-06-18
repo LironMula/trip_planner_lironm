@@ -2130,15 +2130,7 @@ function renderTable(id, pk) {
         &#x1F4B0; הערכת עלויות ל-5 אנשים:
         מינימום ~${minVal} &nbsp;|&nbsp; ממוצע ~${avgVal} &nbsp;|&nbsp; מקסימום ~${maxVal}
       </td></tr>`;
-  } {
-    const cols = hasDayCost ? 5 : 4;
-    html += `<tr style="background:var(--lake);color:#fff;font-weight:700;font-size:.8rem;">
-      <td colspan="${cols}" style="padding:9px 12px;text-align:right;">
-        &#x1F4B0; &#x1D97; הערכת עלויות ל-5 אנשים:
-        מינימום ~$8,500&nbsp;&#x202F;|&#x202F;&nbsp;ממוצע ~$10,000&nbsp;&#x202F;|&#x202F;&nbsp;מקסימום ~$12,500
-        <span style="font-weight:400;opacity:.85;font-size:.72rem;">(&#x20AA;25,500 / &#x20AA;30,000 / &#x20AA;37,500)</span>
-      </td></tr>`;
-  }
+    }
   document.getElementById(id).innerHTML = html;
 }
 // Convert bullet text to styled HTML
