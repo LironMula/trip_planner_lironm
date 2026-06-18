@@ -2525,12 +2525,13 @@ function renderAltsForProject() {
   renderTable('tbE','pE'); renderTable('tbF','pF'); renderTable('tbG','pG'); renderTable('tbH','pH'); renderTable('tbI','pI');
   renderDetail('detE','pE'); renderDetail('detF','pF'); renderDetail('detG','pG'); renderDetail('detH','pH'); renderDetail('detI','pI');
   renderQA('qa-pE','pE'); renderQA('qa-pF','pF'); renderQA('qa-pG','pG'); renderQA('qa-pH','pH'); renderQA('qa-pI','pI');
-  // reset maps
+  // reset all map instances — they'll re-render lazily when each panel is opened
   ['p8','p9','pE','pF','pG','pH','pI'].forEach(pk => {
     if (mapInstances[pk]) { try { mapInstances[pk].remove(); } catch(e){} delete mapInstances[pk]; }
     const mel = document.getElementById('map-'+pk);
     if (mel) mel.innerHTML = '';
   });
+  // Only init the currently active panel's map
   initMaps();
 }
 
@@ -3004,24 +3005,29 @@ function switchAlt(pk, btn) {
   document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-'+pk).classList.add('active');
   btn.classList.add('active');
-  // Initialize map if Leaflet loaded but this panel was hidden at init time
-  if (typeof L !== 'undefined' && MAP_DATA[pk]) {
-    if (!mapInstances[pk]) {
-      renderMap(pk);
-    }
-    setTimeout(() => {
-      const m = mapInstances[pk];
-      if (m) {
-        m.invalidateSize();
-        const d = MAP_DATA[pk];
-        const all = [...d.sleeps.map(s=>[s.lat,s.lng]), ...d.attractions.map(a=>[a.lat,a.lng])];
-        m.fitBounds(L.latLngBounds(all), { padding:[40,40] });
-      }
-    }, 200);
-  } else {
-    // Leaflet not yet loaded — trigger initMaps which will render when ready
-    if (typeof initMaps === 'function') initMaps();
+
+  if (typeof L === 'undefined') {
+    // Leaflet not loaded yet — load it then render
+    initMaps().then(() => { setTimeout(() => _refitMap(pk), 300); });
+    return;
   }
+  if (!MAP_DATA[pk]) return;
+
+  if (!mapInstances[pk]) {
+    // Panel was hidden on load — safe to init now that it's visible
+    renderMap(pk);
+  }
+  // Always refit after panel becomes visible
+  setTimeout(() => _refitMap(pk), 200);
+}
+
+function _refitMap(pk) {
+  const m = mapInstances[pk];
+  if (!m || !MAP_DATA[pk]) return;
+  m.invalidateSize();
+  const d = MAP_DATA[pk];
+  const all = [...d.sleeps.map(s=>[s.lat,s.lng]), ...d.attractions.map(a=>[a.lat,a.lng])];
+  if (all.length) m.fitBounds(L.latLngBounds(all), { padding:[40,40] });
 }
 
 // ════════════════════════════════════════════════
@@ -3045,13 +3051,10 @@ async function initMaps() {
     await ldScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
     leafletLoaded = true;
   }
-  renderMap('p9');
-  setTimeout(() => renderMap('p8'), 300);
-  setTimeout(() => renderMap('pE'), 500);
-  setTimeout(() => renderMap('pF'), 700);
-  setTimeout(() => renderMap('pG'), 900);
-  setTimeout(() => renderMap('pH'), 1100);
-  setTimeout(() => renderMap('pI'), 1300);
+  // Only render the active panel's map on load — others render on switchAlt
+  const activePk = document.querySelector('.alt-panel.active');
+  const firstPk = activePk ? (activePk.id.replace('panel-','')) : 'p9';
+  renderMap(firstPk);
 }
 
 function renderMap(pk) {
