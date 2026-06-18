@@ -568,7 +568,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
                   <span class="chosen-badge" id="chosen-badge-p9">✓ מועדף</span>
                   מילאן_9_לילות
                 </div>
-                <div class="alt-meta">20–29 אוגוסט 2026 · 9 לילות · יוצאים 10:45 · חוזרים 13:05 | ✈ $4,000 ×5 | 💰 סה״כ $8,500–$12,500</div>
+                <div class="alt-meta">20–29 אוגוסט 2026 · 9 לילות · יוצאים 10:45 · חוזרים 13:05 | 💰 עלות כוללת ל-5 אנשים: $8,500–$12,500</div>
               </div>
               <button class="choose-btn" id="choose-btn-p9" onclick="setChosen('p9')">קבע כמועדף</button>
             </div>
@@ -586,7 +586,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               </div>
               <div class="vwrap" id="p9t">
                 <div class="old-label">גרסה מוקדמת</div><div class="old-overlay"></div>
-                <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th><th>סוג</th><th>עלות ✈×5</th></tr></thead>
+                <div class="tbl-wrap"><table><thead><tr><th>תאריך</th><th>פעילות</th><th>Drive time</th><th>לינה</th><th>עלות יומית</th></tr></thead>
                 <tbody id="tb9"></tbody></table></div>
               </div>
 
@@ -606,6 +606,109 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
                 </div>
               </div>
               <div class="det-sec"><h3>תכנית מפורטת</h3><div id="det9"></div></div>
+              <div class="det-sec" id="cost-sec-p9">
+                <h3>&#x1F4B0; פירוט הערכת עלויות — מילאן 9 לילות (5 אנשים)</h3>
+
+                <!-- Summary table -->
+                <div style="background:#fff;border-radius:10px;border:1px solid var(--border);overflow:hidden;font-size:.83rem;margin-bottom:16px;">
+                  <table style="width:100%;border-collapse:collapse;min-width:unset;">
+                    <thead><tr style="background:var(--lake);color:#fff;">
+                      <th style="padding:8px 10px;text-align:right;">קטגוריה</th>
+                      <th style="padding:8px 6px;text-align:center;">מינימום</th>
+                      <th style="padding:8px 6px;text-align:center;background:#1a5a8b;">ממוצע ✦</th>
+                      <th style="padding:8px 6px;text-align:center;">מקסימום</th>
+                    </tr></thead><tbody>
+                      <tr><td style="padding:7px 10px;">&#x2708; טיסות &#xD7;5</td><td style="text-align:center;padding:7px 6px;">$4,000</td><td style="text-align:center;padding:7px 6px;background:#f0f7ff;">$4,000</td><td style="text-align:center;padding:7px 6px;">$4,000</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:7px 10px;">&#x1F3E8; לינה (9 לילות)</td><td style="text-align:center;padding:7px 6px;">$1,310</td><td style="text-align:center;padding:7px 6px;background:#e8f4ff;">$2,000</td><td style="text-align:center;padding:7px 6px;">$2,805</td></tr>
+                      <tr><td style="padding:7px 10px;">&#x1F37D; אוכל</td><td style="text-align:center;padding:7px 6px;">$1,210</td><td style="text-align:center;padding:7px 6px;background:#f0f7ff;">$1,700</td><td style="text-align:center;padding:7px 6px;">$2,365</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:7px 10px;">&#x1F3A2; פעילויות</td><td style="text-align:center;padding:7px 6px;">$900</td><td style="text-align:center;padding:7px 6px;background:#e8f4ff;">$1,000</td><td style="text-align:center;padding:7px 6px;">$1,100</td></tr>
+                      <tr><td style="padding:7px 10px;">&#x1F697; רכב + דלק</td><td style="text-align:center;padding:7px 6px;">$870</td><td style="text-align:center;padding:7px 6px;background:#f0f7ff;">$1,000</td><td style="text-align:center;padding:7px 6px;">$1,170</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:7px 10px;">&#x1F6D2; שונות</td><td style="text-align:center;padding:7px 6px;">$210</td><td style="text-align:center;padding:7px 6px;background:#e8f4ff;">$300</td><td style="text-align:center;padding:7px 6px;">$560</td></tr>
+                      <tr style="background:var(--lake);color:#fff;font-weight:700;">
+                        <td style="padding:10px 10px;">&#x1F4B0; סה"כ</td>
+                        <td style="text-align:center;padding:10px 6px;">$8,500<br><small style="opacity:.8;">&#x20AA;25,500</small></td>
+                        <td style="text-align:center;padding:10px 6px;background:#1a5a8b;">$10,000<br><small style="opacity:.8;">&#x20AA;30,000</small></td>
+                        <td style="text-align:center;padding:10px 6px;">$12,500<br><small style="opacity:.8;">&#x20AA;37,500</small></td>
+                      </tr>
+                    </tbody></table>
+                  <div style="padding:8px 12px;font-size:.74rem;color:var(--rock);">&#x26A0; שער: $1=&#x20AA;3.0 (יוני 2026: ~&#x20AA;2.95) &middot; &#x20AC;1&#x2248;$1.10</div>
+                </div>
+
+                <!-- Detailed breakdown table -->
+                <h3 style="font-size:.92rem;margin-bottom:8px;">&#x1F4CB; פירוט מפורט לפי קטגוריה</h3>
+                <div style="background:#fff;border-radius:10px;border:1px solid var(--border);overflow:hidden;font-size:.81rem;">
+                  <table style="width:100%;border-collapse:collapse;min-width:unset;">
+                    <thead><tr style="background:#2d5a3d;color:#fff;">
+                      <th style="padding:8px 10px;text-align:right;" colspan="2">פריט</th>
+                      <th style="padding:8px 6px;text-align:center;">חישוב</th>
+                      <th style="padding:8px 6px;text-align:center;">סה"כ</th>
+                    </tr></thead><tbody>
+
+                      <!-- FLIGHTS -->
+                      <tr style="background:#e8f0e8;"><td colspan="4" style="padding:6px 10px;font-weight:700;color:#2d5a3d;">&#x2708; טיסות</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">טיסה הלוך-שוב Wizz Air Malta</td><td style="text-align:center;padding:5px 6px;">$800 &#xD7; 5 אנשים</td><td style="text-align:center;padding:5px 6px;font-weight:600;">$4,000</td></tr>
+
+                      <!-- ACCOMMODATION -->
+                      <tr style="background:#e8f0e8;"><td colspan="4" style="padding:6px 10px;font-weight:700;color:#2d5a3d;">&#x1F3E8; לינה (9 לילות)</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">מנאג'יו — 2 לילות (גראנד הוטל / וילה)</td><td style="text-align:center;padding:5px 6px;">€150–€350/לילה &#xD7; 2</td><td style="text-align:center;padding:5px 6px;">$330–$770</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:5px 10px 5px 18px;" colspan="2">מירסבורג — 3 לילות (בוטיק / פישרהאוס)</td><td style="text-align:center;padding:5px 6px;">€120–€250/לילה &#xD7; 3</td><td style="text-align:center;padding:5px 6px;">$395–$825</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">טיטיזי — 3 לילות (מריטים / שטוב)</td><td style="text-align:center;padding:5px 6px;">€130–€280/לילה &#xD7; 3</td><td style="text-align:center;padding:5px 6px;">$430–$925</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:5px 10px 5px 18px;" colspan="2">לוגאנו — 1 לילה (לוגנודנטה / רסידנצה)</td><td style="text-align:center;padding:5px 6px;">€140–€260/לילה &#xD7; 1</td><td style="text-align:center;padding:5px 6px;">$155–$285</td></tr>
+                      <tr style="background:#e8f4ff;font-weight:600;"><td style="padding:5px 10px 5px 18px;" colspan="2">&#x2508; סה"כ לינה</td><td></td><td style="text-align:center;padding:5px 6px;">$1,310–$2,805</td></tr>
+
+                      <!-- FOOD -->
+                      <tr style="background:#e8f0e8;"><td colspan="4" style="padding:6px 10px;font-weight:700;color:#2d5a3d;">&#x1F37D; אוכל (9 ימים, 5 אנשים)</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">ארוחות ערב במסעדה (8 &#xD7; €50–€100)</td><td style="text-align:center;padding:5px 6px;">€400–€800</td><td style="text-align:center;padding:5px 6px;">$440–$880</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:5px 10px 5px 18px;" colspan="2">ארוחות צהריים &#x2F; קלות (9 &#xD7; €30–€60)</td><td style="text-align:center;padding:5px 6px;">€270–€540</td><td style="text-align:center;padding:5px 6px;">$295–$595</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">קניות סופרמרקט (5 &#xD7; €40–€70)</td><td style="text-align:center;padding:5px 6px;">€200–€350</td><td style="text-align:center;padding:5px 6px;">$220–$385</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">קפה, גלידה, חטיפים &#x2F; שוטף</td><td style="text-align:center;padding:5px 6px;">€50–€100 סה"כ</td><td style="text-align:center;padding:5px 6px;">$55–$110</td></tr>
+                      <tr style="background:#e8f4ff;font-weight:600;"><td style="padding:5px 10px 5px 18px;" colspan="2">&#x2508; סה"כ אוכל</td><td></td><td style="text-align:center;padding:5px 6px;">$1,010–$1,970</td></tr>
+
+                      <!-- ACTIVITIES -->
+                      <tr style="background:#e8f0e8;"><td colspan="4" style="padding:6px 10px;font-weight:700;color:#2d5a3d;">&#x1F3A2; פעילויות וכניסות</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">אירופה פארק — 5 אנשים (Ride &amp; Slide)</td><td style="text-align:center;padding:5px 6px;">€55 &#xD7; 5</td><td style="text-align:center;padding:5px 6px;">$302</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:5px 10px 5px 18px;" colspan="2">אי מאינאו — 3 מבוגר + 2 ילד (עד 12 חינם)</td><td style="text-align:center;padding:5px 6px;">€26&#xD7;3 + €0&#xD7;2</td><td style="text-align:center;padding:5px 6px;">$85</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">SEA LIFE קונסטנץ — 5 אנשים</td><td style="text-align:center;padding:5px 6px;">€20 &#xD7; 5</td><td style="text-align:center;padding:5px 6px;">$110</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:5px 10px 5px 18px;" colspan="2">Burg Meersburg — 5 אנשים</td><td style="text-align:center;padding:5px 6px;">€15 &#xD7; 5</td><td style="text-align:center;padding:5px 6px;">$82</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">Hasenhorn Coaster + Blackforestline — 5</td><td style="text-align:center;padding:5px 6px;">(€10+€12) &#xD7; 5</td><td style="text-align:center;padding:5px 6px;">$121</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:5px 10px 5px 18px;" colspan="2">חוות Pegasus — 5 אנשים (רכיבה)</td><td style="text-align:center;padding:5px 6px;">€30 &#xD7; 5</td><td style="text-align:center;padding:5px 6px;">$165</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">קונצרט Festivalsommer — 3 מבוגרים (2 ילד חינם)</td><td style="text-align:center;padding:5px 6px;">€35 &#xD7; 3</td><td style="text-align:center;padding:5px 6px;">$115</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:5px 10px 5px 18px;" colspan="2">שיטים, סירות פדלים, מיני גולף, כניסות קטנות</td><td style="text-align:center;padding:5px 6px;">~€120 סה"כ</td><td style="text-align:center;padding:5px 6px;">$132</td></tr>
+                      <tr style="background:#e8f4ff;font-weight:600;"><td style="padding:5px 10px 5px 18px;" colspan="2">&#x2508; סה"כ פעילויות</td><td></td><td style="text-align:center;padding:5px 6px;">~$1,112</td></tr>
+
+                      <!-- CAR -->
+                      <tr style="background:#e8f0e8;"><td colspan="4" style="padding:6px 10px;font-weight:700;color:#2d5a3d;">&#x1F697; רכב שכור + נסיעות</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">השכרת רכב 10 ימים (כולל CDW ביטוח)</td><td style="text-align:center;padding:5px 6px;">$500–$750</td><td style="text-align:center;padding:5px 6px;">$500–$750</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:5px 10px 5px 18px;" colspan="2">דלק (~900 ק"מ סה"כ, €0.20/ק"מ)</td><td style="text-align:center;padding:5px 6px;">€180</td><td style="text-align:center;padding:5px 6px;">$198</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">Vignette שווייץ (חובה) + חניות</td><td style="text-align:center;padding:5px 6px;">€45 + €30</td><td style="text-align:center;padding:5px 6px;">$83</td></tr>
+                      <tr style="background:#e8f4ff;font-weight:600;"><td style="padding:5px 10px 5px 18px;" colspan="2">&#x2508; סה"כ רכב</td><td></td><td style="text-align:center;padding:5px 6px;">$781–$1,031</td></tr>
+
+                      <!-- MISC -->
+                      <tr style="background:#e8f0e8;"><td colspan="4" style="padding:6px 10px;font-weight:700;color:#2d5a3d;">&#x1F6D2; שונות</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">ביטוח נסיעות (5 אנשים)</td><td style="text-align:center;padding:5px 6px;">~$100–$150</td><td style="text-align:center;padding:5px 6px;">$125</td></tr>
+                      <tr style="background:#f8fafc;"><td style="padding:5px 10px 5px 18px;" colspan="2">תרופות, צרכי טיפוח, שונות</td><td style="text-align:center;padding:5px 6px;">~$80</td><td style="text-align:center;padding:5px 6px;">$80</td></tr>
+                      <tr><td style="padding:5px 10px 5px 18px;" colspan="2">קניות &#x2F; מזכרות (Lindt, שעונים, מזכרות)</td><td style="text-align:center;padding:5px 6px;">$100–$300</td><td style="text-align:center;padding:5px 6px;">$100–$300</td></tr>
+                      <tr style="background:#e8f4ff;font-weight:600;"><td style="padding:5px 10px 5px 18px;" colspan="2">&#x2508; סה"כ שונות</td><td></td><td style="text-align:center;padding:5px 6px;">$305–$555</td></tr>
+
+                      <!-- GRAND TOTAL -->
+                      <tr style="background:var(--lake);color:#fff;font-weight:700;font-size:.88rem;">
+                        <td colspan="3" style="padding:11px 12px;text-align:right;">&#x1F4B0; סה"כ כולל — 5 אנשים, 9 לילות</td>
+                        <td style="text-align:center;padding:11px 8px;">$8,310–$12,467</td>
+                      </tr>
+                      <tr style="background:#1a5a8b;color:#fff;font-size:.8rem;">
+                        <td colspan="3" style="padding:8px 12px;text-align:right;opacity:.9;">בשקלים (שער $1=&#x20AA;3.0)</td>
+                        <td style="text-align:center;padding:8px 8px;opacity:.9;">&#x20AA;24,930–&#x20AA;37,400</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="padding:8px 12px;font-size:.73rem;color:var(--rock);border-top:1px solid var(--border);">
+                    &#x26A0; הערות: שער $1=&#x20AA;3.0 (שוק יוני 2026: ~&#x20AA;2.95) &middot; &#x20AC;1&#x2248;$1.10 &middot;
+                    מחירי מלונות בסוף אוגוסט גבוהים יותר — הזמינו מוקדם &middot;
+                    ילדים עד 12 — כניסה חינם במרבית האטרקציות &middot;
+                    שגיאת הערכה: &#xB1;15%
+                  </div>
+                </div>
+              </div>
               <div class="det-sec" id="cost-sec-p9"><h3>&#x1F4B0; פירוט הערכת עלויות — מילאן 9 לילות</h3>
                 <div style="background:#fff;border-radius:10px;border:1px solid var(--border);overflow:hidden;font-size:.83rem;">
                   <table style="width:100%;border-collapse:collapse;min-width:unset;">
@@ -1983,17 +2086,23 @@ function ldScript(src){ return new Promise((r,j)=>{ const s=document.createEleme
 // ════════════════════════════════════════════════
 function renderTable(id, pk) {
   const rows = getPlans()[pk].rows;
+  const hasDayCost = rows.some(r => r.daycost);
   let html = rows.map(r=>`
     <tr class="${r.z}">
-      <td class="dc">${esc(r.d)}</td><td class="rc">${esc(r.r)}</td>
-      <td class="drc">${esc(r.dr)}</td><td class="sc">${esc(r.s)}</td>
+      <td class="dc">${esc(r.d)}</td>
+      <td class="rc">${esc(r.r)}</td>
+      <td class="drc">${esc(r.dr)}</td>
+      <td class="sc">${esc(r.s)}</td>
+      ${hasDayCost ? `<td class="act-cell" style="font-size:.75rem;color:var(--accent);font-weight:600;white-space:nowrap">${esc(r.daycost||'')}</td>` : ''}
     </tr>`).join('');
   if (pk === 'p9') {
-    html += '<tr style="background:var(--lake);color:#fff;font-weight:700;font-size:.8rem;">'
-          + '<td colspan="4" style="padding:9px 12px;text-align:right;">'
-          + '&#x1F4B0; עלויות: מינימום ~$8,500 &nbsp;|&nbsp; ממוצע ~$10,000 &nbsp;|&nbsp; מקסימום ~$12,500'
-          + ' <span style="font-weight:400;opacity:.85;font-size:.72rem;">(&#x20AA;25,500 / &#x20AA;30,000 / &#x20AA;37,500)</span>'
-          + '</td></tr>';
+    const cols = hasDayCost ? 5 : 4;
+    html += `<tr style="background:var(--lake);color:#fff;font-weight:700;font-size:.8rem;">
+      <td colspan="${cols}" style="padding:9px 12px;text-align:right;">
+        &#x1F4B0; &#x1D97; הערכת עלויות ל-5 אנשים:
+        מינימום ~$8,500&nbsp;&#x202F;|&#x202F;&nbsp;ממוצע ~$10,000&nbsp;&#x202F;|&#x202F;&nbsp;מקסימום ~$12,500
+        <span style="font-weight:400;opacity:.85;font-size:.72rem;">(&#x20AA;25,500 / &#x20AA;30,000 / &#x20AA;37,500)</span>
+      </td></tr>`;
   }
   document.getElementById(id).innerHTML = html;
 }
