@@ -2427,67 +2427,116 @@ init();
 let _fsMap = null;
 let _fsBounds = null;
 
-function openFullscreenMap() {
-  const overlay = document.getElementById('fs-overlay');
-  const fsContainer = document.getElementById('fs-map');
-  const fsWrap = document.getElementById('fs-map-wrap');
+function openFullscreenMap(pk) {
+  // Determine which plan to show
+  if (!pk) {
+    // detect from active panel
+    const active = document.querySelector('.alt-panel.active');
+    if (active) {
+      const mb = active.querySelector('.map-box');
+      if (mb) pk = mb.id.replace('map-','');
+    }
+    if (!pk) pk = 'p9'; // fallback
+  }
+
+  const overlay    = document.getElementById('fs-overlay');
+  const fsContainer= document.getElementById('fs-map');
   overlay.classList.add('open');
 
-  // Find the currently visible map-box
-  const activePanel = document.querySelector('.alt-panel[style*="block"], .alt-panel:not([style*="none"])');
-  let mapBox = null;
-  let title = 'מפה';
+  // Set title
+  const planNames = { p7:'מילאן 8 לילות', p9:'מילאן 9 לילות' };
+  document.getElementById('fs-title').textContent = planNames[pk] || pk;
 
-  if (activePanel) {
-    mapBox = activePanel.querySelector('.map-box');
-    const badge = activePanel.querySelector('.alt-badge');
-    if (badge) title = badge.textContent.trim();
-  }
-  document.getElementById('fs-title').textContent = title;
-
-  // Init a fresh Leaflet map in the overlay container
+  // Init fresh Leaflet map
   if (_fsMap) { _fsMap.remove(); _fsMap = null; }
   fsContainer.innerHTML = '';
+  _fsBounds = null;
 
   _fsMap = L.map(fsContainer, { zoomControl: true });
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap contributors, © CARTO',
-    subdomains:'abcd',
-    maxZoom: 18
+    attribution:'© OpenStreetMap contributors, © CARTO',
+    subdomains:'abcd', maxZoom:19
   }).addTo(_fsMap);
 
-  // Copy markers from the current active project map
-  if (currentProject && getMapData()[currentProject]) {
-    const md = getMapData()[currentProject];
-    const bounds = [];
+  // Get data directly from MAP_DATA
+  const md = (typeof MAP_DATA !== 'undefined') ? MAP_DATA[pk] : null;
 
-    (md.sleeps || []).forEach(s => {
+  if (md) {
+    const bounds = [];
+    const sleeps = md.sleeps || [];
+    const attractions = md.attractions || [];
+
+    // Route line
+    const sleepCoords = sleeps.filter(s => s.lat).map(s => [s.lat, s.lng]);
+    if (sleepCoords.length > 1) {
+      L.polyline(sleepCoords, { color:'#1a4a6b', weight:3, opacity:.65 }).addTo(_fsMap);
+    }
+
+    // Sleep markers
+    sleeps.forEach(s => {
       if (!s.lat) return;
-      const m = L.circleMarker([s.lat, s.lng], {
-        radius: 10, fillColor: s.color || '#1a4a6b',
-        color: '#fff', weight: 2, fillOpacity: 0.92
-      }).addTo(_fsMap).bindPopup(`<b>${s.label}</b>`);
+      const nights = s.nights ? `${s.nights[0]}–${s.nights[1]}` : '';
+      const size = s.nights ? 44 : 28;
+      const icon = L.divIcon({
+        className:'',
+        html:`<div style="background:${s.color||'#1a4a6b'};color:#fff;border-radius:50%;
+          width:${size}px;height:${size}px;display:flex;flex-direction:column;
+          align-items:center;justify-content:center;border:3px solid #fff;
+          box-shadow:0 2px 8px rgba(0,0,0,.4);font-family:Heebo,sans-serif;
+          line-height:1.15;text-align:center;">
+          ${nights
+            ? `<div style="font-size:10px;font-weight:900">${nights}</div>
+               <div style="font-size:8px;opacity:.85">לילות</div>`
+            : `<div style="font-size:9px;font-weight:700">✈</div>`}
+        </div>`,
+        iconSize:[size,size], iconAnchor:[size/2,size/2]
+      });
+      L.marker([s.lat, s.lng], {icon, zIndexOffset:100})
+        .addTo(_fsMap)
+        .bindPopup(`<div dir="rtl" style="font-family:Heebo,sans-serif"><strong>${s.label}</strong></div>`);
       bounds.push([s.lat, s.lng]);
     });
 
-    (md.attractions || []).forEach(a => {
+    // Spoke lines + attraction markers
+    attractions.forEach((a, i) => {
       if (!a.lat) return;
-      L.marker([a.lat, a.lng]).addTo(_fsMap)
-        .bindPopup(`<b>${a.label}</b><br>${a.day || ''}`);
+      const base = sleeps.find(s => s.label === a.base);
+      const color = base ? base.color : '#c8773a';
+      if (base) {
+        L.polyline([[base.lat,base.lng],[a.lat,a.lng]], {
+          color, weight:1.8, opacity:.6, dashArray:'4 5'
+        }).addTo(_fsMap);
+      }
+      const icon = L.divIcon({
+        className:'',
+        html:`<div style="background:${color};color:#fff;border-radius:50%;
+          width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+          border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);
+          font-family:Heebo,sans-serif;font-size:11px;font-weight:800;">${i+1}</div>`,
+        iconSize:[24,24], iconAnchor:[12,12]
+      });
+      L.marker([a.lat, a.lng], {icon, zIndexOffset:50})
+        .addTo(_fsMap)
+        .bindPopup(`<div dir="rtl" style="font-family:Heebo,sans-serif;min-width:120px">
+          <strong>${a.label}</strong><br>
+          <span style="font-size:.8rem;color:#666">${a.day||''}</span>
+        </div>`);
       bounds.push([a.lat, a.lng]);
     });
 
     if (bounds.length) {
-      _fsMap.fitBounds(bounds, { padding: [40, 40] });
+      _fsBounds = bounds;
+      _fsMap.fitBounds(bounds, { padding:[40,40] });
     }
   } else {
     _fsMap.setView([46.5, 9], 6);
   }
 
-  // Invalidate after CSS rotation transition completes
   setTimeout(() => { _fsMap.invalidateSize(); }, 350);
-  // Re-invalidate once more for safety on mobile
-  setTimeout(() => { _fsMap.invalidateSize(); if (bounds && bounds.length) _fsMap.fitBounds(bounds, {padding:[30,30]}); }, 700);
+  setTimeout(() => {
+    _fsMap.invalidateSize();
+    if (_fsBounds) _fsMap.fitBounds(_fsBounds, { padding:[30,30] });
+  }, 700);
 }
 
 function closeFullscreenMap() {
