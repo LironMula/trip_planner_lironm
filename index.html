@@ -1537,6 +1537,18 @@ function speakText(text, btnEl) {
   }
 }
 
+
+function promptToken() {
+  const t = prompt('הדבק טוקן GitHub (נדרש לשמירת הערות):','');
+  if (t && t.trim()) {
+    ghToken = t.trim();
+    localStorage.setItem('gh_token_trip', ghToken);
+    sessionStorage.setItem('gh_token', ghToken);
+    setGhStatus('ok', '✓ GitHub מחובר');
+    alert('✓ טוקן נשמר. תוכל עכשיו לשמור הערות.');
+  }
+}
+
 async function setChosen(pk) {
   if (!currentProject) return;
 
@@ -1683,66 +1695,68 @@ function showTokenDialog() {
 // ════════════════════════════════════════════════
 async function loadProjList() {
   const el = document.getElementById('proj-list');
-  // load token from all possible sources
+  // load token quietly — only needed for saving, not for reading built-in plans
   if (!ghToken) {
     ghToken = localStorage.getItem('gh_token_trip')
            || sessionStorage.getItem('gh_token')
            || '';
   }
-  // private repo: if no token, show inline prompt inside dialog (not a separate modal)
-  if (!ghToken) {
-    el.innerHTML = `<div style="padding:12px;font-size:.85rem;color:#5a3a10;background:#fff8f0;border-radius:8px;border:1px solid #e8c890">
-      <strong>🔑 המאגר פרטי — נדרש טוקן GitHub</strong><br><br>
-      <input id="inline-token-input" type="password" placeholder="github_pat_..."
-        style="width:100%;font-family:monospace;font-size:.82rem;padding:7px 10px;border:1px solid #ccc;border-radius:6px;margin-bottom:8px;direction:ltr"/>
-      <button onclick="(async()=>{
-        const t=document.getElementById('inline-token-input').value.trim();
-        if(!t){return;}
-        ghToken=t;
-        localStorage.setItem('gh_token_trip',t);
-        sessionStorage.setItem('gh_token',t);
-        await loadProjList();
-      })()" style="background:#1a4a6b;color:#fff;border:none;padding:7px 18px;border-radius:6px;font-family:Heebo,sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;width:100%">
-        התחבר וטען פרויקטים
-      </button>
-      <div style="margin-top:8px;font-size:.75rem;color:#888">
-        <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" style="color:#1a4a6b">
-          לחץ כאן ליצירת טוקן ב-GitHub
-        </a>
-      </div>
-    </div>`;
+
+  el.innerHTML = '<div class="proj-loading">⏳ טוען פרויקטים...</div>';
+
+  // Built-in projects — always available, no token needed
+  const builtIn = [
+    { name:'2026_summer_trip',  label:'קיץ 2026 — מילאן ואגמים 🏖' },
+    { name:'peloponnese_2026',  label:'פלופונז 2026 — יוון 🏛' },
+  ];
+
+  // Try to get additional projects from GitHub (only if token available)
+  let extraProjects = [];
+  if (ghToken) {
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects`,
+        { headers: { 'Accept':'application/vnd.github.v3+json',
+                     'Authorization':'token '+ghToken } }
+      );
+      if (res.ok) {
+        const files = await res.json();
+        const builtInNames = builtIn.map(b=>b.name+'.json');
+        extraProjects = files
+          .filter(f => f.name.endsWith('.json') && !builtInNames.includes(f.name))
+          .map(f => ({ name: f.name.replace('.json',''), label: f.name.replace('.json','') }));
+      }
+    } catch(e) { /* silent fail — token might be expired */ }
+  }
+
+  const allProjects = [...builtIn, ...extraProjects];
+
+  if (allProjects.length === 0) {
+    el.innerHTML = '<div class="proj-loading">אין פרויקטים זמינים</div>';
     return;
   }
-  el.innerHTML = '<div class="proj-loading">⏳ טוען מ-GitHub...</div>';
-  try {
-    const tok = ghToken;
-    const fetchHdrs = { 'Accept':'application/vnd.github.v3+json' };
-    if (tok) fetchHdrs['Authorization'] = 'token ' + tok;
-    const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/projects`,
-      { headers: fetchHdrs });
-    if (!res.ok) throw new Error(res.status);
-    const files = await res.json();
-    const projects = files.filter(f => f.name.endsWith('.json'))
-      .map(f => f.name.replace('.json',''))
-      .filter(n => validateProjectName(n)); // reject names with injection chars
-    if (!projects.length) {
-      el.innerHTML = '<div class="proj-loading">אין פרויקטים עדיין.</div>';
-    } else {
-      el.innerHTML = projects.map(n => `
-        <div class="proj-item" data-name="${esc(n)}"
-          onclick="this.parentElement.querySelectorAll(\'.proj-item\').forEach(x=>x.classList.remove(\'selected\'));this.classList.add(\'selected\')">
-          <div>
-            <div class="proj-name">${esc(n)}</div>
-            <div class="proj-meta">☁ GitHub</div>
-          </div>
-        </div>`).join('');
-    }
-    setGhStatus('ok', '✓ '+GH_USER+'/'+GH_REPO);
-  } catch(e) {
-    el.innerHTML = '<div class="proj-loading">שגיאה בטעינה מ-GitHub.</div>';
-    setGhStatus('err', '✗ שגיאת GitHub');
+
+  el.innerHTML = allProjects.map(p => {
+    const isCurrent = currentProject === p.name;
+    return `<div class="proj-item ${isCurrent?'active':''}"
+      onclick="loadProjectFromGH('${esc(p.name)}')"
+      style="cursor:pointer">
+      <span>${esc(p.label||p.name)}</span>
+      ${isCurrent ? '<span style="color:var(--accent);font-weight:700">✓ נבחר</span>' : ''}
+    </div>`;
+  }).join('');
+
+  // Show token hint if no token
+  if (!ghToken) {
+    el.innerHTML += `<div style="margin-top:10px;padding:8px 10px;background:#f0f7ff;
+      border-radius:7px;font-size:.78rem;color:#555;border:1px solid #c0d8f0">
+      💡 להוספת פרויקטים חדשים וכדי לשמור הערות — נדרש
+      <a href="#" onclick="promptToken();return false"
+        style="color:var(--lake);font-weight:700">טוקן GitHub</a>
+    </div>`;
   }
 }
+
 
 async function loadProjectFromGH(name) {
   if (!validateProjectName(name)) { alert('שם פרויקט לא תקין'); return; }
@@ -2185,7 +2199,7 @@ function init(){
   if (ghToken) {
     setGhStatus('ok', '✓ GitHub מחובר');
   } else {
-    setGhStatus('none', '🔑 GitHub — טוקן נדרש');
+    setGhStatus('none', '👁 צפייה בלבד — שמירה דורשת טוקן');
   }
   // restore token FIRST — must happen before openProjModal loads projects
   const storedToken = localStorage.getItem('gh_token_trip') || sessionStorage.getItem('gh_token');
