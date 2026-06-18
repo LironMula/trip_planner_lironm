@@ -948,6 +948,7 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
         </div><!-- /panel-pa3 -->
       
             <div class="alt-panel" id="panel-pG">
+          <div class="alt-card"><div class="alt-body" style="padding:20px 24px">
               <div class="alt-hdr">
                 <div class="alt-title">
                   <span class="chosen-badge" id="chosen-badge-pG">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
@@ -982,9 +983,11 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
                 <h3>&#x1F4AC; &#x05E9;&#x05D9;&#x05D7;&#x05D4;</h3>
                 <div class="chat-msgs" id="chatG"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA; &#x05E2;&#x05D3;&#x05D9;&#x05DF;</div></div>
               </div>
-            </div>
+                      </div></div>
+        </div>
 
             <div class="alt-panel" id="panel-pH">
+          <div class="alt-card"><div class="alt-body" style="padding:20px 24px">
               <div class="alt-hdr">
                 <div class="alt-title">
                   <span class="chosen-badge" id="chosen-badge-pH">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
@@ -1004,9 +1007,11 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detH"></div></div>
               <div class="sbar"><div class="section-hdr"><span class="section-hdr-title">&#x1F4CB; &#x05E9;&#x05D0;&#x05DC;&#x05D5;&#x05EA;</span></div><div id="qa-pH"></div></div>
               <div class="chat-sec"><h3>&#x1F4AC; &#x05E9;&#x05D9;&#x05D7;&#x05D4;</h3><div class="chat-msgs" id="chatH"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA; &#x05E2;&#x05D3;&#x05D9;&#x05DF;</div></div></div>
-            </div>
+                      </div></div>
+        </div>
 
             <div class="alt-panel" id="panel-pI">
+          <div class="alt-card"><div class="alt-body" style="padding:20px 24px">
               <div class="alt-hdr">
                 <div class="alt-title">
                   <span class="chosen-badge" id="chosen-badge-pI">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
@@ -1030,7 +1035,8 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
               <div class="chat-sec"><h3>&#x1F4AC; &#x05E9;&#x05D9;&#x05D7;&#x05D4;</h3>
                 <div class="chat-msgs" id="chatI"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
               </div>
-            </div>
+                      </div></div>
+        </div>
 
 </div><!-- /alts-main -->
     </div><!-- /alts-layout -->
@@ -3001,17 +3007,11 @@ async function saveToGitHub() {
 // ALTERNATIVE SWITCHER (sidebar)
 // ════════════════════════════════════════════════
 function switchAlt(pk, btn) {
-  console.log('[switchAlt] pk='+pk);
   document.querySelectorAll('.alt-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('active'));
   const panel = document.getElementById('panel-'+pk);
-  console.log('[switchAlt] panel element:', panel);
-  if (!panel) { console.error('[switchAlt] panel-'+pk+' NOT FOUND in DOM'); return; }
+  if (!panel) return;
   panel.classList.add('active');
-  console.log('[switchAlt] panel classes after:', panel.className);
-  console.log('[switchAlt] panel offsetHeight:', panel.offsetHeight);
-  const tbEl = document.getElementById('tb'+pk.slice(1));
-  console.log('[switchAlt] table body (tb'+pk.slice(1)+'):', tbEl, 'innerHTML length:', tbEl ? tbEl.innerHTML.length : 'N/A');
   btn.classList.add('active');
 
   if (typeof L === 'undefined') {
@@ -3167,9 +3167,7 @@ function ldScript(src){ return new Promise((r,j)=>{ const s=document.createEleme
 // ════════════════════════════════════════════════
 function renderTable(id, pk) {
   const plan = getPlans()[pk];
-  if (!plan) { console.error('renderTable: no plan for', pk); return; }
-  const el = document.getElementById(id);
-  if (!el) { console.error('renderTable: no element', id); return; }
+  if (!plan) return;
   const rows = plan.rows;
   const hasDayCost = rows.some(r => r.daycost);
   let html = rows.map(r=>`
@@ -3193,9 +3191,8 @@ function renderTable(id, pk) {
       </td></tr>`;
     }
   const target = document.getElementById(id);
-  if (!target) { console.error('[renderTable] element not found:', id); return; }
+  if (!target) return;
   target.innerHTML = html;
-  console.log('[renderTable] rendered', id, 'rows:', html.length, 'chars');
 }
 // Convert bullet text to styled HTML
 function formatDet(raw) {
@@ -3211,10 +3208,8 @@ function formatDet(raw) {
 
 function renderDetail(id, pk) {
   const el2 = document.getElementById(id);
-  if (!el2) { console.error('renderDetail: no element', id); return; }
-  const plan2 = getPlans()[pk];
-  if (!plan2) { console.error('renderDetail: no plan for', pk); return; }
-  el2.innerHTML = plan2.det.map(d=>{
+  if (!el2) return;
+  el2.innerHTML = getPlans()[pk].det.map(d=>{
     const hasSp = d.sp && d.sp !== '—' && d.sp.trim() !== '';
     const spHtml = hasSp ? `<div class="sbox">${esc(d.sp)}</div>` : '';
     return `<div class="dblock ${d.z}">
@@ -3593,6 +3588,6 @@ document.addEventListener('keydown', e => {
   </div>
 </div>
 
-<div id="build-ver">v2.6.18-d</div>
+<div id="build-ver">v2.6.18-e</div>
 </body>
 </html>
