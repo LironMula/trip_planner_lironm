@@ -2003,15 +2003,24 @@ function switchAlt(pk, btn) {
   document.querySelectorAll('.alt-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-'+pk).classList.add('active');
   btn.classList.add('active');
-  setTimeout(() => {
-    const m = mapInstances[pk];
-    if (m) {
-      m.invalidateSize();
-      const d = MAP_DATA[pk];
-      const all = [...d.sleeps.map(s=>[s.lat,s.lng]), ...d.attractions.map(a=>[a.lat,a.lng])];
-      m.fitBounds(L.latLngBounds(all), { padding:[40,40] });
+  // Initialize map if Leaflet loaded but this panel was hidden at init time
+  if (typeof L !== 'undefined' && MAP_DATA[pk]) {
+    if (!mapInstances[pk]) {
+      renderMap(pk);
     }
-  }, 50);
+    setTimeout(() => {
+      const m = mapInstances[pk];
+      if (m) {
+        m.invalidateSize();
+        const d = MAP_DATA[pk];
+        const all = [...d.sleeps.map(s=>[s.lat,s.lng]), ...d.attractions.map(a=>[a.lat,a.lng])];
+        m.fitBounds(L.latLngBounds(all), { padding:[40,40] });
+      }
+    }, 200);
+  } else {
+    // Leaflet not yet loaded — trigger initMaps which will render when ready
+    if (typeof initMaps === 'function') initMaps();
+  }
 }
 
 // ════════════════════════════════════════════════
@@ -2035,8 +2044,8 @@ async function initMaps() {
     await ldScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
     leafletLoaded = true;
   }
-  renderMap('p7');
-  setTimeout(() => renderMap('p9'), 200);
+  renderMap('p9');
+  setTimeout(() => renderMap('p7'), 300);
 }
 
 function renderMap(pk) {
