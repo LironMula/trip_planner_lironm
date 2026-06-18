@@ -1513,9 +1513,9 @@ function renderAltsForProject() {
     if (mc) mc.textContent = panelMeta[i][1];
   });
   // re-render all content
-  renderTable('tb7','p8'); renderTable('tb9','p9');
-  renderDetail('det7','p8'); renderDetail('det9','p9');
-  renderQA('qa-p7','p8'); renderQA('qa-p9','p9');
+  renderTable('tb8','p8'); renderTable('tb9','p9');
+  renderDetail('det8','p8'); renderDetail('det9','p9');
+  renderQA('qa-p8','p8'); renderQA('qa-p9','p9');
   // reset maps
   ['p8','p9'].forEach(pk => {
     if (mapInstances[pk]) { try { mapInstances[pk].remove(); } catch(e){} delete mapInstances[pk]; }
@@ -2396,9 +2396,9 @@ function init(){
   if(cu){ ['cu7','cu9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=decodeURIComponent(cu); }); }
   ['cu7','cu9'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input',function(){ sanitizeUser(this); document.cookie='chat_user='+encodeURIComponent(this.value)+';max-age=31536000;path=/'; }); });
 
-  renderTable('tb7','p8'); renderTable('tb9','p9');
-  renderDetail('det7','p8'); renderDetail('det9','p9');
-  renderQA('qa-p7','p8'); renderQA('qa-p9','p9');
+  renderTable('tb8','p8'); renderTable('tb9','p9');
+  renderDetail('det8','p8'); renderDetail('det9','p9');
+  renderQA('qa-p8','p8'); renderQA('qa-p9','p9');
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   if (ghToken) {
