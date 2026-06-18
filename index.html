@@ -2523,7 +2523,7 @@ function renderAltsForProject() {
   renderDetail('det8','p8'); renderDetail('det9','p9');
   renderQA('qa-p8','p8'); renderQA('qa-p9','p9');
   renderTable('tbE','pE'); renderTable('tbF','pF'); renderTable('tbG','pG'); renderTable('tbH','pH'); renderTable('tbI','pI');
-  renderDetail('detE','pE'); renderDetail('detF','pF'); renderDetail('detG','pG'); renderDetail('detH','pH'); renderDetail('detI','pI'); renderDetail('detH','pH');
+  renderDetail('detE','pE'); renderDetail('detF','pF'); renderDetail('detG','pG'); renderDetail('detH','pH'); renderDetail('detI','pI');
   renderQA('qa-pE','pE'); renderQA('qa-pF','pF'); renderQA('qa-pG','pG'); renderQA('qa-pH','pH'); renderQA('qa-pI','pI');
   // reset maps
   ['p8','p9','pE','pF','pG','pH','pI'].forEach(pk => {
@@ -3410,9 +3410,9 @@ function init(){
   if(cu){ ['cu7','cu9'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=decodeURIComponent(cu); }); }
   ['cu7','cu9'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('input',function(){ sanitizeUser(this); document.cookie='chat_user='+encodeURIComponent(this.value)+';max-age=31536000;path=/'; }); });
 
-  renderTable('tb8','p8'); renderTable('tb9','p9'); renderTable('tbE','pE'); renderTable('tbF','pF');
-  renderDetail('det8','p8'); renderDetail('det9','p9'); renderDetail('detE','pE'); renderDetail('detF','pF');
-  renderQA('qa-p8','p8'); renderQA('qa-p9','p9'); renderQA('qa-pE','pE'); renderQA('qa-pF','pF');
+  renderTable('tb8','p8'); renderTable('tb9','p9'); renderTable('tbE','pE'); renderTable('tbF','pF'); renderTable('tbG','pG'); renderTable('tbH','pH'); renderTable('tbI','pI');
+  renderDetail('det8','p8'); renderDetail('det9','p9'); renderDetail('detE','pE'); renderDetail('detF','pF'); renderDetail('detG','pG'); renderDetail('detH','pH'); renderDetail('detI','pI');
+  renderQA('qa-p8','p8'); renderQA('qa-p9','p9'); renderQA('qa-pE','pE'); renderQA('qa-pF','pF'); renderQA('qa-pG','pG'); renderQA('qa-pH','pH'); renderQA('qa-pI','pI');
   initMaps();
   updateDates(); setInterval(updateDates,30000);
   if (ghToken) {
