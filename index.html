@@ -1050,7 +1050,7 @@ body { background: var(--bg, #f0f4f8); }
         </div>
 </main>
 
-<div id="build-ver">v2.7.0</div>
+<div id="build-ver">v2.8.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -2880,6 +2880,92 @@ function loadLeaflet() {
   });
 }
 
+function drawMapContent(map, d) {
+  var sleeps = d.sleeps;
+  var attrs  = d.attractions;
+
+  function dayNum(dayStr) {
+    var p = (dayStr||'0').split('.');
+    return parseFloat(p[0]) + (p[1] ? parseFloat(p[1])/100 : 0);
+  }
+  var stayNodes = sleeps.filter(function(s){ return s.nights; });
+  var sleepByLabel = {};
+  sleeps.forEach(function(s){ sleepByLabel[s.label] = s; });
+
+  var spokeAttrs  = [];
+  var transitSegs = {};
+  attrs.forEach(function(a) {
+    var bn = sleepByLabel[a.base];
+    if (bn && bn.nights) { spokeAttrs.push({attr:a, node:bn}); return; }
+    var dn = dayNum(a.day);
+    var segA = null, segB = null;
+    for (var i = 0; i < stayNodes.length - 1; i++) {
+      var A = stayNodes[i], B = stayNodes[i+1];
+      if (dn > A.nights[1] && dn <= B.nights[0] + 1) { segA=A; segB=B; break; }
+    }
+    if (!segA && stayNodes.length >= 2) {
+      segA = dn <= stayNodes[0].nights[1] ? stayNodes[0] : stayNodes[stayNodes.length-2];
+      segB = dn <= stayNodes[0].nights[1] ? stayNodes[1] : stayNodes[stayNodes.length-1];
+    }
+    if (segA && segB) {
+      var key = segA.label+'||'+segB.label;
+      if (!transitSegs[key]) transitSegs[key] = {A:segA,B:segB,stops:[]};
+      transitSegs[key].stops.push(a);
+    } else if (bn) { spokeAttrs.push({attr:a, node:bn}); }
+  });
+
+  // Airport lines
+  var fa = sleeps[0], la = sleeps[sleeps.length-1];
+  var fs2 = stayNodes[0], ls = stayNodes[stayNodes.length-1];
+  if (fa && !fa.nights && fs2)
+    L.polyline([[fa.lat,fa.lng],[fs2.lat,fs2.lng]],{color:'#888',weight:2,dashArray:'6 5',opacity:.6}).addTo(map);
+  if (la && !la.nights && ls && la.label!==fa.label)
+    L.polyline([[ls.lat,ls.lng],[la.lat,la.lng]],{color:'#888',weight:2,dashArray:'6 5',opacity:.6}).addTo(map);
+
+  // Solid/transit route segments
+  for (var i = 0; i < stayNodes.length-1; i++) {
+    var A=stayNodes[i], B=stayNodes[i+1], key=A.label+'||'+B.label;
+    if (transitSegs[key]) {
+      var stops = transitSegs[key].stops.slice().sort(function(x,y){ return dayNum(x.day)-dayNum(y.day); });
+      var chain = [[A.lat,A.lng]];
+      stops.forEach(function(s){ chain.push([s.lat,s.lng]); });
+      chain.push([B.lat,B.lng]);
+      L.polyline(chain,{color:'#555',weight:2.5,dashArray:'8 5',opacity:.7}).addTo(map);
+    } else {
+      L.polyline([[A.lat,A.lng],[B.lat,B.lng]],{color:'#1a4a6b',weight:3,opacity:.7}).addTo(map);
+    }
+  }
+
+  // Sleep markers
+  sleeps.forEach(function(s) {
+    var size = s.nights ? 44 : 28;
+    var lbl  = s.nights ? s.nights[0]+'-'+s.nights[1] : '&#x2708;';
+    var icon = L.divIcon({className:'',iconSize:[size,size],iconAnchor:[size/2,size/2],
+      html:'<div style="background:'+s.color+';color:#fff;border-radius:50%;width:'+size+'px;height:'+size+'px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.4);font-size:10px;font-weight:900">'+lbl+(s.nights?'<div style="font-size:8px;opacity:.8">&#x05DC;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</div>':'')+'</div>'});
+    L.marker([s.lat,s.lng],{icon:icon,zIndexOffset:100}).addTo(map).bindPopup(s.label);
+  });
+
+  // Spoke attractions
+  var idx = 0;
+  spokeAttrs.forEach(function(item) {
+    var a=item.attr, node=item.node, color=node.color;
+    L.polyline([[node.lat,node.lng],[a.lat,a.lng]],{color:color,weight:1.8,dashArray:'4 5',opacity:.7}).addTo(map);
+    var icon = L.divIcon({className:'',iconSize:[24,24],iconAnchor:[12,12],
+      html:'<div style="background:'+color+';color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);font-size:11px;font-weight:800">'+(++idx)+'</div>'});
+    L.marker([a.lat,a.lng],{icon:icon,zIndexOffset:50}).addTo(map).bindPopup('<b>'+a.label+'</b><br>'+a.day);
+  });
+
+  // Transit stop markers (diamond shape)
+  Object.keys(transitSegs).forEach(function(key) {
+    var stops = transitSegs[key].stops.slice().sort(function(x,y){ return dayNum(x.day)-dayNum(y.day); });
+    stops.forEach(function(a) {
+      var icon = L.divIcon({className:'',iconSize:[22,22],iconAnchor:[11,11],
+        html:'<div style="background:#555;color:#fff;border-radius:4px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);font-size:10px;font-weight:800;transform:rotate(45deg)"><span style="transform:rotate(-45deg)">'+(++idx)+'</span></div>'});
+      L.marker([a.lat,a.lng],{icon:icon,zIndexOffset:60}).addTo(map).bindPopup('<b>'+a.label+'</b><br>'+a.day+' (transit)');
+    });
+  });
+}
+
 function renderMap(pk) {
   var el = document.getElementById('map-' + pk);
   if (!el || mapInstances[pk]) return;
@@ -2889,41 +2975,178 @@ function renderMap(pk) {
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     attribution:'&copy; OpenStreetMap, &copy; CARTO', subdomains:'abcd', maxZoom:19
   }).addTo(map);
-  // Full route: all sleeps including airports
-  var allSleepPts = d.sleeps.map(function(s){ return [s.lat,s.lng]; });
-  var stayPts     = d.sleeps.filter(function(s){ return s.nights; }).map(function(s){ return [s.lat,s.lng]; });
-  // Main route line through stay locations
-  if (stayPts.length > 1) L.polyline(stayPts, {color:'#1a4a6b',weight:3,opacity:.7}).addTo(map);
-  // Airport approach/departure dashed lines
-  var firstStay = d.sleeps.find(function(s){ return s.nights; });
-  var lastStay  = d.sleeps.slice().reverse().find(function(s){ return s.nights; });
-  var firstAirport = d.sleeps[0];
-  var lastAirport  = d.sleeps[d.sleeps.length-1];
-  if (!firstAirport.nights && firstStay)
+
+  var sleeps = d.sleeps;
+  var attrs  = d.attractions;
+
+  // ── Identify transit attractions ────────────────────────────────────────
+  // An attraction is "in transit" when its base differs from both the
+  // previous sleep AND the next sleep (i.e. it is visited while moving
+  // between two overnight stops).  We detect this by finding which
+  // sleep-segment each attraction falls on:
+  //
+  //   stayNodes = ordered list of sleep nodes that have nights[] (i.e.
+  //               real overnight stops, not airports/transit markers)
+  //
+  // For each pair of consecutive stayNodes (A → B) we collect all
+  // attractions whose base equals NEITHER A.label NOR B.label — those
+  // are intermediate transit stops.  We draw:
+  //   A → transit1 → transit2 → ... → B   as one dashed polyline
+  // and suppress the solid A→B segment.
+  //
+  // Attractions whose base matches a stayNode are day-trip spokes from
+  // that node (drawn as before).
+
+  var stayNodes = sleeps.filter(function(s){ return s.nights; });
+
+  // Build a map: label → stayNode
+  var sleepByLabel = {};
+  sleeps.forEach(function(s){ sleepByLabel[s.label] = s; });
+
+  // For each attraction, resolve its base node
+  function baseNode(a) { return sleepByLabel[a.base] || null; }
+
+  // Determine which pair-segment (stayA, stayB) an attr belongs to as transit
+  // An attr is transit on segment (A,B) if its base is neither A nor B
+  // but it is positioned geographically between them (we use day ordering
+  // to decide — first match by checking if base is a transit/airport node
+  // that sits between A.nights[1] and B.nights[0]).
+  //
+  // Simpler heuristic: if attr.base is a sleep node with nights=null
+  // (airport / transit marker), or attr.base is NOT any stayNode label,
+  // treat it as a transit attraction and find the two adjacent stayNodes
+  // that bracket its day number.
+
+  function dayNum(dayStr) {
+    // "16.8" → 16.8 for ordering
+    var p = dayStr.split('.');
+    return parseFloat(p[0]) + (p[1] ? parseFloat(p[1])/100 : 0);
+  }
+
+  // Assign each attraction to either a "spoke" base or a "transit segment"
+  var spokeAttrs   = [];  // {attr, node}
+  var transitSegs  = {};  // key "A_label||B_label" → [{attr}]
+
+  attrs.forEach(function(a) {
+    var bn = baseNode(a);
+    if (bn && bn.nights) {
+      // Normal spoke from an overnight base
+      spokeAttrs.push({attr:a, node:bn});
+      return;
+    }
+    // Transit attraction — find which segment it belongs to
+    // by finding the two consecutive stayNodes that bracket its day
+    var dn = dayNum(a.day);
+    var segA = null, segB = null;
+    for (var i = 0; i < stayNodes.length - 1; i++) {
+      var A = stayNodes[i], B = stayNodes[i+1];
+      // A covers nights A.nights[0]..A.nights[1]
+      // B starts at B.nights[0]
+      // A transit attr on this move day falls between A's last night and B's first
+      var aEnd   = A.nights[1];
+      var bStart = B.nights[0];
+      if (dn > aEnd && dn <= bStart + 1) {
+        segA = A; segB = B;
+        break;
+      }
+    }
+    // Fallback: if stayNodes only 1, or day outside range, use first/last
+    if (!segA && stayNodes.length >= 2) {
+      if (dn <= stayNodes[0].nights[1]) {
+        segA = stayNodes[0];
+        segB = stayNodes[1] || stayNodes[0];
+      } else {
+        segA = stayNodes[stayNodes.length-2];
+        segB = stayNodes[stayNodes.length-1];
+      }
+    }
+    if (segA && segB) {
+      var key = segA.label + '||' + segB.label;
+      if (!transitSegs[key]) transitSegs[key] = {A:segA, B:segB, stops:[]};
+      transitSegs[key].stops.push(a);
+    } else {
+      // Couldn't place — fall back to spoke from closest base
+      if (bn) spokeAttrs.push({attr:a, node:bn});
+    }
+  });
+
+  // ── Draw routes ─────────────────────────────────────────────────────────
+
+  // 1. Airport approach/departure dashed lines
+  var firstAirport = sleeps[0];
+  var lastAirport  = sleeps[sleeps.length-1];
+  var firstStay    = stayNodes[0];
+  var lastStay     = stayNodes[stayNodes.length-1];
+  if (firstAirport && !firstAirport.nights && firstStay)
     L.polyline([[firstAirport.lat,firstAirport.lng],[firstStay.lat,firstStay.lng]],
       {color:'#888',weight:2,dashArray:'6 5',opacity:.6}).addTo(map);
-  if (!lastAirport.nights && lastStay && lastAirport !== firstAirport)
+  if (lastAirport && !lastAirport.nights && lastStay && lastAirport.label !== firstAirport.label)
     L.polyline([[lastStay.lat,lastStay.lng],[lastAirport.lat,lastAirport.lng]],
       {color:'#888',weight:2,dashArray:'6 5',opacity:.6}).addTo(map);
-  d.sleeps.forEach(function(s) {
+
+  // 2. Solid lines between consecutive stayNodes — ONLY if no transit segment exists
+  var transitSegKeys = Object.keys(transitSegs);
+  for (var i = 0; i < stayNodes.length - 1; i++) {
+    var A = stayNodes[i], B = stayNodes[i+1];
+    var key = A.label + '||' + B.label;
+    if (transitSegs[key]) {
+      // Draw dashed transit chain: A → stops (sorted by day) → B
+      var stops = transitSegs[key].stops.slice().sort(function(x,y){
+        return dayNum(x.day) - dayNum(y.day);
+      });
+      var chain = [[A.lat,A.lng]];
+      stops.forEach(function(s){ chain.push([s.lat,s.lng]); });
+      chain.push([B.lat,B.lng]);
+      // Use a mid-colour between A and B
+      L.polyline(chain, {color:'#555',weight:2.5,dashArray:'8 5',opacity:.7}).addTo(map);
+    } else {
+      // Normal solid segment
+      L.polyline([[A.lat,A.lng],[B.lat,B.lng]],
+        {color:'#1a4a6b',weight:3,opacity:.7}).addTo(map);
+    }
+  }
+
+  // 3. Draw sleep markers
+  sleeps.forEach(function(s) {
     var size = s.nights ? 44 : 28;
     var label = s.nights ? s.nights[0]+'-'+s.nights[1] : '&#x2708;';
     var icon = L.divIcon({className:'', iconSize:[size,size], iconAnchor:[size/2,size/2],
       html:'<div style="background:'+s.color+';color:#fff;border-radius:50%;width:'+size+'px;height:'+size+'px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.4);font-size:10px;font-weight:900">'+label+(s.nights?'<div style="font-size:8px;opacity:.8">&#x05DC;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</div>':'')+'</div>'});
     L.marker([s.lat,s.lng],{icon:icon,zIndexOffset:100}).addTo(map).bindPopup(s.label);
   });
-  d.attractions.forEach(function(a, i) {
-    var base = d.sleeps.find(function(s){ return s.label === a.base; });
-    var color = base ? base.color : '#666';
-    if (base) L.polyline([[base.lat,base.lng],[a.lat,a.lng]],{color:color,weight:1.8,dashArray:'4 5',opacity:.7}).addTo(map);
+
+  // 4. Draw spoke attractions (day trips from a base)
+  spokeAttrs.forEach(function(item, i) {
+    var a = item.attr, node = item.node;
+    var color = node.color;
+    L.polyline([[node.lat,node.lng],[a.lat,a.lng]],
+      {color:color,weight:1.8,dashArray:'4 5',opacity:.7}).addTo(map);
     var icon = L.divIcon({className:'', iconSize:[24,24], iconAnchor:[12,12],
       html:'<div style="background:'+color+';color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);font-size:11px;font-weight:800">'+(i+1)+'</div>'});
-    L.marker([a.lat,a.lng],{icon:icon,zIndexOffset:50}).addTo(map).bindPopup('<b>'+a.label+'</b><br>'+a.day);
+    L.marker([a.lat,a.lng],{icon:icon,zIndexOffset:50}).addTo(map)
+      .bindPopup('<b>'+a.label+'</b><br>'+a.day);
   });
-  var pts = allSleepPts.concat(d.attractions.map(function(a){ return [a.lat,a.lng]; }));
-  if (pts.length) setTimeout(function(){ map.invalidateSize(); map.fitBounds(L.latLngBounds(pts),{padding:[40,40]}); }, 150);
-}
 
+  // 5. Draw transit stop markers
+  var transitIdx = spokeAttrs.length;
+  Object.keys(transitSegs).forEach(function(key) {
+    var seg = transitSegs[key];
+    var stops = seg.stops.slice().sort(function(x,y){ return dayNum(x.day)-dayNum(y.day); });
+    stops.forEach(function(a) {
+      // use a diamond shape to visually distinguish transit stops
+      var icon = L.divIcon({className:'', iconSize:[22,22], iconAnchor:[11,11],
+        html:'<div style="background:#555;color:#fff;border-radius:4px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);font-size:10px;font-weight:800;transform:rotate(45deg)"><span style="transform:rotate(-45deg)">'+(++transitIdx)+'</span></div>'});
+      L.marker([a.lat,a.lng],{icon:icon,zIndexOffset:60}).addTo(map)
+        .bindPopup('<b>'+a.label+'</b><br>'+a.day+' (transit)');
+    });
+  });
+
+  // 6. Fit bounds
+  var allPts = sleeps.map(function(s){ return [s.lat,s.lng]; })
+    .concat(attrs.map(function(a){ return [a.lat,a.lng]; }));
+  if (allPts.length)
+    setTimeout(function(){ map.invalidateSize(); map.fitBounds(L.latLngBounds(allPts),{padding:[40,40]}); }, 150);
+}
 var _fsMap = null;
 var _fsPk  = null;
 
@@ -2941,32 +3164,8 @@ function openFS(pk) {
   _fsMap = L.map(fsMapEl, {zoomControl:true});
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
     {attribution:'&copy; OpenStreetMap, &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(_fsMap);
-  // full route
-  var allPts = d.sleeps.map(function(s){ return [s.lat,s.lng]; });
-  var stayPts = d.sleeps.filter(function(s){ return s.nights; }).map(function(s){ return [s.lat,s.lng]; });
-  if (stayPts.length > 1) L.polyline(stayPts,{color:'#1a4a6b',weight:3,opacity:.7}).addTo(_fsMap);
-  var fa = d.sleeps[0], la = d.sleeps[d.sleeps.length-1];
-  var fs2 = d.sleeps.find(function(s){ return s.nights; });
-  var ls  = d.sleeps.slice().reverse().find(function(s){ return s.nights; });
-  if (!fa.nights && fs2) L.polyline([[fa.lat,fa.lng],[fs2.lat,fs2.lng]],{color:'#888',weight:2,dashArray:'6 5'}).addTo(_fsMap);
-  if (!la.nights && ls && la !== fa) L.polyline([[ls.lat,ls.lng],[la.lat,la.lng]],{color:'#888',weight:2,dashArray:'6 5'}).addTo(_fsMap);
-  // sleep markers
-  d.sleeps.forEach(function(s) {
-    var size = s.nights ? 44 : 28;
-    var lbl  = s.nights ? s.nights[0]+'-'+s.nights[1] : '&#x2708;';
-    var icon = L.divIcon({className:'',iconSize:[size,size],iconAnchor:[size/2,size/2],
-      html:'<div style="background:'+s.color+';color:#fff;border-radius:50%;width:'+size+'px;height:'+size+'px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.4);font-size:10px;font-weight:900">'+lbl+(s.nights?'<div style="font-size:8px">&#x05DC;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</div>':'')+'</div>'});
-    L.marker([s.lat,s.lng],{icon:icon,zIndexOffset:100}).addTo(_fsMap).bindPopup('<b>'+s.label+'</b>');
-  });
-  // attraction markers + spokes
-  d.attractions.forEach(function(a,i) {
-    var base = d.sleeps.find(function(s){ return s.label===a.base; });
-    var color = base ? base.color : '#666';
-    if (base) L.polyline([[base.lat,base.lng],[a.lat,a.lng]],{color:color,weight:1.8,dashArray:'4 5',opacity:.7}).addTo(_fsMap);
-    var icon = L.divIcon({className:'',iconSize:[24,24],iconAnchor:[12,12],
-      html:'<div style="background:'+color+';color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);font-size:11px;font-weight:800">'+(i+1)+'</div>'});
-    L.marker([a.lat,a.lng],{icon:icon,zIndexOffset:50}).addTo(_fsMap).bindPopup('<b>'+a.label+'</b><br>'+a.day);
-  });
+  // Use shared drawing logic — delegate to drawMapContent
+  drawMapContent(_fsMap, d);
   var bounds = allPts.concat(d.attractions.map(function(a){ return [a.lat,a.lng]; }));
   setTimeout(function(){ _fsMap.invalidateSize(); _fsMap.fitBounds(L.latLngBounds(bounds),{padding:[50,50]}); }, 200);
 }
