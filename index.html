@@ -381,6 +381,11 @@ body.mobile-view thead th,body.mobile-view tbody td{padding:7px 8px;}
 
 body { background: var(--bg, #f0f4f8); }
 #build-ver { position:fixed; bottom:8px; right:8px; font-size:.7rem; color:#aaa; z-index:9999; }
+
+/* older variants collapsible */
+.older-variants summary::-webkit-details-marker { display:none; }
+.older-variants[open] summary { background:var(--border); }
+.older-variants .alt-btn { font-size:.81rem; padding:7px 10px; }
 </style>
 </head>
 <body>
@@ -398,38 +403,47 @@ body { background: var(--bg, #f0f4f8); }
   <!-- SIDEBAR -->
   <div class="alts-sidebar">
     <div class="alts-sidebar-title">&#x05D0;&#x05DC;&#x05D8;&#x05E8;&#x05E0;&#x05D8;&#x05D9;&#x05D1;&#x05D5;&#x05EA;</div>
-    <button class="alt-btn active" id="sidebtn-pG" onclick="switchAlt('pG',this)">
-      <span class="chosen-star">&#x2B50;</span>Frankfurt+Basel<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · FRA/BSL</span>
-    </button>
-    <button class="alt-btn" id="sidebtn-pI" onclick="switchAlt('pI',this)">
-      <span class="chosen-star">&#x2B50;</span>Star Black Forest<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · Gemini</span>
-    </button>
-    <button class="alt-btn" id="sidebtn-pH" onclick="switchAlt('pH',this)">
-      <span class="chosen-star">&#x2B50;</span>Hybrid 3-Base<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · Baden-Baden+Titisee+L&#xF6;rrach</span>
-    </button>
-    <button class="alt-btn" id="sidebtn-pJ" onclick="switchAlt('pJ',this)">
-      <span class="chosen-star">&#x2B50;</span>Alsace Finale<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · Titisee+Alsace+BSL</span>
-    </button>
-    <button class="alt-btn" id="sidebtn-pK" onclick="switchAlt('pK',this)">
-      <span class="chosen-star">&#x2B50;</span>Gemini Alsace Finale<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · MerkurBahn+Triberg+Alsace</span>
-    </button>
-    <button class="alt-btn" id="sidebtn-pL" onclick="switchAlt('pL',this)">
-      <span class="chosen-star">&#x2B50;</span>Gemini Alsace Finale v2<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · +עלויות+לינה+אוכל מפורטים</span>
-    </button>
-    <button class="alt-btn" id="sidebtn-pM" onclick="switchAlt('pM',this)">
-      <span class="chosen-star">&#x2B50;</span>Gemini Alsace Finale v3<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · ⭐ Gutach + J3</span>
+
+    <button class="alt-btn" id="sidebtn-pM" onclick="switchAlt('pM',this)" class="active">
+      <span class="chosen-star">&#x2B50;</span>Gemini Alsace v3<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · &#x05D1;&#x05D3;&#x05DF;-&#x05D1;&#x05D3;&#x05DF;+&#x05D8;&#x05D9;&#x05D8;&#x05D9;&#x05D6;&#x05D9;+&#x05D0;&#x05DC;&#x05D6;&#x05E1; &middot; &#x2B50; Gutach</span>
     </button>
     <button class="alt-btn" id="sidebtn-pN" onclick="switchAlt('pN',this)">
-      <span class="chosen-star">&#x2B50;</span>Gemini Alsace Finale v4<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · ⭐ Rust+EuropaPark 5min</span>
+      <span class="chosen-star">&#x2B50;</span>Gemini Alsace v4<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · 4 &#x05D1;&#x05E1;&#x05D9;&#x05E1;&#x05D9;&#x05DD; &middot; &#x2B50; Rust 5&#x05D3;&#x05E7; &#x05DC;&#x05E4;&#x05D0;&#x05E8;&#x05E7;</span>
     </button>
+
+    <details class="older-variants" style="margin-top:10px">
+      <summary style="cursor:pointer;font-size:.78rem;color:var(--rock);padding:6px 8px;border-radius:6px;background:var(--card);border:1px solid var(--border);list-style:none;display:flex;align-items:center;gap:6px">
+        <span style="font-size:.9rem">&#x1F4C2;</span> &#x05D2;&#x05E8;&#x05E1;&#x05D0;&#x05D5;&#x05EA; &#x05E7;&#x05D5;&#x05D3;&#x05DE;&#x05D5;&#x05EA; (6)
+      </summary>
+      <div style="margin-top:4px;display:flex;flex-direction:column;gap:4px">
+        <button class="alt-btn" id="sidebtn-pL" onclick="switchAlt('pL',this)">
+          <span class="chosen-star">&#x2B50;</span>Gemini Alsace v2<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">+&#x05E2;&#x05DC;&#x05D5;&#x05D9;&#x05D5;&#x05EA;+&#x05DC;&#x05D9;&#x05E0;&#x05D4;+&#x05D0;&#x05D5;&#x05DB;&#x05DC; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05D9;&#x05DD;</span>
+        </button>
+        <button class="alt-btn" id="sidebtn-pK" onclick="switchAlt('pK',this)">
+          <span class="chosen-star">&#x2B50;</span>Gemini Alsace v1<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">MerkurBahn+Triberg+Alsace</span>
+        </button>
+        <button class="alt-btn" id="sidebtn-pJ" onclick="switchAlt('pJ',this)">
+          <span class="chosen-star">&#x2B50;</span>Alsace Finale<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">Titisee+Alsace+BSL</span>
+        </button>
+        <button class="alt-btn" id="sidebtn-pH" onclick="switchAlt('pH',this)">
+          <span class="chosen-star">&#x2B50;</span>Hybrid 3-Base<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">Baden-Baden+Titisee+L&#xF6;rrach</span>
+        </button>
+        <button class="alt-btn" id="sidebtn-pI" onclick="switchAlt('pI',this)">
+          <span class="chosen-star">&#x2B50;</span>Star Black Forest<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">Gemini single-base</span>
+        </button>
+        <button class="alt-btn" id="sidebtn-pG" onclick="switchAlt('pG',this)">
+          <span class="chosen-star">&#x2B50;</span>Frankfurt+Basel<br>
+          <span style="font-size:.72rem;font-weight:400;color:var(--rock)">FRA/Meersburg/BSL</span>
+        </button>
+      </div>
+    </details>
   </div>
 
   <!-- PANELS -->
@@ -1050,7 +1064,7 @@ body { background: var(--bg, #f0f4f8); }
         </div>
 </main>
 
-<div id="build-ver">v2.9.0</div>
+<div id="build-ver">v2.10.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -2702,6 +2716,8 @@ const MAP_DATA = {
     ]
   },
 
+
+
   pM: {
     sleeps: [
       { lat:50.0379, lng:8.5622, label:'Frankfurt Airport',               nights:null,  color:'#888888' },
@@ -2712,20 +2728,19 @@ const MAP_DATA = {
       { lat:47.5980, lng:7.5292, label:'Basel EuroAirport',               nights:null,  color:'#888888' }
     ],
     attractions: [
-      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee',         day:'16.8',    base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.5976, lng:8.2015, label:'Mummelsee',                  day:'17.8',    base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn',             day:'17.8',    base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.1301, lng:8.2319, label:'Triberg Waterfalls',         day:'18.8',    base:'Titisee / Lenzkirch Base' },
-      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach',     day:'18.8',    base:'Titisee / Lenzkirch Base' },
-      { lat:47.9022, lng:8.1549, label:'Titisee',                    day:'18.8',    base:'Titisee / Lenzkirch Base' },
-      { lat:48.2660, lng:7.7220, label:'Europa Park Rust',           day:'19.8',    base:'Titisee / Lenzkirch Base' },
-      { lat:47.8167, lng:8.1833, label:'Schluchsee',                 day:'20.8',    base:'Titisee / Lenzkirch Base' },
-      { lat:47.9990, lng:7.8421, label:'Freiburg',                   day:'21.8',    base:'Titisee / Lenzkirch Base' },
-      { lat:47.8299, lng:7.9436, label:'Todtnau / Horses',           day:'22.8',    base:'Titisee / Lenzkirch Base' },
-      { lat:48.0448, lng:7.3072, label:'Eguisheim',                  day:'23.8',    base:'Eguisheim / Colmar / Ribeauville' },
-      { lat:48.0794, lng:7.3585, label:'Colmar',                     day:'23-24.8', base:'Eguisheim / Colmar / Ribeauville' },
-      { lat:48.1953, lng:7.3190, label:'Ribeauville',                day:'24.8',    base:'Eguisheim / Colmar / Ribeauville' },
-      { lat:48.1668, lng:7.2973, label:'Riquewihr',                  day:'24.8',    base:'Eguisheim / Colmar / Ribeauville' }
+      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee',       day:'16.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.5976, lng:8.2015, label:'Mummelsee',                 day:'17.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn',            day:'17.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.1301, lng:8.2319, label:'Triberg Waterfalls',        day:'18.8', base:'transit' },
+      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach ⭐', day:'18.8', base:'transit' },
+      { lat:47.9022, lng:8.1549, label:'Titisee (arrival)',         day:'18.8', base:'transit' },
+      { lat:48.2660, lng:7.7220, label:'Europa Park Rust',          day:'19.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8167, lng:8.1833, label:'Schluchsee',                day:'20.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.9990, lng:7.8421, label:'Freiburg',                  day:'21.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8299, lng:7.9436, label:'Todtnau / Horses',          day:'22.8', base:'Titisee / Lenzkirch Base' },
+      { lat:48.0448, lng:7.3072, label:'Eguisheim',                 day:'23.8', base:'Eguisheim / Colmar / Ribeauville' },
+      { lat:48.0794, lng:7.3585, label:'Colmar',                    day:'24.8', base:'Eguisheim / Colmar / Ribeauville' },
+      { lat:48.1953, lng:7.3190, label:'Ribeauville',               day:'24.8', base:'Eguisheim / Colmar / Ribeauville' }
     ]
   },
 
@@ -2754,6 +2769,33 @@ const MAP_DATA = {
       { lat:48.0448, lng:7.3072, label:'Eguisheim', day:'23.8', base:'Eguisheim / Colmar' },
       { lat:48.0794, lng:7.3585, label:'Colmar', day:'23.8', base:'Eguisheim / Colmar' },
       { lat:48.1953, lng:7.3190, label:'Ribeauvillé', day:'24.8', base:'Eguisheim / Colmar' }
+    ]
+  },
+
+  pN: {
+    sleeps: [
+      { lat:50.0379, lng:8.5622, label:'Frankfurt Airport',               nights:null,  color:'#888888' },
+      { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden',      nights:[1,2], color:'#b7791f' },
+      { lat:47.8682, lng:8.2021, label:'Titisee / Lenzkirch Base',         nights:[3,5], color:'#2f855a' },
+      { lat:48.2660, lng:7.7220, label:'Rust / Ringsheim',                 nights:[6,7], color:'#805ad5' },
+      { lat:48.0420, lng:7.3060, label:'Eguisheim / Colmar',               nights:[8,9], color:'#c53030' },
+      { lat:47.6140, lng:7.6646, label:'Loerrach Car Return',              nights:null,  color:'#888888' },
+      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport',               nights:null,  color:'#888888' }
+    ],
+    attractions: [
+      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee',       day:'16.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.5976, lng:8.2015, label:'Mummelsee',                 day:'17.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn',            day:'17.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.1301, lng:8.2319, label:'Triberg Waterfalls',        day:'18.8', base:'transit' },
+      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach ⭐', day:'18.8', base:'transit' },
+      { lat:47.9022, lng:8.1549, label:'Titisee (arrival)',         day:'18.8', base:'transit' },
+      { lat:47.8167, lng:8.1833, label:'Schluchsee',                day:'19.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8299, lng:7.9436, label:'Todtnau / Horses',          day:'20.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.9990, lng:7.8421, label:'Freiburg (transit)',        day:'21.8', base:'transit' },
+      { lat:48.2660, lng:7.7220, label:'Europa Park Rust ⭐',       day:'22.8', base:'Rust / Ringsheim' },
+      { lat:48.0448, lng:7.3072, label:'Eguisheim',                 day:'23.8', base:'Eguisheim / Colmar' },
+      { lat:48.0794, lng:7.3585, label:'Colmar',                    day:'24.8', base:'Eguisheim / Colmar' },
+      { lat:48.1953, lng:7.3190, label:'Ribeauville',               day:'24.8', base:'Eguisheim / Colmar' }
     ]
   }};
 
