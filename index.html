@@ -1064,7 +1064,7 @@ body { background: var(--bg, #f0f4f8); }
         </div>
 </main>
 
-<div id="build-ver">v2.18.0</div>
+<div id="build-ver">v2.19.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -3089,7 +3089,7 @@ function drawMapContent(map, d) {
   var sleeps = d.sleeps;
   var attrs  = d.attractions;
 
-  /* day palette — 10 distinct colours */
+  /* 10-colour day palette */
   var DAY_COLORS = [
     '#e63946','#f4a261','#2a9d8f','#457b9d','#6a4c93',
     '#e76f51','#2196f3','#43aa8b','#f77f00','#c77dff'
@@ -3099,17 +3099,23 @@ function drawMapContent(map, d) {
     return parseInt((str||'0').split('-')[0], 10);
   }
 
+  /* Convert calendar day-of-month to trip night number.
+     Trip starts 16 August = night 1, so night = day - 15. */
+  function dayToNight(day) { return day - 15; }
+
   var stayNodes = sleeps.filter(function(s){ return s.nights; });
 
-  function nodeForNight(n) {
-    for (var i=0; i<stayNodes.length; i++) {
-      if (stayNodes[i].nights[0] <= n && n <= stayNodes[i].nights[1])
-        return stayNodes[i];
+  /* Which base covers a given night number? */
+  function nodeForNight(nightNum) {
+    for (var i = 0; i < stayNodes.length; i++) {
+      var sn = stayNodes[i];
+      if (sn.nights[0] <= nightNum && nightNum <= sn.nights[1])
+        return sn;
     }
     return null;
   }
 
-  /* group attractions by day, preserve data order */
+  /* Group attractions by day, preserve data order */
   var byDay = {};
   attrs.forEach(function(a) {
     var dn = parseDayFirst(a.day);
@@ -3117,28 +3123,28 @@ function drawMapContent(map, d) {
     byDay[dn].push(a);
   });
 
-  /* sorted day list → assign palette colour per day */
+  /* Sorted days → assign a unique palette colour */
   var days = Object.keys(byDay).map(Number).sort(function(a,b){return a-b;});
   var dayColor = {};
   days.forEach(function(dn, idx) {
     dayColor[dn] = DAY_COLORS[idx % DAY_COLORS.length];
   });
 
-  /* ── airport approach lines (very subtle) ── */
-  var fa=sleeps[0], la=sleeps[sleeps.length-1];
-  var fs=stayNodes[0], ls=stayNodes[stayNodes.length-1];
-  if (fa&&!fa.nights&&fs)
+  /* ── faint airport approach lines ── */
+  var fa = sleeps[0], la = sleeps[sleeps.length-1];
+  var fs = stayNodes[0], ls = stayNodes[stayNodes.length-1];
+  if (fa && !fa.nights && fs)
     L.polyline([[fa.lat,fa.lng],[fs.lat,fs.lng]],
-      {color:'#bbb',weight:1.5,dashArray:'4 7',opacity:.45}).addTo(map);
-  if (la&&!la.nights&&ls&&la.label!==(fa&&fa.label))
+      {color:'#bbb',weight:1.5,dashArray:'4 7',opacity:.4}).addTo(map);
+  if (la && !la.nights && ls && la.label !== (fa&&fa.label))
     L.polyline([[ls.lat,ls.lng],[la.lat,la.lng]],
-      {color:'#bbb',weight:1.5,dashArray:'4 7',opacity:.45}).addTo(map);
+      {color:'#bbb',weight:1.5,dashArray:'4 7',opacity:.4}).addTo(map);
 
-  /* ── base (sleep) markers — drawn BEFORE lines so lines appear on top ── */
+  /* ── base markers (drawn first, so lines overlay them) ── */
   sleeps.forEach(function(s) {
-    var sz = s.nights ? 44 : 28;
-    var lbl= s.nights ? s.nights[0]+'\u2013'+s.nights[1] : '\u2708';
-    var htm='<div style="background:'+s.color+';color:#fff;border-radius:50%;'
+    var sz  = s.nights ? 44 : 28;
+    var lbl = s.nights ? s.nights[0]+'\u2013'+s.nights[1] : '\u2708';
+    var htm = '<div style="background:'+s.color+';color:#fff;border-radius:50%;'
       +'width:'+sz+'px;height:'+sz+'px;display:flex;flex-direction:column;'
       +'align-items:center;justify-content:center;border:3px solid #fff;'
       +'box-shadow:0 2px 8px rgba(0,0,0,.4);font-size:10px;font-weight:900">'+lbl
@@ -3150,36 +3156,42 @@ function drawMapContent(map, d) {
      .addTo(map).bindPopup('<b>'+s.label+'</b>');
   });
 
-  /* ── per-day dashed route loops ── */
+  /* ── per-day dashed loops ── */
   var markerIdx = 0;
   days.forEach(function(dn) {
     var dayAttrs = byDay[dn];
     if (!dayAttrs || dayAttrs.length === 0) return;
 
-    var color     = dayColor[dn];
-    var wakeNode  = nodeForNight(dn-1);   /* base you woke up at */
-    var sleepNode = nodeForNight(dn);     /* base you sleep at tonight */
+    var color = dayColor[dn];
+
+    /* Convert day → night numbers */
+    var nightSlept  = dayToNight(dn);      /* night you sleep tonight */
+    var nightWoke   = dayToNight(dn) - 1;  /* night you slept last night */
+
+    var wakeNode  = nodeForNight(nightWoke);
+    var sleepNode = nodeForNight(nightSlept);
     var isStay    = wakeNode && sleepNode && wakeNode.label === sleepNode.label;
 
-    /* build chain */
+    /* build coordinate chain */
     var chain = [];
     if (wakeNode)  chain.push([wakeNode.lat,  wakeNode.lng]);
     dayAttrs.forEach(function(a){ chain.push([a.lat, a.lng]); });
     if (isStay && wakeNode) {
-      chain.push([wakeNode.lat, wakeNode.lng]);  /* close loop */
-    } else if (sleepNode) {
+      chain.push([wakeNode.lat, wakeNode.lng]);   /* close loop back to base */
+    } else if (sleepNode && sleepNode !== wakeNode) {
       chain.push([sleepNode.lat, sleepNode.lng]); /* end at new base */
+    } else if (!wakeNode && sleepNode) {
+      chain.push([sleepNode.lat, sleepNode.lng]); /* arrival day */
     }
 
-    /* draw dashed line */
     if (chain.length >= 2)
       L.polyline(chain,
         {color:color, weight:2.5, dashArray:'8 5', opacity:.9}).addTo(map);
 
-    /* numbered attraction markers */
+    /* numbered attraction circles */
     dayAttrs.forEach(function(a) {
       var n = ++markerIdx;
-      var htm='<div style="background:'+color+';color:#fff;border-radius:50%;'
+      var htm = '<div style="background:'+color+';color:#fff;border-radius:50%;'
         +'width:22px;height:22px;display:flex;align-items:center;justify-content:center;'
         +'border:2px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.4);'
         +'font-size:11px;font-weight:800;line-height:1">'+n+'</div>';
@@ -3192,12 +3204,12 @@ function drawMapContent(map, d) {
 
   /* ── fit bounds ── */
   var pts = sleeps.map(function(s){return [s.lat,s.lng];})
-    .concat(attrs.map(function(a){return [a.lat,a.lng];}));
+              .concat(attrs.map(function(a){return [a.lat,a.lng];}));
   if (pts.length)
     setTimeout(function(){
       map.invalidateSize();
       map.fitBounds(L.latLngBounds(pts),{padding:[40,40]});
-    },150);
+    }, 150);
 }
 
 
