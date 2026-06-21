@@ -1064,7 +1064,7 @@ body { background: var(--bg, #f0f4f8); }
         </div>
 </main>
 
-<div id="build-ver">v2.10.0</div>
+<div id="build-ver">v2.11.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -2926,58 +2926,52 @@ function drawMapContent(map, d) {
   var sleeps = d.sleeps;
   var attrs  = d.attractions;
 
-  /* ── helpers ── */
   function parseDayFirst(str) {
-    // "18.8" → 18, "23-24.8" → 23
     return parseInt((str||'0').split('-')[0], 10);
   }
 
-  /* stayNodes: overnight bases only (nights != null) */
+  /* overnight bases only */
   var stayNodes = sleeps.filter(function(s){ return s.nights; });
 
-  /* quick label lookup */
-  var sleepByLabel = {};
-  sleeps.forEach(function(s){ sleepByLabel[s.label] = s; });
+  /* ── For each day, determine: wake-up base and sleep base ── */
+  /* nights[0]=first night, nights[1]=last night.
+     Night N means you sleep there at the end of day N.
+     So on day D:
+       wake-up base = the node whose last night >= D and first night < D  (you slept there night D-1)
+                    = the node where  nights[0] <= D-1 <= nights[1]
+                    = nights[0] <= D-1  AND  D-1 <= nights[1]
+                    = nights[0] < D    AND  nights[1] >= D-1
+       sleep  base = the node where you spend night D
+                    = nights[0] <= D <= nights[1]
 
-  /* ── classify every attraction ── */
-  var spokeAttrs  = [];   // [{attr, node}]  — day-trip from a base
-  var transitSegs = {};   // "A||B" → {A, B, stops:[attr]}
+     Simpler: map day D to:
+       wakeNode  = stayNode where nights[0] <= D-1 <= nights[1]   (nil on day 1)
+       sleepNode = stayNode where nights[0] <= D   <= nights[1]   (nil on last day)
+  */
+  function nodeForNight(n) {
+    for (var i=0; i<stayNodes.length; i++) {
+      if (stayNodes[i].nights[0] <= n && n <= stayNodes[i].nights[1])
+        return stayNodes[i];
+    }
+    return null;
+  }
 
+  /* Group attractions by day */
+  var byDay = {};
   attrs.forEach(function(a) {
     var dn = parseDayFirst(a.day);
-
-    /* 1. find which stayNode this day belongs to as a spoke */
-    var spokeNode = null;
-    for (var i = 0; i < stayNodes.length; i++) {
-      var sn = stayNodes[i];
-      if (dn >= sn.nights[0] && dn <= sn.nights[1]) { spokeNode = sn; break; }
-    }
-    if (spokeNode) { spokeAttrs.push({attr:a, node:spokeNode}); return; }
-
-    /* 2. not a spoke day → must be a transit day between two stayNodes */
-    var segA = null, segB = null;
-    for (var j = 0; j < stayNodes.length - 1; j++) {
-      var A = stayNodes[j], B = stayNodes[j+1];
-      /* transit day: after A's last night, on/before B's first night */
-      if (dn > A.nights[1] && dn <= B.nights[0]) { segA = A; segB = B; break; }
-    }
-    /* fallback: arrival/departure days at the very edges */
-    if (!segA && stayNodes.length >= 2) {
-      if (dn < stayNodes[0].nights[0])  { segA = stayNodes[0]; segB = stayNodes[1]; }
-      else                               { segA = stayNodes[stayNodes.length-2]; segB = stayNodes[stayNodes.length-1]; }
-    }
-    if (segA && segB) {
-      var key = segA.label + '||' + segB.label;
-      if (!transitSegs[key]) transitSegs[key] = {A:segA, B:segB, stops:[]};
-      transitSegs[key].stops.push(a);
-    } else {
-      /* last resort: treat as spoke from nearest stayNode by label */
-      var bn = sleepByLabel[a.base];
-      if (bn && bn.nights) spokeAttrs.push({attr:a, node:bn});
-    }
+    if (!byDay[dn]) byDay[dn] = [];
+    byDay[dn].push(a);
   });
 
-  /* ── draw airport/transit approach lines ── */
+  /* Sort each day's attractions by their order in the data array */
+  Object.keys(byDay).forEach(function(dn) {
+    byDay[dn].sort(function(a, b) {
+      return attrs.indexOf(a) - attrs.indexOf(b);
+    });
+  });
+
+  /* ── Draw airport approach/departure lines ── */
   var fa = sleeps[0], la = sleeps[sleeps.length-1];
   var fs = stayNodes[0], ls = stayNodes[stayNodes.length-1];
   if (fa && !fa.nights && fs)
@@ -2987,65 +2981,95 @@ function drawMapContent(map, d) {
     L.polyline([[ls.lat,ls.lng],[la.lat,la.lng]],
       {color:'#888',weight:2,dashArray:'6 5',opacity:.6}).addTo(map);
 
-  /* ── draw inter-base route ── */
-  for (var i = 0; i < stayNodes.length - 1; i++) {
+  /* ── Draw inter-base solid segments for days with NO attractions ── */
+  /* We draw a solid line A→B only when there are no attractions on the move day */
+  for (var i=0; i<stayNodes.length-1; i++) {
     var A = stayNodes[i], B = stayNodes[i+1];
-    var key = A.label + '||' + B.label;
-    if (transitSegs[key]) {
-      /* dashed chain:  A → s1 → s2 → … → B */
-      var chain = [[A.lat,A.lng]];
-      transitSegs[key].stops
-        .slice().sort(function(x,y){ return parseDayFirst(x.day)-parseDayFirst(y.day); })
-        .forEach(function(s){ chain.push([s.lat,s.lng]); });
-      chain.push([B.lat,B.lng]);
-      L.polyline(chain, {color:'#555',weight:2.5,dashArray:'8 5',opacity:.75}).addTo(map);
-    } else {
-      /* solid segment */
+    /* The move day for this segment: day = B.nights[0] (first night at B = move day) */
+    var moveDay = B.nights[0];
+    var hasAttrs = byDay[moveDay] && byDay[moveDay].length > 0;
+    if (!hasAttrs) {
       L.polyline([[A.lat,A.lng],[B.lat,B.lng]],
         {color:'#1a4a6b',weight:3,opacity:.75}).addTo(map);
     }
+    /* If there ARE attractions on the move day, the chain below handles it */
   }
 
-  /* ── sleep markers ── */
+  /* ── Draw sleep markers ── */
   sleeps.forEach(function(s) {
     var sz  = s.nights ? 44 : 28;
     var lbl = s.nights ? s.nights[0]+'\u2013'+s.nights[1] : '\u2708';
-    var html = '<div style="background:'+s.color+';color:#fff;border-radius:50%;'
+    var htm = '<div style="background:'+s.color+';color:#fff;border-radius:50%;'
       +'width:'+sz+'px;height:'+sz+'px;display:flex;flex-direction:column;'
       +'align-items:center;justify-content:center;border:3px solid #fff;'
       +'box-shadow:0 2px 8px rgba(0,0,0,.4);font-size:10px;font-weight:900">'+lbl
       +(s.nights?'<div style="font-size:8px;opacity:.8">\u05dc\u05d9\u05dc\u05d5\u05ea</div>':'')
       +'</div>';
-    L.marker([s.lat,s.lng],{icon:L.divIcon({className:'',iconSize:[sz,sz],iconAnchor:[sz/2,sz/2],html:html}),zIndexOffset:100})
+    L.marker([s.lat,s.lng],{icon:L.divIcon({className:'',iconSize:[sz,sz],iconAnchor:[sz/2,sz/2],html:htm}),zIndexOffset:100})
      .addTo(map).bindPopup(s.label);
   });
 
-  /* ── spoke attraction markers (circles) ── */
-  var idx = 0;
-  spokeAttrs.forEach(function(item) {
-    var a = item.attr, color = item.node.color;
-    L.polyline([[item.node.lat,item.node.lng],[a.lat,a.lng]],
-      {color:color,weight:1.8,dashArray:'4 5',opacity:.7}).addTo(map);
-    var html = '<div style="background:'+color+';color:#fff;border-radius:50%;'
-      +'width:24px;height:24px;display:flex;align-items:center;justify-content:center;'
-      +'border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);font-size:11px;font-weight:800">'+(++idx)+'</div>';
-    L.marker([a.lat,a.lng],{icon:L.divIcon({className:'',iconSize:[24,24],iconAnchor:[12,12],html:html}),zIndexOffset:50})
-     .addTo(map).bindPopup('<b>'+a.label+'</b><br>'+a.day);
-  });
+  /* ── Draw per-day chains ── */
+  var markerIdx = 0;
+  var days = Object.keys(byDay).map(Number).sort(function(a,b){return a-b;});
 
-  /* ── transit stop markers (diamonds) ── */
-  Object.keys(transitSegs).forEach(function(key) {
-    transitSegs[key].stops
-      .slice().sort(function(x,y){ return parseDayFirst(x.day)-parseDayFirst(y.day); })
-      .forEach(function(a) {
-        var html = '<div style="background:#555;color:#fff;border-radius:4px;'
+  days.forEach(function(dn) {
+    var dayAttrs = byDay[dn];
+    /* Night index for this day: night dn-16+1 if trip starts 16.8.
+       Actually we just use dn directly against nights[] arrays. */
+    var wakeNode  = nodeForNight(dn-1);   /* slept here the previous night */
+    var sleepNode = nodeForNight(dn);     /* sleeping here tonight */
+
+    /* Determine chain type */
+    var isStayDay  = wakeNode && sleepNode && wakeNode.label === sleepNode.label;
+    var isMoveDay  = !isStayDay; /* wake ≠ sleep, or one is null (first/last day) */
+
+    /* Pick chain color */
+    var chainColor = isStayDay ? wakeNode.color : '#555';
+    var chainDash  = isStayDay ? '5 6' : '8 5';
+    var chainW     = isStayDay ? 2 : 2.5;
+
+    /* Build coordinate chain */
+    var chain = [];
+    if (isStayDay) {
+      /* loop: base → a1 → a2 → … → base */
+      chain.push([wakeNode.lat, wakeNode.lng]);
+      dayAttrs.forEach(function(a){ chain.push([a.lat, a.lng]); });
+      chain.push([wakeNode.lat, wakeNode.lng]);
+    } else {
+      /* open chain: wakeBase → a1 → a2 → … → sleepBase */
+      if (wakeNode)  chain.push([wakeNode.lat,  wakeNode.lng]);
+      dayAttrs.forEach(function(a){ chain.push([a.lat, a.lng]); });
+      if (sleepNode) chain.push([sleepNode.lat, sleepNode.lng]);
+    }
+
+    if (chain.length >= 2)
+      L.polyline(chain, {color:chainColor, weight:chainW, dashArray:chainDash, opacity:.8}).addTo(map);
+
+    /* Draw attraction markers */
+    dayAttrs.forEach(function(a) {
+      var isMoveStop = isMoveDay;
+      var color = isStayDay ? wakeNode.color : '#555';
+      var n = ++markerIdx;
+
+      var htm;
+      if (isMoveStop) {
+        /* diamond for transit/move stops */
+        htm = '<div style="background:#555;color:#fff;border-radius:4px;'
           +'width:22px;height:22px;display:flex;align-items:center;justify-content:center;'
           +'border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);font-size:10px;'
-          +'font-weight:800;transform:rotate(45deg)">'
-          +'<span style="transform:rotate(-45deg)">'+(++idx)+'</span></div>';
-        L.marker([a.lat,a.lng],{icon:L.divIcon({className:'',iconSize:[22,22],iconAnchor:[11,11],html:html}),zIndexOffset:60})
-         .addTo(map).bindPopup('<b>'+a.label+'</b><br>'+a.day+' \u2014 transit stop');
-      });
+          +'font-weight:800;transform:rotate(45deg)"><span style="transform:rotate(-45deg)">'+n+'</span></div>';
+        L.marker([a.lat,a.lng],{icon:L.divIcon({className:'',iconSize:[22,22],iconAnchor:[11,11],html:htm}),zIndexOffset:60})
+         .addTo(map).bindPopup('<b>'+a.label+'</b><br>'+a.day+' \u2014 \u05d9\u05d5\u05dd \u05de\u05e2\u05d1\u05e8');
+      } else {
+        /* circle for day-trip stops */
+        htm = '<div style="background:'+color+';color:#fff;border-radius:50%;'
+          +'width:24px;height:24px;display:flex;align-items:center;justify-content:center;'
+          +'border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.3);font-size:11px;font-weight:800">'+n+'</div>';
+        L.marker([a.lat,a.lng],{icon:L.divIcon({className:'',iconSize:[24,24],iconAnchor:[12,12],html:htm}),zIndexOffset:50})
+         .addTo(map).bindPopup('<b>'+a.label+'</b><br>'+a.day);
+      }
+    });
   });
 
   /* ── fit bounds ── */
@@ -3054,6 +3078,7 @@ function drawMapContent(map, d) {
   if (pts.length)
     setTimeout(function(){ map.invalidateSize(); map.fitBounds(L.latLngBounds(pts),{padding:[40,40]}); }, 150);
 }
+
 
 function renderMap(pk) {
   var el = document.getElementById('map-'+pk);
