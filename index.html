@@ -1064,7 +1064,7 @@ body { background: var(--bg, #f0f4f8); }
         </div>
 </main>
 
-<div id="build-ver">v2.20.0</div>
+<div id="build-ver">v2.21.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -2627,7 +2627,8 @@ Titisee: דירה €220–450/לילה. Lenzkirch (זול), Hinterzarten (KONUS
 // MAP DATA
 // ════════════════════════════════════════════════
 const MAP_DATA = {
-    pG: {
+
+pG: {
     sleeps: [
       { lat:50.0379, lng:8.5622, label:'FRA פרנקפורט', nights:null, color:'#888888' },
       { lat:47.6944, lng:9.2712, label:'מירסבורג', nights:[1,3], color:'#4a90a4' },
@@ -2646,29 +2647,8 @@ const MAP_DATA = {
       { lat:48.0787, lng:7.3584, label:'Colmar קולמר', day:'23.8', base:'Basel/BSL' }
     ]
   },
-    pH: {
-    sleeps: [
-      { lat:50.0379, lng:8.5622, label:'FRA Frankfurt', nights:null, color:'#888888' },
-      { lat:49.3988, lng:8.6724, label:'Heidelberg', nights:[1,1], color:'#c8773a' },
-      { lat:48.2672, lng:7.7256, label:'Rust', nights:[2,3], color:'#558b6e' },
-      { lat:47.9029, lng:8.1540, label:'Titisee-Schluchsee', nights:[4,9], color:'#4676a0' },
-      { lat:47.5989, lng:7.5299, label:'BSL EuroAirport', nights:null, color:'#888888' }
-    ],
-    attractions: [
-      { lat:49.4106, lng:8.7157, label:'Heidelberg Altstadt', day:'16.8', base:'Heidelberg' },
-      { lat:48.7606, lng:8.2398, label:'Baden-Baden Allee', day:'17.8', base:'Rust' },
-      { lat:48.5985, lng:8.2010, label:'Mummelsee', day:'17.8', base:'Rust' },
-      { lat:48.2689, lng:7.7200, label:'Europa-Park', day:'18.8', base:'Rust' },
-      { lat:47.8166, lng:8.1779, label:'Schluchsee', day:'20.8', base:'Titisee-Schluchsee' },
-      { lat:48.1301, lng:8.2336, label:'Triberg Waterfalls', day:'21.8', base:'Titisee-Schluchsee' },
-      { lat:48.2709, lng:8.2031, label:'Vogtsbauernhof Gutach', day:'21.8', base:'Titisee-Schluchsee' },
-      { lat:47.9959, lng:7.8522, label:'Freiburg Altstadt', day:'22.8', base:'Titisee-Schluchsee' },
-      { lat:47.8547, lng:8.0912, label:'Menzenschwand', day:'23.8', base:'Titisee-Schluchsee' },
-      { lat:47.7605, lng:8.1286, label:'St.Blasien Cathedral', day:'23.8', base:'Titisee-Schluchsee' },
-      { lat:47.8986, lng:8.1566, label:'Badeparadies', day:'24.8', base:'Titisee-Schluchsee' }
-    ]
-  },
-    pI: {
+
+pI: {
     sleeps: [
       { lat:50.0379, lng:8.5622, label:'Frankfurt Airport', nights:null, color:'#888888' },
       { lat:48.7606, lng:8.2398, label:'Baden-Baden', nights:[1,1], color:'#b7791f' },
@@ -2687,10 +2667,9 @@ const MAP_DATA = {
       { lat:47.6779, lng:8.6159, label:'Rhine Falls', day:'23.8', base:'Lenzkirch / Titisee Star Base' },
       { lat:48.0794, lng:7.3585, label:'Colmar', day:'24.8', base:'Lenzkirch / Titisee Star Base' }
     ]
-  }
-,
+  },
 
-  pH: {
+pH: {
     sleeps: [
       { lat:50.0379, lng:8.5622, label:'Frankfurt Airport',           nights:null,  color:'#888888' },
       { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
@@ -2713,7 +2692,7 @@ const MAP_DATA = {
     ]
   },
 
-  pJ: {
+pJ: {
     sleeps: [
       { lat:50.0379, lng:8.5622, label:'Frankfurt Airport',           nights:null,  color:'#888888' },
       { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
@@ -2737,7 +2716,7 @@ const MAP_DATA = {
     ]
   },
 
-  pK: {
+pK: {
     sleeps: [
       { lat:50.0379, lng:8.5622, label:'Frankfurt Airport',           nights:null,  color:'#888888' },
       { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
@@ -2763,7 +2742,7 @@ const MAP_DATA = {
     ]
   },
 
-  pL: {
+pL: {
     sleeps: [
       { lat:50.0379, lng:8.5622, label:'Frankfurt Airport',           nights:null,  color:'#888888' },
       { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
@@ -2789,125 +2768,7 @@ const MAP_DATA = {
     ]
   },
 
-
-
-
-    pM: {
-    sleeps: [
-      { lat:50.0379, lng:8.5622, label:'Frankfurt Airport', nights:null, color:'#888888' },
-      { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
-      { lat:47.8682, lng:8.2021, label:'Titisee / Lenzkirch Base', nights:[3,7], color:'#2f855a' },
-      { lat:48.0420, lng:7.3060, label:'Eguisheim / Colmar', nights:[8,9], color:'#c53030' },
-      { lat:47.6140, lng:7.6646, label:'Lörrach Car Return', nights:null, color:'#888888' },
-      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport', nights:null, color:'#888888' }
-    ],
-    attractions: [
-      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee', day:'16.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.5976, lng:8.2015, label:'Mummelsee', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.1301, lng:8.2319, label:'Triberg Waterfalls', day:'18.8', base:'Titisee / Lenzkirch Base' },
-      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach', day:'18.8', base:'Titisee / Lenzkirch Base' },
-      { lat:48.2660, lng:7.7220, label:'Europa-Park Rust', day:'19.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8167, lng:8.1833, label:'Schluchsee', day:'20.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.9990, lng:7.8421, label:'Freiburg', day:'21.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8299, lng:7.9436, label:'Todtnau Waterfall', day:'22.8', base:'Titisee / Lenzkirch Base' },
-      { lat:48.0448, lng:7.3072, label:'Eguisheim', day:'23.8', base:'Eguisheim / Colmar' },
-      { lat:48.0794, lng:7.3585, label:'Colmar', day:'23.8', base:'Eguisheim / Colmar' },
-      { lat:48.1953, lng:7.3190, label:'Ribeauvillé', day:'24.8', base:'Eguisheim / Colmar' }
-    ]
-  },
-
-
-
-    pN: {
-    sleeps: [
-      { lat:50.0379, lng:8.5622, label:'Frankfurt Airport', nights:null, color:'#888888' },
-      { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
-      { lat:47.8682, lng:8.2021, label:'Titisee / Lenzkirch Base', nights:[3,5], color:'#2f855a' },
-      { lat:48.2660, lng:7.7220, label:'Rust / Ringsheim', nights:[6,7], color:'#805ad5' },
-      { lat:48.0420, lng:7.3060, label:'Eguisheim / Colmar', nights:[8,9], color:'#c53030' },
-      { lat:47.6140, lng:7.6646, label:'Lörrach Car Return', nights:null, color:'#888888' },
-      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport', nights:null, color:'#888888' }
-    ],
-    attractions: [
-      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee', day:'16.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.5976, lng:8.2015, label:'Mummelsee', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.1301, lng:8.2319, label:'Triberg Waterfalls', day:'18.8', base:'Titisee / Lenzkirch Base' },
-      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach', day:'18.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8167, lng:8.1833, label:'Schluchsee', day:'19.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8299, lng:7.9436, label:'Todtnau Waterfall', day:'20.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.9990, lng:7.8421, label:'Freiburg', day:'21.8', base:'Rust / Ringsheim' },
-      { lat:48.2660, lng:7.7220, label:'Europa-Park Rust', day:'22.8', base:'Rust / Ringsheim' },
-      { lat:48.0448, lng:7.3072, label:'Eguisheim', day:'23.8', base:'Eguisheim / Colmar' },
-      { lat:48.0794, lng:7.3585, label:'Colmar', day:'23.8', base:'Eguisheim / Colmar' },
-      { lat:48.1953, lng:7.3190, label:'Ribeauvillé', day:'24.8', base:'Eguisheim / Colmar' }
-    ]
-  },
-
-
-
-    pN: {
-    sleeps: [
-      { lat:50.0379, lng:8.5622, label:'Frankfurt Airport', nights:null, color:'#888888' },
-      { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
-      { lat:47.8682, lng:8.2021, label:'Titisee / Lenzkirch Base', nights:[3,5], color:'#2f855a' },
-      { lat:48.2660, lng:7.7220, label:'Rust / Ringsheim', nights:[6,7], color:'#805ad5' },
-      { lat:48.0420, lng:7.3060, label:'Eguisheim / Colmar', nights:[8,9], color:'#c53030' },
-      { lat:47.6140, lng:7.6646, label:'Lörrach Car Return', nights:null, color:'#888888' },
-      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport', nights:null, color:'#888888' }
-    ],
-    attractions: [
-      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee', day:'16.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.5976, lng:8.2015, label:'Mummelsee', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.1301, lng:8.2319, label:'Triberg Waterfalls', day:'18.8', base:'Titisee / Lenzkirch Base' },
-      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach', day:'18.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8167, lng:8.1833, label:'Schluchsee', day:'19.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8299, lng:7.9436, label:'Todtnau Waterfall', day:'20.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.9990, lng:7.8421, label:'Freiburg', day:'21.8', base:'Rust / Ringsheim' },
-      { lat:48.2660, lng:7.7220, label:'Europa-Park Rust', day:'22.8', base:'Rust / Ringsheim' },
-      { lat:48.0448, lng:7.3072, label:'Eguisheim', day:'23.8', base:'Eguisheim / Colmar' },
-      { lat:48.0794, lng:7.3585, label:'Colmar', day:'23.8', base:'Eguisheim / Colmar' },
-      { lat:48.1953, lng:7.3190, label:'Ribeauvillé', day:'24.8', base:'Eguisheim / Colmar' }
-    ]
-  },
-
-
-    pN: {
-    sleeps: [
-      { lat:50.0379, lng:8.5622, label:'Frankfurt Airport', nights:null, color:'#888888' },
-      { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
-      { lat:47.8682, lng:8.2021, label:'Titisee / Lenzkirch Base', nights:[3,5], color:'#2f855a' },
-      { lat:48.2660, lng:7.7220, label:'Rust / Ringsheim', nights:[6,7], color:'#805ad5' },
-      { lat:48.0420, lng:7.3060, label:'Eguisheim / Colmar', nights:[8,9], color:'#c53030' },
-      { lat:47.6140, lng:7.6646, label:'Lörrach Car Return', nights:null, color:'#888888' },
-      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport', nights:null, color:'#888888' }
-    ],
-    attractions: [
-      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee', day:'16.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.5976, lng:8.2015, label:'Mummelsee', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.1301, lng:8.2319, label:'Triberg Waterfalls', day:'18.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.1350, lng:8.2280, label:'Cuckoo Clock shop', day:'18.8', base:'Baden-Baden / Sasbachwalden' },
-      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach', day:'18.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.9022, lng:8.1549, label:'Titisee lake', day:'18.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8167, lng:8.1833, label:'Schluchsee', day:'19.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8200, lng:8.1900, label:'Schluchsee Strandbad', day:'19.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8500, lng:7.9700, label:'Horse riding (Feldberg)', day:'20.8', base:'Titisee / Lenzkirch Base' },
-      { lat:47.8299, lng:7.9436, label:'Todtnau Waterfall', day:'20.8', base:'Titisee / Lenzkirch Base' },
-      { lat:48.0003, lng:7.8522, label:'Freiburg / Münsterplatz', day:'21.8', base:'Rust / Ringsheim' },
-      { lat:48.2660, lng:7.7220, label:'Europa-Park Rust', day:'22.8', base:'Rust / Ringsheim' },
-      { lat:48.0448, lng:7.3072, label:'Eguisheim', day:'23.8', base:'Eguisheim / Colmar' },
-      { lat:48.0752, lng:7.3551, label:'Colmar Little Venice', day:'23.8', base:'Eguisheim / Colmar' },
-      { lat:48.0794, lng:7.3585, label:'Colmar centre', day:'24.8', base:'Eguisheim / Colmar' },
-      { lat:48.1953, lng:7.3190, label:'Ribeauvillé', day:'24.8', base:'Eguisheim / Colmar' },
-      { lat:48.1668, lng:7.2973, label:'Riquewihr', day:'24.8', base:'Eguisheim / Colmar' }
-    ]
-  },
-
-
-    pM: {
+pM: {
     sleeps: [
       { lat:50.0379, lng:8.5622, label:'Frankfurt Airport', nights:null, color:'#888888' },
       { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
@@ -2938,7 +2799,7 @@ const MAP_DATA = {
     ]
   },
 
-  pN: {
+pN: {
     sleeps: [
       { lat:50.0379, lng:8.5622, label:'Frankfurt Airport',               nights:null,  color:'#888888' },
       { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden',      nights:[1,2], color:'#b7791f' },
@@ -2968,7 +2829,9 @@ const MAP_DATA = {
       { lat:48.1953, lng:7.3190, label:'Ribeauville',               day:'24.8', base:'Eguisheim / Colmar' },
       { lat:48.1668, lng:7.2973, label:'Riquewihr',                 day:'24.8', base:'Eguisheim / Colmar' }
     ]
-  }};
+  }
+
+};
 
 // ════════════════════════════════════════════════
 // HELPERS
