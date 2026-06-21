@@ -424,7 +424,11 @@ body { background: var(--bg, #f0f4f8); }
     </button>
     <button class="alt-btn" id="sidebtn-pM" onclick="switchAlt('pM',this)">
       <span class="chosen-star">&#x2B50;</span>Gemini Alsace Finale v3<br>
-      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · ⭐ +Gutach מגלשת הר יום 3</span>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · ⭐ Gutach + J3</span>
+    </button>
+    <button class="alt-btn" id="sidebtn-pN" onclick="switchAlt('pN',this)">
+      <span class="chosen-star">&#x2B50;</span>Gemini Alsace Finale v4<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">16–25.8 · ⭐ Rust+EuropaPark 5min</span>
     </button>
   </div>
 
@@ -922,6 +926,124 @@ body { background: var(--bg, #f0f4f8); }
               </div>
               <div class="chat-sec">
                 <div class="chat-msgs" id="chatM"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alt-panel" id="panel-pN">
+          <div class="alt-card">
+            <div class="alt-hdr">
+              <div>
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pN">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
+                  Gemini Alsace Finale v4 &#x2B50; Variant A
+                </div>
+                <div class="alt-meta">16&#x2013;25.8 2026 &middot; Baden-Baden 2n + Titisee 3n + Rust 2n + &#x05D0;&#x05DC;&#x05D6;&#x05E1; 2n &middot; &#x2B50; &#x05D0;&#x05D9;&#x05E8;&#x05D5;&#x05E4;&#x05D4; &#x05E4;&#x05D0;&#x05E8;&#x05E7; 5&#x2013;15 &#x05D3;&#x05E7;' &#x05DE;&#x05D4;&#x05DC;&#x05D9;&#x05E0;&#x05D4;!</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pN" onclick="setChosen('pN')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
+            </div>
+            <div class="alt-body">
+              <div class="qa-section" id="qa-pN"></div>
+              <div class="section-hdr" style="margin-top:16px"><span class="section-hdr-title">&#x1F4CB; &#x05EA;&#x05E7;&#x05E6;&#x05D9;&#x05E8;</span></div>
+              <div class="tbl-wrap"><table><thead><tr>
+                <th>&#x05EA;&#x05D0;&#x05E8;&#x05D9;&#x05DA;</th><th>&#x05E4;&#x05E2;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</th>
+                <th>Drive time</th><th>&#x05DC;&#x05D9;&#x05E0;&#x05D4;</th>
+              </tr></thead><tbody id="tbN"></tbody></table></div>
+              <div class="section-hdr" style="margin-top:24px"><span class="section-hdr-title">&#x1F5FA; &#x05DE;&#x05E4;&#x05D4;</span></div>
+              <div style="margin-top:10px"><div class="vwrap" id="pNm">
+                <div class="map-box" id="map-pN" style="height:340px"></div>
+                <button class="fs-map-btn" onclick="openFS('pN')" title="fullscreen">&#x26F6;</button>
+              </div></div>
+              <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detN"></div></div>
+              <div class="det-sec" style="margin-top:24px">
+                <h3>💰 הערכת עלויות — 5 אנשים | משפחה אחת vs. שתי משפחות</h3>
+                <p style="font-size:.81rem;color:var(--rock);margin:4px 0 12px">
+                  <strong>שתי משפחות:</strong> חלוקת וילת יער שחור (5 לילות) חצי-חצי, קניות משותפות. שאר הקטגוריות זהות.
+                </p>
+                <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.81rem;min-width:520px">
+                <thead><tr style="background:#1a4a6b;color:#fff">
+                  <th style="padding:7px 10px;text-align:right">קטגוריה</th>
+                  <th style="padding:7px 6px;text-align:center">מינ'</th>
+                  <th style="padding:7px 6px;text-align:center;background:#1a6aab">ממוצע ★</th>
+                  <th style="padding:7px 6px;text-align:center">מקס'</th>
+                  <th style="padding:7px 10px;text-align:right;font-size:.74rem">הערות</th>
+                </tr></thead><tbody>
+                <tr><td style="padding:6px 10px">✈ טיסות + כבודה (×5)</td><td style="text-align:center;padding:6px">$4,300</td><td style="text-align:center;padding:6px;background:#e8f4ff">$4,680</td><td style="text-align:center;padding:6px">$5,200</td><td style="padding:6px 10px;font-size:.74rem">496 USD TLV→FRA + 360 USD BSL→TLV ×5 + $400 כבודה</td></tr>
+                <tr style="background:#f8fafc"><td style="padding:6px 10px">🏨 Baden-Baden (2 לילות)</td><td style="text-align:center;padding:6px">€600</td><td style="text-align:center;padding:6px;background:#e8f4ff">€900</td><td style="text-align:center;padding:6px">€1,200</td><td style="padding:6px 10px;font-size:.74rem">זהה בשני המצבים</td></tr>
+                <tr style="background:#e8f8ee"><td style="padding:6px 10px">🏡 Titisee — <strong>משפחה אחת</strong> (5 לילות דירה)</td><td style="text-align:center;padding:6px">€1,500</td><td style="text-align:center;padding:6px;background:#d4efdf">€2,400</td><td style="text-align:center;padding:6px">€3,200</td><td style="padding:6px 10px;font-size:.74rem;color:#555">דירה רגילה 5 לילות</td></tr>
+                <tr style="background:#d4f0d4"><td style="padding:6px 10px">🏡 Titisee — <strong>שתי משפחות</strong> (וילה משותפת ×½)</td><td style="text-align:center;padding:6px;color:#1a6b2f;font-weight:600">€1,125</td><td style="text-align:center;padding:6px;background:#b8e6b8;color:#1a6b2f;font-weight:600">€1,500</td><td style="text-align:center;padding:6px;color:#1a6b2f;font-weight:600">€2,125</td><td style="padding:6px 10px;font-size:.74rem;color:#1a6b2f">וילה €2,250–4,250 / 5 לילות ÷ 2</td></tr>
+                <tr style="background:#f8fafc"><td style="padding:6px 10px">🏨 אלזס (2 לילות)</td><td style="text-align:center;padding:6px">€500</td><td style="text-align:center;padding:6px;background:#e8f4ff">€900</td><td style="text-align:center;padding:6px">€1,400</td><td style="padding:6px 10px;font-size:.74rem">זהה בשני המצבים</td></tr>
+                <tr><td style="padding:6px 10px">🚗 רכב One-Way FRA→BSL (9 ימים SUV)</td><td style="text-align:center;padding:6px">€950</td><td style="text-align:center;padding:6px;background:#e8f4ff">€1,350</td><td style="text-align:center;padding:6px">€1,750</td><td style="padding:6px 10px;font-size:.74rem">כולל One-Way fee €150–400. ודאו אישור צרפת!</td></tr>
+                <tr style="background:#f8fafc"><td style="padding:6px 10px">⛽ דלק + חניות + כבישים</td><td style="text-align:center;padding:6px">€320</td><td style="text-align:center;padding:6px;background:#e8f4ff">€510</td><td style="text-align:center;padding:6px">€700</td><td style="padding:6px 10px;font-size:.74rem">זהה בשני המצבים</td></tr>
+                <tr style="background:#e8f8ee"><td style="padding:6px 10px">🛒 קניות GF — <strong>משפחה אחת</strong></td><td style="text-align:center;padding:6px">€650</td><td style="text-align:center;padding:6px;background:#d4efdf">€850</td><td style="text-align:center;padding:6px">€1,050</td><td style="padding:6px 10px;font-size:.74rem">פיקניקים, ארוחות בוקר, חטיפים GF</td></tr>
+                <tr style="background:#d4f0d4"><td style="padding:6px 10px">🛒 קניות GF — <strong>שתי משפחות</strong> (פחות בזבוז)</td><td style="text-align:center;padding:6px;color:#1a6b2f;font-weight:600">€520</td><td style="text-align:center;padding:6px;background:#b8e6b8;color:#1a6b2f;font-weight:600">€680</td><td style="text-align:center;padding:6px;color:#1a6b2f;font-weight:600">€840</td><td style="padding:6px 10px;font-size:.74rem;color:#1a6b2f">~20% חיסכון: פחות בזבוז GF, קנייה בכמות</td></tr>
+                <tr><td style="padding:6px 10px">🍽 מסעדות (6–7 ארוחות ערב + 3 צהריים)</td><td style="text-align:center;padding:6px">€550</td><td style="text-align:center;padding:6px;background:#e8f4ff">€720</td><td style="text-align:center;padding:6px">€950</td><td style="padding:6px 10px;font-size:.74rem">ריאלי: ~€76/ערב ×5 + €95 ×1 + €150 פינאלה + 3×€55 צהריים</td></tr>
+                <tr style="background:#f8fafc"><td style="padding:6px 10px">🎢 פעילויות (ראה טבלה)</td><td style="text-align:center;padding:6px">€591</td><td style="text-align:center;padding:6px;background:#e8f4ff">€878</td><td style="text-align:center;padding:6px">€1,124</td><td style="padding:6px 10px;font-size:.74rem">אירופה פארק + סוסים + MerkurBahn + עוד</td></tr>
+                <tr><td style="padding:6px 10px">🛡 מאגר (גשם, תרופות, בלת"מ)</td><td style="text-align:center;padding:6px">€600</td><td style="text-align:center;padding:6px;background:#e8f4ff">€900</td><td style="text-align:center;padding:6px">€1,200</td><td style="padding:6px 10px;font-size:.74rem">Badeparadies, כביסה, מונית BSL</td></tr>
+                <tr style="background:#1a4a6b;color:#fff;font-weight:700">
+                  <td style="padding:8px 10px">💰 סה"כ ללא טיסות — <strong>משפחה אחת</strong></td>
+                  <td style="text-align:center;padding:8px">€6,761</td><td style="text-align:center;padding:8px;background:#1a6aab">€9,408</td><td style="text-align:center;padding:8px">€12,624</td>
+                  <td style="padding:8px 10px;font-size:.74rem"></td>
+                </tr>
+                <tr style="background:#1a6b2f;color:#fff;font-weight:700">
+                  <td style="padding:8px 10px">💰 סה"כ ללא טיסות — <strong>שתי משפחות</strong></td>
+                  <td style="text-align:center;padding:8px">€6,156</td><td style="text-align:center;padding:8px;background:#248a3d">€8,308</td><td style="text-align:center;padding:8px">€11,639</td>
+                  <td style="padding:8px 10px;font-size:.74rem;color:#90ee90">חיסכון ממוצע: ~€1,100</td>
+                </tr>
+                <tr style="background:#0d2f47;color:#fff;font-weight:700">
+                  <td style="padding:8px 10px">💰 כולל טיסות — <strong>משפחה אחת</strong></td>
+                  <td style="text-align:center;padding:8px">~€11,450</td><td style="text-align:center;padding:8px;background:#1a5a8b">~€14,100</td><td style="text-align:center;padding:8px">~€17,400</td>
+                  <td style="padding:8px 10px;font-size:.74rem"></td>
+                </tr>
+                <tr style="background:#0d4d1f;color:#fff;font-weight:700">
+                  <td style="padding:8px 10px">💰 כולל טיסות — <strong>שתי משפחות</strong></td>
+                  <td style="text-align:center;padding:8px">~€10,845</td><td style="text-align:center;padding:8px;background:#1a6b2f">~€13,000</td><td style="text-align:center;padding:8px">~€16,400</td>
+                  <td style="padding:8px 10px;font-size:.74rem;color:#90ee90">חיסכון ~€1,100</td>
+                </tr>
+                <tr style="background:#f0fff4">
+                  <td colspan="5" style="padding:8px 10px;font-size:.79rem;color:#1a6b2f">
+                    💡 <strong>הסבר הפרש מסעדות:</strong> 2 מבוגרים (~€18–25/איש) + 3 ילדים (~€10–13/ילד) = €66–89/ערב גרמניה, €89–115 אלזס. 6×€76 + 1×€150 + 3×€55 ≈ €771 ממוצע. <strong>הפחתנו ~25% מההערכה המקורית.</strong>
+                  </td>
+                </tr>
+                </tbody></table></div>
+
+                <h3 style="margin-top:20px">📋 פירוט עלויות פעילויות לפי יום</h3>
+                <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.80rem;min-width:520px">
+                <thead><tr style="background:#2d5a3d;color:#fff">
+                  <th style="padding:7px 10px;text-align:right">יום / פעילות</th>
+                  <th style="padding:7px 6px;text-align:center">כרטיסים ×5</th>
+                  <th style="padding:7px 6px;text-align:center">חניה/נסיעה</th>
+                  <th style="padding:7px 6px;text-align:center">סה"כ</th>
+                  <th style="padding:7px 10px;text-align:right;font-size:.74rem">פרטים</th>
+                </tr></thead><tbody>
+                <tr style="background:#e8f0e8"><td colspan="5" style="padding:5px 10px;font-weight:700;color:#2d5a3d">📅 16.8 — הגעה FRA → Baden-Baden</td></tr>
+                <tr><td style="padding:5px 10px 5px 18px">Lichtentaler Allee</td><td style="text-align:center;padding:5px">€0</td><td style="text-align:center;padding:5px">€5–15</td><td style="text-align:center;padding:5px;font-weight:600">€5–15</td><td style="padding:5px 10px;font-size:.74rem">כניסה חינם. חניה עירונית.</td></tr>
+                <tr style="background:#e8f0e8"><td colspan="5" style="padding:5px 10px;font-weight:700;color:#2d5a3d">📅 17.8 — Mummelsee + MerkurBergbahn</td></tr>
+                <tr><td style="padding:5px 10px 5px 18px">Mummelsee</td><td style="text-align:center;padding:5px">€0</td><td style="text-align:center;padding:5px">€3–5</td><td style="text-align:center;padding:5px;font-weight:600">€3–5</td><td style="padding:5px 10px;font-size:.74rem">כניסה חינם. חניה בלבד.</td></tr>
+                <tr style="background:#f5faf5"><td style="padding:5px 10px 5px 18px">MerkurBergbahn הלוך-חזור ×5</td><td style="text-align:center;padding:5px">~€25–35</td><td style="text-align:center;padding:5px">€5</td><td style="text-align:center;padding:5px;font-weight:600">€30–40</td><td style="padding:5px 10px;font-size:.74rem">~€6 ה"ח/מבוגר. ילדים מוזל/חינם. <strong>מזומן בלבד!</strong></td></tr>
+                <tr style="background:#e8f0e8"><td colspan="5" style="padding:5px 10px;font-weight:700;color:#2d5a3d">📅 18.8 — מעבר דרך טריברג → Titisee</td></tr>
+                <tr><td style="padding:5px 10px 5px 18px">מפלי טריברג (כרטיס משפחה)</td><td style="text-align:center;padding:5px">€20</td><td style="text-align:center;padding:5px">€8–12</td><td style="text-align:center;padding:5px;font-weight:600">€28–32</td><td style="padding:5px 10px;font-size:.74rem">€20 = 2 מבוגרים + ילדים. תחת גיל 7: <strong>חינם!</strong> כולל מוזיאון + Triberg-Land.</td></tr>
+                <tr style="background:#e8f0e8"><td colspan="5" style="padding:5px 10px;font-weight:700;color:#2d5a3d">📅 19.8 — אירופה פארק</td></tr>
+                <tr><td style="padding:5px 10px 5px 18px">אירופה פארק — Standard (אונליין)</td><td style="text-align:center;padding:5px">€303.50</td><td style="text-align:center;padding:5px">€10</td><td style="text-align:center;padding:5px;font-weight:600">€313.50</td><td style="padding:5px 10px;font-size:.74rem">2×€67 + 3×€56.50. Peak: 2×€76+3×€65=€347. <strong>⚠ בקופה: +€10/כרטיס!</strong></td></tr>
+                <tr style="background:#e8f0e8"><td colspan="5" style="padding:5px 10px;font-weight:700;color:#2d5a3d">📅 20.8 — Schluchsee</td></tr>
+                <tr><td style="padding:5px 10px 5px 18px">חוף + סירות פדלים</td><td style="text-align:center;padding:5px">€0–30</td><td style="text-align:center;padding:5px">€5–10</td><td style="text-align:center;padding:5px;font-weight:600">€5–40</td><td style="padding:5px 10px;font-size:.74rem">כניסה לחוף חינם. סירה: ~€15–20/30 דק'.</td></tr>
+                <tr style="background:#e8f0e8"><td colspan="5" style="padding:5px 10px;font-weight:700;color:#2d5a3d">📅 21.8 — פרייבורג</td></tr>
+                <tr><td style="padding:5px 10px 5px 18px">קתדרלה + Bächle + עיר עתיקה</td><td style="text-align:center;padding:5px">€0</td><td style="text-align:center;padding:5px">€0–25</td><td style="text-align:center;padding:5px;font-weight:600">€0–25</td><td style="padding:5px 10px;font-size:.74rem">חינם. KONUS: רכבת חינם. ללא KONUS: ~€8–15/pp.</td></tr>
+                <tr style="background:#e8f0e8"><td colspan="5" style="padding:5px 10px;font-weight:700;color:#2d5a3d">📅 22.8 — סוסים + טודנאו</td></tr>
+                <tr><td style="padding:5px 10px 5px 18px">רכיבת סוסים מודרכת ×5</td><td style="text-align:center;padding:5px">€150–320</td><td style="text-align:center;padding:5px">€10–20</td><td style="text-align:center;padding:5px;font-weight:600">€160–340</td><td style="padding:5px 10px;font-size:.74rem">~€30–65/pp. <strong>הזמינו מראש לאוגוסט!</strong></td></tr>
+                <tr style="background:#f5faf5"><td style="padding:5px 10px 5px 18px">שביל מפל טודנאו בלבד</td><td style="text-align:center;padding:5px">€0</td><td style="text-align:center;padding:5px">€5</td><td style="text-align:center;padding:5px;font-weight:600">€5</td><td style="padding:5px 10px;font-size:.74rem"><strong>חינם לגמרי!</strong> שביל המפל ללא גשר.</td></tr>
+                <tr><td style="padding:5px 10px 5px 18px">BLACKFORESTLINE גשר (אופציה)</td><td style="text-align:center;padding:5px">€55</td><td style="text-align:center;padding:5px">—</td><td style="text-align:center;padding:5px;font-weight:600">€55</td><td style="padding:5px 10px;font-size:.74rem">כרטיס קבוצתי ×5. גשר 450מ' ב-120מ' גובה.</td></tr>
+                <tr style="background:#e8f0e8"><td colspan="5" style="padding:5px 10px;font-weight:700;color:#2d5a3d">📅 23–24.8 — אלזס</td></tr>
+                <tr><td style="padding:5px 10px 5px 18px">עגינשיים + קולמר + כפרי יין</td><td style="text-align:center;padding:5px">€0–45</td><td style="text-align:center;padding:5px">€20–40</td><td style="text-align:center;padding:5px;font-weight:600">€20–85</td><td style="padding:5px 10px;font-size:.74rem">כניסה חינם. סירת תעלות: ~€7–9/pp.</td></tr>
+                <tr style="background:#2d5a3d;color:#fff;font-weight:700">
+                  <td style="padding:8px 10px">סה"כ פעילויות (ללא אוכל)</td><td style="text-align:center;padding:8px">~€591</td><td style="text-align:center;padding:8px">~€878</td><td style="text-align:center;padding:8px">~€1,124</td>
+                  <td style="padding:8px 10px;font-size:.74rem">לא כולל Badeparadies (~€120–200 יום גשם)</td>
+                </tr>
+                </tbody></table></div>
+              </div>
+              <div class="chat-sec">
+                <div class="chat-msgs" id="chatN"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
               </div>
             </div>
           </div>
@@ -2054,194 +2176,391 @@ Titisee: דירה €220–450/לילה. Lenzkirch (זול), Hinterzarten (KONUS
     ]
   },
 
-  pM: {
+
+    pM: {
     rows: [
-      { d:'16.8', r:"✈ הגעה FRA → Baden-Baden / Sasbachwalden", dr:'🚗 1h40-2h15', s:'Baden-Baden / Sasbachwalden', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'16.8', r:"✈ הגעה FRA → Baden-Baden / יער שחור צפוני", dr:'🚗 1h40-2h15', s:'Baden-Baden / Sasbachwalden', z:'zf', act:'', cost:'', daycost:'' },
       { d:'17.8', r:"Mummelsee + פוניקולר MerkurBergbahn", dr:'🚗 1h30-2h10 total', s:'Baden-Baden / Sasbachwalden', z:'zf', act:'', cost:'', daycost:'' },
       { d:'18.8', r:"⭐ Triberg + Gutach מגלשת הר → Titisee", dr:'🚗 2h20-2h50 total', s:'Titisee / Lenzkirch', z:'zf', act:'', cost:'', daycost:'' },
       { d:'19.8', r:"אירופה פארק — יום מלא", dr:'🚗 2h00-2h30 RT', s:'Titisee / Lenzkirch', z:'zf', act:'', cost:'', daycost:'' },
       { d:'20.8', r:"Schluchsee — יום שחזור", dr:'🚗 30-60 min RT', s:'Titisee / Lenzkirch', z:'zf', act:'', cost:'', daycost:'' },
-      { d:'21.8', r:"פרייבורג + אופציית רכבת", dr:'🚗 40-55min | 🚂 under 1h', s:'Titisee / Lenzkirch', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'21.8', r:"פרייבורג + 🚂 רכבת אזורית (מומלץ!)", dr:'🚂 under 1h | 🚗 40-55min', s:'Titisee / Lenzkirch', z:'zf', act:'', cost:'', daycost:'' },
       { d:'22.8', r:"רכיבת סוסים + מפל טודנאו", dr:'🚗 1h00-1h45 total', s:'Titisee / Lenzkirch', z:'zf', act:'', cost:'', daycost:'' },
       { d:'23.8', r:"מעבר לאלזס — עגינשיים + ערב קולמר", dr:'🚗 1h15-1h45', s:'Eguisheim / Colmar', z:'zi', act:'', cost:'', daycost:'' },
-      { d:'24.8', r:"פינאלה אלזס — קולמר + כפרי יין", dr:'🚗 30-90 min total', s:'Eguisheim / Colmar', z:'zi', act:'', cost:'', daycost:'' },
+      { d:'24.8', r:"פינאלה אלזס — קולמר + כפר יין", dr:'🚗 30-90 min total', s:'Eguisheim / Colmar', z:'zi', act:'', cost:'', daycost:'' },
+      { d:'25.8', r:"אלזס → לוהרר → BSL 19:50", dr:'🚗 1h15-1h40 total', s:'Flight', z:'zx', act:'', cost:'', daycost:'' }
+    ],
+    det: [
+      { d:'16.8', t:`הגעה — Frankfurt → Baden-Baden | יער שחור צפוני`, z:'zf',
+        m:`• [07:10] ✈ המראה TLV → FRA. משך ~4:20 שעות. נחיתה ~10:40.
+• [10:40–11:45] 🚶 שדה FRA: דרכונים + כבודה + השכרת רכב. זמן ריאלי: 60–75 דק'.
+• [11:45] 🚗 נסיעה: FRA → Baden-Baden/Sasbachwalden/Bühl. ~130 ק"מ. 1h40–2h15.
+• 🛒 עצירה: Edeka/Rewe/DM ליד Bühl — glutenfrei, Schär, פירות, גבינה, יוגורט.
+• 💰 עלות יום (ללא לינה): €150–260.
+• 🏨 לינה: מלון/דירה ב-Baden-Baden/Sasbachwalden/Bühl. 2 לילות.
+  ◦ מלון: €220–420/לילה. חניה + ארוחת בוקר + חדר משפחה.
+  ◦ דירה: €180–350/לילה. Ferienwohnung 2–3 חדרים, מטבח, חניה.`,
+        n:`• [~13:45] 🍽 ארוחת צהריים קלה ליד הלינה. לא מסעדה כבדה אחרי טיסה.
+• [15:00] 🚶 הליכה: Lichtentaler Allee, Baden-Baden. שביל שטוח מוצל לאורך נחל. ~90 דק'.
+  ◦ פארק אלגנטי, ללא תור, ללא כרטיסים. טוב מאחרי טיסה.
+  ◦ 🧩 [צרכים מיוחדים] — הרגישויות העיקריות: רעש, עומס, תורים. לא מעברי מלון. Lichtentaler Allee מושלם: שקט, פתוח.`,
+        e:`• [16:30] 🛒 מכולת: GF בסיסי. קנו לחם, פירות, גבינה לבוקר.
+• [17:30] 🏨 צ'ק אין. מקלחות. פריקה קלה (2 לילות).
+• [19:00] 🍽 ארוחת ערב פשוטה. איטלקי/גרמני; glutenfrei. או ארוחת דירה אם עייפים.
+• 🧩 פיצול: הורה קניות, הורה מנוחה עם ילדים.`, sp:`אם עייפים — דלגו על Lichtentaler Allee. ישירות ללינה.` },
+      { d:'17.8', t:`יום צפוני קל — Mummelsee + פוניקולר MerkurBergbahn`, z:'zf',
+        m:`• [08:30] 🍳 ארוחת בוקר. בכוונה לא מוקדם — מתאוששים מהטיסה.
+• [10:00] 🚗 נסיעה: לינה → Mummelsee דרך B500 (כביש הרים ציורי). ~35–55 דק'.
+• 💰 עלות יום (ללא לינה): €180–360.
+  ◦ MerkurBergbahn ה"ח: ~€6/מבוגר. ילדים מוזל/חינם. מזומן בלבד!
+  ◦ Mummelsee: חינם + חניה €3–5. דלק + חניה: €30–60. אוכל: €120–240.
+• 💡 יום טוב לחיסוי חטיפים לפני יום המעבר מחר.`,
+        n:`• [10:50] 🌊 Mummelsee: אגם קטן ואווירי. לולאה ~1.2 ק"מ (30 דק'), חנויות, נשנוש.
+• [12:15] 🚗 נסיעה: Mummelsee → Baden-Baden. ~35–40 ק"מ. ~45–60 דק'. B500 ציורי.
+• [13:15] 🍽 ארוחת צהריים ב-Baden-Baden. קפה/איטלקי; glutenfrei.
+• [14:30] 🚗/🚌 (קו 204/205): → MerkurBergbahn תחנה תחתונה. ~10–15 דק'.`,
+        e:`• [15:00] 🚞 MerkurBergbahn — עלייה: 7 דק'. פסגה 668 מ'. רכבת פוניקולר על מסילות!
+  ◦ לא כבל, לא גונדולה — מסילה, כמו רכבת.
+  ◦ פסגה: משחקייה, נוף, צפייה בצניחת מצנחים, קפה.
+  ◦ מגדל תצפית — אופציונלי בלבד. לא לחייב אף אחד.
+• [16:30] 🚞 ירידה: 7 דק'. 🚗/🚌 חזרה: ~10–15 דק'.
+• [17:30] 🛋 מנוחה. קנייה DM/Edeka.
+• [19:00] 🍽 ארוחת ערב — Baden-Baden או Sasbachwalden.
+• 🧩 פיצול: אם הפסגה מציפה — הורה + ילד 8 במשחקייה/קפה. יורדים מוקדם.`, sp:`MerkurBergbahn = פוניקולר על מסילות. לא כבל. מגדל אופציונלי בלבד.` },
+      { d:'18.8', t:`⭐ מעבר: מפלי טריברג + Gutach מגלשת הר → בסיס Titisee`, z:'zf',
+        m:`• [08:30] 🍳 ארוחת בוקר + צ'ק אאוט. 🧺 קחו GF ארוז — אין הזדמנות טובה בדרך.
+• [09:30] 🚗 נסיעה: לינה צפונית → טריברג. ~60–75 ק"מ. ~60–75 דק' דרך B500/B33.
+• 💰 עלות יום (ללא לינה): €270–520.
+  ◦ מפלי טריברג (כרטיס משפחה): €20. תחת גיל 7: חינם! כולל מוזיאון + Triberg-Land.
+  ◦ Gutach: ~€4–5/הורד (אמתו 2026!). 850 מ' מסלול.
+  ◦ דלק + חניה: €45–75. אוכל: €40–90.
+• 🏨 לינה בסיס דרומי: Lenzkirch (שקט, מרכזי, ערך טוב) / Hinterzarten (KONUS) / Titisee-Neustadt.
+  ◦ דירה/וילה: €220–450/לילה. 3 חדרים, מטבח, כביסה, גינה, חניה.`,
+        n:`• [10:45] 🌊 מפלי טריברג: מסלול תחתון בלבד! ~75 דק' כולל חניה.
+  ◦ המפלים הגבוהים ביותר בגרמניה (163 מ'). נוף יפה גם מהפלטפורמה הראשונה.
+  ◦ ⚠ J3 tradeoff: קצרו כאן כדי לפנות זמן לGutach.
+  ◦ 🧩 פיצול: הורה + ילד 8 → פלטפורמה ראשונה + קפה/ספסל.
+• [12:00] 🚗 נסיעה: טריברג → Gutach. ~7 ק"מ. ~12–15 דק'. כמעט על הדרך!
+• [12:15] 🧺 פיקניק: אכלו האוכל הארוז. עדיף על מסעדה ביום עמוס.`,
+        e:`• [13:15] 🎿 Sommerrodelbahn Gutach — מגלשת הר 850 מ'!
+  ◦ בקרונית על מסילה. שולטים במהירות בעצמכם. לא כבל, לא גבהים!
+  ◦ גיל 3+ עם מבוגר; גיל 8+ לבד לפי כללים מקומיים (בדקו 2026).
+  ◦ 🧩 ילד 8: גולש פעם אחת עם הורה — או צופה/משחק באזור הצידי.
+  ◦ ילד 6: עם הורה. ילד 10: עצמאי + עם הורה.
+  ◦ ⭐ יתרון Gutach: 7 ק"מ מטריברג — כמעט אין עיקוף מסלול!
+  ◦ ⚠ מחיר: ~75–90 דק' פחות מנוחה וצ'ק אין.
+  ◦ אזור משחק/מנוחה ליד המגלשה — מי שלא רוצה לגלוש.
+• [14:30] 🚗 נסיעה: Gutach → Titisee/Lenzkirch. ~55–65 ק"מ. ~60–75 דק' דרך B33/B31.
+• [15:35] 🏨 צ'ק אין. 5 לילות!
+• [16:30] 🛒 קנייה גדולה: GF ל-5 לילות.
+• [19:00] 🍽 ארוחת דירה. שינה מוקדמת — מחר אירופה פארק!`, sp:`טריברג: פלטפורמה תחתונה עם ילד 8. Gutach: גולש פעם אחת עם הורה. ערב — דירה.` },
+      { d:'19.8', t:`אירופה פארק — יום מלא עם תוכנית מפוצלת`, z:'zf',
+        m:`• [07:00] 🍳 ארוחת בוקר מוקדמת. ציוד: GF ארוז + מים + כובעים + אוזניות (לרעש!).
+• [07:30] 🚗 נסיעה: בסיס → Europa Park Rust. ~65–75 ק"מ. ~60–75 דק'.
+  ◦ ⚠ ביום אינטנסיבי זה — הנסיעה הלוך-חזור היא ~2:30 שעות. ראו Variant A אם זה חשוב.
+• 💰 עלות יום: €473–787.
+  ◦ כרטיסים Standard (אונליין): 2×€67 + 3×€56.50 = €303.50.
+  ◦ Peak: 2×€76 + 3×€65 = €347. ⚠ בקופה: +€10/כרטיס!
+  ◦ חניה: €10. אוכל: €120–220. מזכרות: €40–200.
+• [08:45] 🅿 חניה + כניסה. 30 דק' לפני פתיחה.`,
+        n:`• [09:15] 🎢 פתיחה — ישר ל-Voltron Nevera.
+  ◦ 🧩 צוות א: הורה + ילד 10: Voltron → Silver Star → Arthur → Blue Fire.
+  ◦ 🧩 צוות ב: הורה + ילד 8 (+ילד 6): רכבות פנימיות, סירות, Grimm Forest, מופעים. לא אידיאלי לרגיש לרעש — אוזניות!
+  ◦ ⏰ נקודות איחוד: 11:00, 13:00, 15:00, 17:30.
+• [11:00] 🧃 הפסקת חטיף + צל.
+• [13:00] 🍽 צהריים. GF ב-guest services. GF backup בתיק.
+• [14:00] 🛋 שעת רגיעה חובה! רכבת/סירה/מופע/צל. לא ניתן למשא ומתן.`,
+        e:`• [15:00] 🎡 סיבוב שני — 3–4 אטרקציות.
+• [18:00] 🚗 נסיעה חזרה: ~60–75 דק'.
+• [19:15] 🚿 מקלחות. ארוחה קלה.
+• ⚠ ללא רולנטיקה. Schluchsee מחר — יום שחזור!`, sp:`צוות ב יוצא אם עומס — ממתינים בקפה בכניסה. אוזניות עוזרות לרעש. ראו Variant A לאופציית לינה קרובה.` },
+      { d:'20.8', t:`Schluchsee — יום שחזור | אגם, פיקניק, מנוחה`, z:'zf',
+        m:`• [09:00] 🍳 ארוחת בוקר ללא אזעקה. יום שחזור חובה.
+• [10:30] 🚗 נסיעה: → Schluchsee. ~15–25 ק"מ. ~20–35 דק'.
+• 💰 עלות יום: €100–230.`,
+        n:`• [11:00] 🌊 Schluchsee: הליכה שטוחה, חוף, שחייה, סירות. גדול ושקט מ-Titisee.
+  ◦ 🧩 אגם שקט — מצוין לילד עם רגישות רעש/עומס.
+• [12:30] 🧺 פיקניק GF.
+• [13:30] 🏊 שחייה / סירות / מנוחה. ✅ אין אג'נדה.`,
+        e:`• [15:00] 🚗 חזרה: ~20–35 דק'.
+• [15:30] 🧺 כביסה, downtime, משחקי קופסא, קריאה.
+• [19:00] 🍽 מסעדה אם יש כוח. אחרת דירה.
+• 🧩 פיצול: הורה + ילד 8 בצל/פיקניק. אחרים שוחים.`, sp:`לא להוסיף יעד. יום זה מגן על שאר הטיול.` },
+      { d:'21.8', t:`פרייבורג — 🚂 רכבת אזורית + שוק + Bächle`, z:'zf',
+        m:`• [08:30] 🍳 ארוחת בוקר.
+• [09:30–09:50] 🚶 הליכה/נסיעה לתחנה.
+• [10:00] 🚂 רכבת אזורית: Hinterzarten/Titisee → Freiburg Hbf. ~45–55 דק'.
+  ◦ KONUS (אם הלינה כוללת): חינם! ללא KONUS: ~€8–15/pp.
+  ◦ ✅ הרכבת היא חלק מהחוויה — כיפי לילדים! בדקו לוח זמנים מראש.
+  ◦ 🚗 חלופה: נסיעה ברכב. ~28–38 ק"מ. ~40–55 דק'. חניה: €15–25.
+• 💰 עלות יום: €170–360.`,
+        n:`• [10:45] 🏛 Münsterplatz: קתדרלה (חינם), שוק צבעוני.
+• [11:30] 🚶 Bächle: תעלות מים ברחובות. 💡 קנו סירת עץ €2 — ילדים מתחרים!
+• [12:15] 🍽 ארוחת צהריים. הכי טוב GF בטיול — Italian/Modern עם תיוג ברור.
+• [13:30] 🍦 גלידה + ספרים/צעצועים + שוטטות חופשי.`,
+        e:`• [14:30] 🌳 Colombipark — הפסקת צל (5 דק' מהקתדרלה).
+• [15:15] 🚂 רכבת חזרה: Freiburg → Hinterzarten/Titisee. ~45–55 דק'.
+  ◦ 🚗 חלופה: נסיעה חזרה ~40–55 דק'.
+• [16:10] 🛋 מנוחה. קנייה GF top-up.
+• [19:00] 🍽 ארוחת ערב.
+• 🧩 פיצול: הורה + ילד 8 בקפה/פארק מוצל ליד הקתדרלה.`, sp:`פרייבורג = top-up GF מצוין. KONUS = רכבת חינם — בדקו מראש עם הלינה.` },
+      { d:'22.8', t:`רכיבת סוסים + מפל טודנאו (אם אפשר)`, z:'zf',
+        m:`• [08:30] 🍳 ארוחת בוקר. נעליים סגורות + פיקניק GF.
+• [09:30] 🚗 → חווה למתחילים: ~20–40 ק"מ. ~30–45 דק'. הזמינו מראש לאוגוסט!
+• 💰 עלות יום: €260–560.
+  ◦ סוסים ×5: €150–320 (~€30–65/pp). שביל טודנאו: חינם! BLACKFORESTLINE: €55/קבוצה.
+• 🐴 חווה מתאימה: Feldberg / St. Märgen / Hinterzarten. חפשו "Reiterhof Anfänger Kinder".`,
+        n:`• [10:15] 🐴 רכיבה: הכרת סוסים (~20 דק') + יער (~60–90 דק'). רגועה למתחילים.
+  ◦ 🧩 ילד 8: אפשרות תצפית/ליטוף ליד האורוות — ללא לחץ ביצועי!
+  ◦ "נסה אם רוצה", "אפשר לצפות קודם", "פעם אחת מספיק".
+• [12:15] 🧺 פיקניק GF ליד החווה.
+• [13:15] 🚗 → טודנאו: ~15–30 ק"מ. ~20–35 דק'. רק אם יש כוח.`,
+        e:`• [14:00] 🌊 בחרו:
+  ◦ 🆓 שביל מפל בלבד (חינם, 30 דק' ה"ח).
+  ◦ 🌉 BLACKFORESTLINE גשר+מפל (€55/קבוצה, 120 מ' גובה). לא חובה.
+  ◦ 🧩 הורה + ילד 8 → תצפית קלה + קיוסק.
+• [15:15] 🚗 חזרה: ~30–40 דק'.
+• [16:00] 🛋 מנוחה + אריזה קלה (מעבר לאלזס מחר).
+• [19:00] 🍽 ארוחת ערב אחרונה ביער שחור — הזמינו מראש!`, sp:`סוסים: הזמינו מראש. ילד 8 — תצפית ניתן לחסוך לחץ ביצועי. שביל המפל חינם.` },
+      { d:'23.8', t:`מעבר לאלזס — עגינשיים + ערב קולמר`, z:'zi',
+        m:`• [08:30] 🍳 ארוחת בוקר + צ'ק אאוט.
+• [09:30] 🚗 נסיעה: Titisee/Lenzkirch → עגינשיים/קולמר. ~75–100 ק"מ. ~1h15–1h45.
+  ◦ B31 → A5 → A35 → D83. ללא אגרה. גבול שנגן חלק.
+  ◦ ⚠ ודאו מראש אישור חציית גבול לצרפת!
+• 💰 עלות יום (ללא לינה): €240–520.
+• 🏨 לינה אלזס: Eguisheim (שקט, יפה) / Colmar (נוח למסעדות).
+  ◦ מלון: €230–500/לילה. דירה/gite: €200–420/לילה.`,
+        n:`• [11:00] 🚶 עגינשיים (~1.5 ק"מ, שטוח): בתים צבעוניים, מזרקות. שקט ורגוע.
+  ◦ 🧩 עוצמה חושית נמוכה — מצוין לילד 8 אחרי מעבר.
+• [12:15] 🍽 צהריים. sans gluten! אם אי-ודאות — פיקניק.
+• [13:30] 🏨 צ'ק אין. מנוחה + כביסה.`,
+        e:`• [16:30] 🚗 (~10 דק')/🚶 (~30 דק'): → קולמר.
+• [16:45] 🚶 Petite Venise, תעלות. מומלץ מאוחר — פחות צפוף.
+• [18:30] 🍽 ארוחת ערב. הזמינו מראש! sans gluten.
+• 🛒 Carrefour/E.Leclerc/ביו ליד קולמר.
+• 🧩 פיצול: הורה + ילד 8 בקפה ליד תעלה.`, sp:`ודאו אישור חציית גבול לצרפת.` },
+      { d:'24.8', t:`פינאלה אלזס — קולמר + כפר יין אחד`, z:'zi',
+        m:`• [08:30] 🍳 ארוחת בוקר.
+• [09:30] 🚶/🚗: קולמר. שוק מכוסה (GF!). ⛵ סירת תעלה ~€7–9/pp אם תורים קצרים.
+• 💰 עלות יום: €230–520.
+  ◦ ארוחת ערב ספיישל: €130–280. כניסות כפרים: חינם.`,
+        n:`• [11:30] 🛒 שוק מכוסה: פיקניק + GF לשדה.
+• [12:15] 🍽 צהריים.
+• [13:30] 🚗 → ריבאוויל (~20 דק'). ריבאוויל = מרווח. ריקוויר = צפוף אך יפה. בחרו אחד!
+• [14:00] 🚶 כפר: בתים, גלידה, שוק יין.
+• [16:00] 🚗 חזרה: ~20–30 דק'.`,
+        e:`• [16:30] 🛋 מנוחה. אריזה סופית — טיסה מחר!
+• [18:30] 🍽 ארוחת ערב ספיישל. הזמינו 2–3 ימים מראש! sans gluten pour chaque personne.
+• 🧩 פיצול: הורה + ילד 8 בקפה שקט.`, sp:`הזמינו 2–3 ימים מראש. sans gluten לכל אחד.` },
+      { d:'25.8', t:`אלזס → לוהרר → BSL EuroAirport 19:50`, z:'zx',
+        m:`• [08:30] 🍳 ארוחת בוקר + אריזה. דרכונים + GF בתיק יד.
+• [10:30] ⏰ הליכה קצרה — אופציונלי!
+• 💰 עלות יום (ללא טיסות): €180–430.`,
+        n:`• [12:00] 🍽 ארוחת צהריים מוקדמת באלזס.
+• [13:00] 🚗 → לוהרר. ~65–80 ק"מ. ~60–75 דק'. תנו 90 דק' עם תנועה!`,
+        e:`• [14:15] ⛽ מילוי דלק ליד לוהרר.
+• [15:00] 🚗 החזרת רכב. 🚕 מונית → BSL: ~10 ק"מ. ~€20–30.
+• [16:00] ✈ הגעה BSL. צ'ק אין + ביטחון: 3 שעות. ב-16:50 לכל המאוחר! ✅
+• [17:00] 🍫 ארוחת ערב + Läderach שוקולד.
+• [19:50] ✈ BSL → TLV.
+• 🧩 פיצול: הורה דלק/רכב. הורה + ילדים בקפה.`, sp:`ודאו עיר החזרת רכב: לוהרר או BSL שדה.` }
+    ],
+    qa: [
+      { q:`מה J3 — Gemini Alsace v3?`, a:`2 לילות Baden-Baden + 5 לילות Titisee/Lenzkirch + 2 לילות אלזס. חידוש ביחס ל-J2: יום 3 כולל Sommerrodelbahn Gutach (מגלשת הר 850 מ') בין טריברג לבסיס. Gutach 7 ק"מ מטריברג — כמעט אין עיקוף! מחיר: ~75–90 דק' פחות מנוחה ביום המעבר.` },
+      { q:`Sommerrodelbahn Gutach — מה זה?`, a:`מגלשת הר ~850 מ' ב-Gutach, יער שחור. בקרונית על מסילה — שולטים במהירות בעצמכם. לא כבל, לא גבהים! גיל 3+ עם מבוגר, גיל 8+ לבד (בדקו 2026). ~€4–5/הורד. יש אזור משחק/מנוחה לצד.` },
+      { q:`ילד עם צרכים מיוחדים — מה הרגישויות בתכנית?`, a:`הרגישויות העיקריות: רעש, צפיפות, עצימות, פעילויות ספורטיביות/ביצועיות, תורים לא צפויים. מה שלא בעייתי: מעברי מלון, נסיעות, מיקומים חדשים. לכן: אוזניות באירופה פארק, פיצול ביום הפארק, תמיד יש exit, לא לחייץ פעילויות מאמץ.` },
+      { q:`מה MerkurBergbahn?`, a:`פוניקולר (על מסילות, לא כבל!) ב-Baden-Baden. 668 מ' גובה. ~€6 ה"ח/מבוגר. ילדים מוזל/חינם. מזומן! ~10:00–22:00.` },
+      { q:`רכבת לפרייבורג — מתי עדיף?`, a:`ב-J3: רכבת מ-Hinterzarten/Titisee היא החלופה המומלצת. ~45–55 דק'. עם KONUS — חינם! ✅ הרכבת היא חלק מהחוויה לילדים. בדקו לוח זמנים ו-KONUS עם הלינה. ב-Variant A (J4): פרייבורג כעצירת מעבר ברכב.` },
+      { q:`KONUS card?`, a:`כרטיס תחבורה ציבורית חינמית ביער שחור לאורחי לינות מסוימות. רכבת לפרייבורג ובחזרה חינם. ~€16–30 למשפחה. בדקו עם הלינה לפני ההזמנה.` },
+      { q:`מחיר ריאלי מסעדות?`, a:`2 מבוגרים + 3 ילדים:
+• גרמניה: ~€76/ערב עם שתייה.
+• אלזס: ~€104/ערב.
+• פינאלה: ~€150.
+סה"כ 6–7 ערבים: ~€620–720.` }
+    ]
+  },
+
+  pN: {
+    rows: [
+      { d:'16.8', r:"✈ הגעה FRA → Baden-Baden", dr:'🚗 1h40-2h15', s:'Baden-Baden / Sasbachwalden', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'17.8', r:"Mummelsee + פוניקולר MerkurBergbahn", dr:'🚗 1h30-2h10 total', s:'Baden-Baden / Sasbachwalden', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'18.8', r:"⭐ Triberg + Gutach → בסיס יער שחור דרומי", dr:'🚗 2h20-2h50 total', s:'Titisee / Lenzkirch', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'19.8', r:"Schluchsee — יום שחזור ולינה בדרום", dr:'🚗 30-60 min RT', s:'Titisee / Lenzkirch', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'20.8', r:"רכיבת סוסים + מפל טודנאו", dr:'🚗 1h00-1h45 total', s:'Titisee / Lenzkirch', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'21.8', r:"מעבר: פרייבורג כעצירת מעבר → Rust", dr:'🚗 1h20-1h50 total', s:'Rust / Ringsheim', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'22.8', r:"⭐ אירופה פארק — 5-15 דק' מהלינה!", dr:'🚗 5-20 min each way', s:'Rust / Ringsheim', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'23.8', r:"Rust → מעבר לאלזס + עגינשיים", dr:'🚗 50-75 min', s:'Eguisheim / Colmar', z:'zi', act:'', cost:'', daycost:'' },
+      { d:'24.8', r:"פינאלה אלזס — קולמר + כפר יין", dr:'🚗 30-90 min total', s:'Eguisheim / Colmar', z:'zi', act:'', cost:'', daycost:'' },
       { d:'25.8', r:"אלזס → לוהרר → BSL 19:50", dr:'🚗 1h15-1h40 total', s:'Flight', z:'zx', act:'', cost:'', daycost:'' }
     ],
     det: [
       { d:'16.8', t:`הגעה — Frankfurt → Baden-Baden`, z:'zf',
-        m:`• [07:10] ✈ המראה TLV → FRA. משך ~4:20 שעות. נחיתה ~10:40.
-• [10:40–11:45] 🚶 שדה תעופה FRA: דרכונים + כבודה + השכרת רכב. ~60–75 דק'.
-• [11:45] 🚗 נסיעה: FRA → Baden-Baden. מרחק ~130 ק"מ. משך: 1:40–2:15 שעות.
-• 🛒 עצירה: Edeka/Rewe/DM — גלוטן-פרי, Schär, פירות, גבינה.
-• 💰 עלות יום (ללא לינה): ~€150–260.`,
-        n:`• [~13:45] 🍽 ארוחת צהריים קלה. לא כבד אחרי טיסה.
-• [15:00] 🚶 הליכה: Lichtentaler Allee. שטוח, מוצל, ~90 דק'. ללא תור, ללא לחץ.
-  ◦ 🧩 אידיאלי לילד 8: חלל פתוח, שקט, אפשר לסיים מתי שרוצים.`,
-        e:`• [16:30] 🛒 מכולת: GF בסיסי.
-• [17:30] 🏨 צ'ק אין. מקלחות. פריקה קלה (2 לילות).
-• [19:00] 🍽 ארוחת ערב — מסעדה פשוטה/איטלקית, glutenfrei. או דירה.
-• 🧩 פיצול: הורה קניות, הורה מנוחה עם ילדים.`, sp:`אם עייפים — דלגו על Lichtentaler Allee. ישירות ללינה.` },
+        m:`• [07:10] ✈ TLV → FRA. ~4:20 שעות. נחיתה ~10:40.
+• [10:40–11:45] 🚶 FRA: דרכונים + כבודה + השכרת רכב. ~60–75 דק'.
+• [11:45] 🚗 → Baden-Baden/Sasbachwalden. ~130 ק"מ. 1h40–2h15.
+• 🛒 Edeka/Rewe/DM ליד Bühl — glutenfrei, פירות, גבינה.
+• 💰 €150–260.`,
+        n:`• [~13:45] 🍽 ארוחת צהריים קלה.
+• [15:00] 🚶 Lichtentaler Allee. שטוח, מוצל, ~90 דק'.
+  ◦ 🧩 מושלם לאחרי טיסה — שקט, פתוח, ללא תורים.`,
+        e:`• [16:30] 🛒 קנייה בסיסית GF.
+• [17:30] 🏨 צ'ק אין. 2 לילות.
+• [19:00] 🍽 ארוחת ערב פשוטה. glutenfrei.
+• 🧩 פיצול: הורה קניות, הורה עם ילדים.`, sp:`אם עייפים — דלגו על Lichtentaler Allee.` },
       { d:'17.8', t:`יום צפוני קל — Mummelsee + פוניקולר MerkurBergbahn`, z:'zf',
-        m:`• [08:30] 🍳 ארוחת בוקר. בכוונה לא מוקדם.
-• [10:00] 🚗 נסיעה: לינה → Mummelsee דרך B500. ~35–55 דק'.
-• 💰 עלות יום (ללא לינה): ~€180–360.
-  ◦ MerkurBergbahn: ~€6/מבוגר ה"ח. ילדים מוזל/חינם. מזומן בלבד!
-  ◦ Mummelsee: חינם + חניה €3–5.`,
-        n:`• [10:50] 🌊 Mummelsee: לולאה ~1.2 ק"מ, חנויות, נשנוש. ~75 דק'.
-• [12:15] 🚗 נסיעה: Mummelsee → Baden-Baden. ~45–60 דק'.
-• [13:15] 🍽 ארוחת צהריים ב-Baden-Baden. glutenfrei.`,
-        e:`• [14:30] 🚗/🚌 → MerkurBergbahn תחנה תחתונה. ~10–15 דק'.
-• [15:00] 🚞 עלייה: 7 דק'. פסגה 668 מ'. רכבת על מסילות — לא כבל!
-  ◦ משחקייה, נוף, צפייה במצנחים. קפה בפסגה.
-  ◦ מגדל תצפית — אופציונלי בלבד.
-• [16:30] 🚞 ירידה: 7 דק'. 🚗 חזרה ~10–15 דק'.
+        m:`• [08:30] 🍳 ארוחת בוקר. לא מוקדם.
+• [10:00] 🚗 → Mummelsee דרך B500. ~35–55 דק'.
+• 💰 €180–360. MerkurBergbahn: ~€6/מבוגר. מזומן!
+• 💡 top-up חטיפים GF לפני יום המעבר.`,
+        n:`• [10:50] 🌊 Mummelsee: לולאה ~1.2 ק"מ, חנויות, נשנוש.
+• [12:15] 🚗 → Baden-Baden: ~45–60 דק'.
+• [13:15] 🍽 צהריים. glutenfrei.`,
+        e:`• [14:30] 🚗/🚌 → MerkurBergbahn תחנה תחתונה: ~10–15 דק'.
+• [15:00] 🚞 עלייה: 7 דק'. פסגה 668 מ'. פוניקולר על מסילות — לא כבל!
+  ◦ פסגה: משחקייה, נוף, קפה. מגדל אופציונלי.
+• [16:30] 🚞 ירידה. 🚗 חזרה ~10–15 דק'.
 • [19:00] 🍽 ארוחת ערב.
-• 🧩 פיצול: הורה + ילד 8 במשחקייה/קפה, יורדים מוקדם אם מציף.`, sp:`MerkurBergbahn = פוניקולר על מסילות. מגדל אופציונלי.` },
-      { d:'18.8', t:`⭐ מעבר: מפלי טריברג + Gutach מגלשת הר → בסיס טיטיזי`, z:'zf',
-        m:`• [08:30] 🍳 ארוחת בוקר + צ'ק אאוט. לקחו GF ארוז — אין הזדמנות טובה בדרך.
-• [09:30] 🚗 נסיעה: בסיס צפוני → טריברג דרך B500/B33. ~60–75 ק"מ. ~60–75 דק'.
-• 💰 עלות יום (ללא לינה): ~€280–480.
-  ◦ טריברג כרטיס משפחה: €20 (תחת גיל 7 חינם!).
-  ◦ Gutach: ~€4–5/הורד. אמתו 2026!
-  ◦ דלק + חניה: ~€45–75.`,
-        n:`• [10:45] 🌊 מפלי טריברג: מסלול תחתון בלבד. ~75 דק' כולל חניה.
-  ◦ המפלים הגבוהים ביותר בגרמניה; מסלול קצר ומוצל למשפחה.
-  ◦ 🧩 פיצול: הורה + ילד 8 → פלטפורמה ראשונה + קפה/ספסל.
-• [12:00] 🚗 נסיעה: טריברג → Gutach. ~7 ק"מ. ~12–15 דק'. כמעט על הדרך!
-• [12:15] 🧺 פיקניק: אכלו את האוכל הארוז — עדיף על מסעדה ביום עמוס.`,
-        e:`• [13:15] 🎿 Sommerrodelbahn Gutach — מגלשת הר 850 מ'!
-  ◦ בקרונית עצמאית על מסילה. שולטים במהירות בעצמכם. לא כבל, לא גבהים!
-  ◦ מגיל 3 עם מבוגר; מגיל 8 לבד לפי כללים מקומיים (בדקו 2026).
-  ◦ 🧩 ילד 8: גולש פעם אחת עם הורה. ילד 6: עם הורה. ילד 10: עצמאי.
-  ◦ ⭐ יתרון J3: Gutach 7 ק"מ מטריברג — כמעט לא חורג מהמסלול!
-  ◦ ⚠ מחיר J3: ~75–90 דק' פחות מנוחה וצ'ק אין ביום זה.
-  ◦ אזור משחק ליד המגלשה — למי שלא רוצה לגלוש הרבה.
-• [14:30] 🚗 נסיעה: Gutach → Titisee/Lenzkirch. ~55–65 ק"מ. ~60–75 דק'.
-• [15:35] 🏨 צ'ק אין. 5 לילות — פרקו מלא!
-• [16:30] 🛒 קנייה גדולה Edeka/Rewe — GF ל-5 הלילות.
-• [19:00] 🍽 ארוחת דירה. שינה מוקדמת — אירופה פארק מחר!`, sp:`טריברג: רק פלטפורמה תחתונה עם ילד 8. Gutach: ילד 8 גולש פעם אחת עם הורה.` },
-      { d:'19.8', t:`אירופה פארק — יום מלא עם תוכנית מפוצלת`, z:'zf',
-        m:`• [07:00] 🍳 ארוחת בוקר מוקדמת. ציוד: GF ארוז + מים + כובעים.
-• [07:30] 🚗 נסיעה: בסיס → Europa Park Rust. ~65–75 ק"מ. ~60–75 דק'.
-• 💰 עלות יום: ~€473–787.
-  ◦ Standard (אונליין): 2×€67 + 3×€56.50 = €303.50. Peak: 2×€76+3×€65 = €347.
-  ◦ ⚠ לא לקנות בקופה: +€10/כרטיס! חניה: €10.
-• [08:45] 🅿 חניה + כניסה. 30 דק' לפני פתיחה.`,
-        n:`• [09:15] 🎢 פתיחה — ישר ל-Voltron Nevera.
-  ◦ 🧩 צוות א: הורה + ילד 10: Voltron → Silver Star → Arthur.
-  ◦ 🧩 צוות ב: הורה + ילד 8 + ילד 6: רכבות פנימיות, סירות, Grimm Forest, מופעים.
-  ◦ ⏰ איחוד: 11:00, 13:00, 15:00, 17:30.
-• [13:00] 🍽 צהריים. GF ב-guest services. GF packed כגיבוי.
-• [14:00] 🛋 שעת רגיעה חובה. לא ניתן למשא ומתן.`,
-        e:`• [15:00] 🎡 סיבוב שני — 3–4 אטרקציות.
-• [18:00] 🚗 חזרה: ~60–75 דק'.
-• ⚠ ללא רולנטיקה היום.`, sp:`צוות ב יוצא אם עומס יתר — ממתינים בכניסה/קפה.` },
-      { d:'20.8', t:`Schluchsee — יום שחזור | אגם, פיקניק, מים`, z:'zf',
-        m:`• [09:00] 🍳 ארוחת בוקר ללא אזעקה. שחזור חובה.
-• [10:30] 🚗 נסיעה: בסיס → Schluchsee. ~15–25 ק"מ. ~20–35 דק'.
-• 💰 עלות יום: ~€100–230.`,
-        n:`• [11:00] 🌊 Schluchsee: הליכה שטוחה, חוף, שחייה, סירות. שקט יחסית.
-  ◦ אגם גדול ושקט, טוב לשחייה ופיקניק ומנוחה.
-• [12:30] 🧺 פיקניק GF — הכי טוב לשליטה באוכל.
-• [13:30] 🏊 שחייה / סירות / מנוחה. ✅ אין אג'נדה.`,
-        e:`• [15:00] 🚗 נסיעה: חזרה ~20–35 דק'.
+• 🧩 פיצול: הורה + ילד 8 במשחקייה/קפה.`, sp:`MerkurBergbahn = פוניקולר על מסילות. מגדל אופציונלי.` },
+      { d:'18.8', t:`⭐ Triberg + Gutach מגלשת הר → בסיס יער שחור דרומי`, z:'zf',
+        m:`• [08:30] 🍳 ארוחת בוקר + צ'ק אאוט. GF ארוז בתיק.
+• [09:30] 🚗 → טריברג: ~60–75 ק"מ. ~60–75 דק'.
+• 💰 €270–520. כרטיס טריברג: €20. Gutach: ~€4–5/הורד.
+• 🏨 לינה: Lenzkirch/Hinterzarten/Titisee-Neustadt. 3 לילות (לא 5, כי יומיים הולכים ל-Rust).
+  ◦ דירה: €220–450/לילה. 3 חדרים, מטבח, כביסה, גינה.`,
+        n:`• [10:45] 🌊 מפלי טריברג: מסלול תחתון בלבד! ~75 דק'.
+  ◦ 🧩 הורה + ילד 8 → פלטפורמה ראשונה + קפה.
+• [12:00] 🚗 → Gutach: 7 ק"מ. ~12–15 דק'.
+• [12:15] 🧺 פיקניק ליד Gutach.`,
+        e:`• [13:15] 🎿 Sommerrodelbahn Gutach: 850 מ' על מסילה! לא כבל, לא גבהים.
+  ◦ גיל 3+ עם מבוגר; גיל 8+ לבד (בדקו 2026). ~€4–5/הורד.
+  ◦ 🧩 ילד 8: פעם אחת עם הורה, או צופה במשחקייה.
+• [14:30] 🚗 → Titisee/Lenzkirch: ~55–65 ק"מ. ~60–75 דק'.
+• [15:35] 🏨 צ'ק אין. 3 לילות.
+• [16:30] 🛒 קנייה גדולה GF ל-3 לילות.
+• [19:00] 🍽 ארוחת דירה.`, sp:`טריברג: רק פלטפורמה תחתונה. Gutach: ילד 8 — פעם אחת עם הורה.` },
+      { d:'19.8', t:`Schluchsee — יום שחזור אחרי המעבר`, z:'zf',
+        m:`• [09:00] 🍳 ארוחת בוקר. לא אזעקה. יום שחזור.
+• [10:30] 🚗 → Schluchsee: ~20–35 דק'.
+• 💰 €100–230.
+• ⭐ Variant A: יום זה הוא יום 4 (לא יום אירופה פארק!) — שינוי מרכזי מ-J3.`,
+        n:`• [11:00] 🌊 Schluchsee: הליכה שטוחה, חוף, שחייה, סירות. גדול ושקט.
+  ◦ 🧩 שקט יחסית — טוב לרגישות רעש/עומס.
+• [12:30] 🧺 פיקניק GF.
+• [13:30] 🏊 שחייה / סירות / מנוחה.`,
+        e:`• [15:00] 🚗 חזרה: ~20–35 דק'.
 • [15:30] 🧺 כביסה, downtime, משחקי קופסא.
-• [19:00] 🍽 מסעדה אם יש כוח, אחרת דירה.
-• 🧩 פיצול: הורה + ילד 8 בצל/פיקניק. אחרים שוחים.`, sp:`אל תוסיפו יעד נוסף. היום הזה מגן על שאר הטיול.` },
-      { d:'21.8', t:`פרייבורג — שוק, Bächle, עיר + אופציית רכבת`, z:'zf',
-        m:`• [08:30] 🍳 ארוחת בוקר.
-• [09:30] בחרו:
-  ◦ 🚂 רכבת: Hinterzarten/Titisee → Freiburg Hbf. ~45–55 דק'. KONUS = חינם!
-  ◦ 🚗 רכב: ~28–38 ק"מ. ~40–55 דק'. חניה €15–25.
-• 💰 עלות יום: ~€170–360.`,
-        n:`• [10:30] 🏛 Münsterplatz: קתדרלה (חינם), שוק.
-• [11:30] 🚶 תעלות Bächle — קנו סירת עץ €2 לילדים!
-• [12:15] 🍽 ארוחת צהריים. הכי טוב GF בטיול.
-• [13:30] 🍦 גלידה + שוטטות.`,
-        e:`• [14:30] 🌳 Colombipark — הפסקת צל.
-• [15:15] 🚂/🚗 חזרה. ~45–55 / ~40–55 דק'.
-• [19:00] 🍽 ארוחת ערב.
-• 🧩 פיצול: הורה + ילד 8 בקפה ליד הקתדרלה.`, sp:`פרייבורג = top-up GF מצוין.` },
-      { d:'22.8', t:`רכיבת סוסים + מפל טודנאו`, z:'zf',
-        m:`• [08:30] 🍳 ארוחת בוקר. נעליים סגורות + פיקניק GF ארוז.
-• [09:30] 🚗 חווה למתחילים: ~20–40 ק"מ. ~30–45 דק'. הזמינו מראש!
-• 💰 עלות יום: ~€260–560.
-  ◦ סוסים ×5: ~€150–320 (~€30–65/pp).
-  ◦ שביל טודנאו: חינם! BLACKFORESTLINE גשר: €55/קבוצה.`,
-        n:`• [10:15] 🐴 רכיבה: הכרה ~20 דק' + רכיבת יער ~60–90 דק'.
-  ◦ חוויה רגועה ומיוחדת ביער למתחילים.
-  ◦ 🧩 פיצול: הורה + ילד 8 בחצר/קפה החווה.
+• [19:00] 🍽 מסעדה / דירה.
+• 🧩 פיצול: הורה + ילד 8 בצל/פיקניק.`, sp:`לא להוסיף יעד. מחר סוסים!` },
+      { d:'20.8', t:`רכיבת סוסים + מפל טודנאו`, z:'zf',
+        m:`• [08:30] 🍳 ארוחת בוקר. נעליים סגורות + פיקניק GF.
+• [09:30] 🚗 → חווה: ~20–40 ק"מ. ~30–45 דק'. הזמינו מראש!
+• 💰 €260–560. סוסים: €150–320. שביל טודנאו: חינם!`,
+        n:`• [10:15] 🐴 רכיבה: הכרה + יער ~60–90 דק'. רגועה למתחילים.
+  ◦ 🧩 ילד 8: תצפית/ליטוף ללא לחץ. "נסה אם רוצה".
 • [12:15] 🧺 פיקניק GF.
-• [13:15] 🚗 → טודנאו: ~15–30 ק"מ. ~20–35 דק'.`,
-        e:`• [14:00] 🌊 בחרו:
-  ◦ 🆓 שביל מפל בלבד: 30 דק' ה"ח. חינם!
-  ◦ 🌉 BLACKFORESTLINE (גשר+מפל, אופציה): €55. גובה 120 מ'.
+• [13:15] 🚗 → טודנאו (אם יש כוח): ~20–35 דק'.`,
+        e:`• [14:00] 🌊 שביל מפל (חינם) / BLACKFORESTLINE (€55/קבוצה).
   ◦ 🧩 הורה + ילד 8 → תצפית קלה + קיוסק.
-• [15:15] 🚗 → בסיס: ~30–40 דק'.
-• [19:00] 🍽 ארוחת ערב אחרונה ביער — הזמינו מראש!`, sp:`סוסים: הזמינו מראש. שביל המפל חינם. BLACKFORESTLINE אופציונלי.` },
-      { d:'23.8', t:`מעבר לאלזס — עגינשיים + ערב בקולמר`, z:'zi',
+• [15:15] 🚗 חזרה: ~30–40 דק'.
+• [16:00] 🛋 מנוחה + אריזה קלה (מחר מעבר ל-Rust).
+• [19:00] 🍽 ארוחת ערב.`, sp:`ילד 8: תצפית ניתן ללא לחץ ביצועי. שביל המפל חינם.` },
+      { d:'21.8', t:`מעבר: פרייבורג כעצירת מעבר → Rust`, z:'zf',
         m:`• [08:30] 🍳 ארוחת בוקר + צ'ק אאוט.
-• [09:30] 🚗 נסיעה: Titisee → עגינשיים/קולמר. ~75–100 ק"מ. ~1:15–1:45 שעות.
-  ◦ B31 → A5 → A35 → D83. ללא אגרה. גבול שנגן חלק.
-  ◦ ⚠ ודאו מראש: אישור חציית גבול לצרפת!
-• 💰 עלות יום (ללא לינה): ~€240–520.`,
-        n:`• [11:00] 🚶 הליכת עגינשיים (~1.5 ק"מ, שטוח). בתים צבעוניים, מזרקות. שקט ורגוע.
-  ◦ 🧩 עוצמה חושית נמוכה — מצוין לילד 8 אחרי מעבר.
-• [12:15] 🍽 ארוחת צהריים. sans gluten!
-• [13:30] 🏨 צ'ק אין. מנוחה + כביסה.`,
-        e:`• [16:30] 🚗 (~10 דק')/🚶 (~30 דק'): → קולמר.
-• [16:45] 🚶 Petite Venise, תעלות, עיר. מומלץ מאוחר — פחות צפוף.
+• [09:30] 🚗 → פרייבורג: ~40–60 ק"מ. ~40–60 דק'.
+• 💰 €170–360.
+• 🏨 לינה: Rust/Ringsheim/Kappel-Grafenhausen. 2 לילות.
+  ◦ Rust: 5–15 דק' לפארק — יתרון מרכזי!
+  ◦ Ringsheim: פרקטי וזול יותר. 10–20 דק'.
+  ◦ מלון: €250–550/לילה. חניה + ארוחת בוקר חובה.
+• ⭐ Variant A: פרייבורג = עצירת מעבר ברכב (לא רכבת). מאפשר checkout דרך-פרייבורג-Rust.`,
+        n:`• [10:30] 🏛 Münsterplatz: קתדרלה (חינם), שוק.
+• [11:30] 🚶 Bächle: תעלות מים. 💡 סירת עץ €2!
+• [12:00] 🍽 צהריים בפרייבורג. הכי טוב GF. איטלקי/מודרני.
+• [13:15] 🧸 גלידה + ספרים/צעצועים.
+• [14:15] 🌳 הפסקת פארק/קפה.`,
+        e:`• [15:00] 🚗 → Rust: ~35–50 ק"מ. ~35–50 דק'.
+• [15:45] 🏨 צ'ק אין. 🛒 קנייה: Edeka/Rewe קרוב.
+• [18:00] 🍽 ארוחת ערב מוקדמת ליד הלינה. הזמינו!
+• [19:30] 🛋 שינה מוקדמת — אירופה פארק מחר!
+• 🧩 פיצול: אם פרייבורג עמוסה — הורה + ילד 8 בקפה/פארק.`, sp:`פרייבורג = עצירה לא עגולה. אין רכבת ב-Variant A — הלוגיסטיקה שונה.` },
+      { d:'22.8', t:`⭐ אירופה פארק — 5–15 דק' מהלינה! יתרון Variant A`, z:'zf',
+        m:`• [08:00] 🍳 ארוחת בוקר. ציוד: GF ארוז + מים + כובעים + אוזניות.
+• [08:30] 🚗 → Europa Park Rust: 5–20 דק' (לפי לינה)! 🌟
+• ⭐ יתרון Variant A #1: ילד 8 נטען? הורה לוקח אותו ללינה ב-5–15 דק'. חוזרים אחר כך!
+• ⭐ יתרון Variant A #2: ללא נסיעה מוקדמת 7:30 — מגיעים בשקט ב-8:30–8:50!
+• 💰 €473–787. כרטיסים: €303.50–347 (אונליין!). חניה: €10.`,
+        n:`• [08:50–09:15] ⏳ כניסה, שירותים, ציון מפגש.
+• [09:15] 🎢 פתיחה — ל-Voltron Nevera.
+  ◦ 🧩 צוות א: הורה + ילד 10: Voltron → Silver Star → Arthur.
+  ◦ 🧩 צוות ב: הורה + ילד 8 + ילד 6: רכבות, סירות, Grimm Forest. אוזניות!
+  ◦ ⏰ איחוד: 11:00, 13:00, 15:00, 17:30.
+• [11:00] 🧃 חטיף + צל.
+• [13:00] 🍽 צהריים. GF ב-guest services + GF backup.
+• [14:00] 🛋 שעת רגיעה חובה!`,
+        e:`• [15:00] 🎡 סיבוב שני.
+• [17:30] 🍽 חטיף קל לפני יציאה.
+• [18:00] 🚗 חזרה: 5–20 דק'. 🌟
+• [19:00] 🍽 ארוחת ערב ליד הלינה — הזמינו מראש.
+• ⭐ יתרון Variant A #3: אם ילד 8 נטען — exit ב-5 דק' + מנוחה + חזרה לפארק אחר כך!`, sp:`צוות ב: exit מהיר ב-5 דק' ללינה אם עומס יתר. בJ3 זה היה 60+ דק'!` },
+      { d:'23.8', t:`Rust → מעבר לאלזס + עגינשיים + ערב קולמר`, z:'zi',
+        m:`• [09:00] 🍳 ארוחת בוקר + צ'ק אאוט.
+• [10:00] 🚗 → עגינשיים/קולמר. ~55–80 ק"מ. ~50–75 דק'.
+  ◦ ⭐ קצר יותר מ-J3 (Titisee → Alsace ~75–100 ק"מ)!
+  ◦ A35 → D83. ⚠ ודאו אישור חציית גבול לצרפת!
+• 💰 €240–520.
+• 🏨 לינה: Eguisheim/Colmar/Ribeauville. 2 לילות.`,
+        n:`• [11:15] 🚶 עגינשיים: כפר עגול, שקט. ~1.5 ק"מ שטוח.
+  ◦ 🧩 אחרי יום אירופה פארק — עוצמה חושית נמוכה! מושלם.
+• [12:15] 🍽 צהריים. sans gluten!
+• [13:30] 🏨 צ'ק אין. 🛋 מנוחה.`,
+        e:`• [16:30] 🚗 (~10 דק') / 🚶 (~30 דק'): → קולמר.
+• [16:45] 🚶 Petite Venise. מומלץ מאוחר.
 • [18:30] 🍽 ארוחת ערב. הזמינו מראש! sans gluten.
 • 🧩 פיצול: הורה + ילד 8 בקפה ליד תעלה.`, sp:`ודאו אישור חציית גבול לצרפת.` },
-      { d:'24.8', t:`פינאלה אלזס — קולמר + כפר יין`, z:'zi',
+      { d:'24.8', t:`פינאלה אלזס — קולמר + כפר יין אחד`, z:'zi',
         m:`• [08:30] 🍳 ארוחת בוקר.
-• [09:30] 🚶/🚗: קולמר עיר עתיקה. שוק מכוסה (GF). ⛵ סירת תעלה ~€7–9/pp.
-• 💰 עלות יום: ~€230–520.
-  ◦ ארוחת ערב ספיישל: ~€130–280. כניסות כפרים: חינם.`,
-        n:`• [11:30] 🛒 שוק מכוסה: פיקניק + GF לשדה.
-• [12:15] 🍽 ארוחת צהריים בקולמר.
-• [13:30] 🚗 → ריבאוויל / ריקוויר: ~20–30 דק'. בחרו אחד!
-  ◦ ריבאוויל = מרווח. ריקוויר = ציורי אך צפוף.
-• [14:00] 🚶 הליכת כפר. גלידה, מזרקות.
+• [09:30] 🚶/🚗: קולמר. שוק מכוסה + Petite Venise.
+  ◦ ⛵ סירת תעלה ~€7–9/pp אם תורים קצרים.
+• 💰 €230–520.`,
+        n:`• [11:30] 🛒 שוק מכוסה: GF לשדה + פיקניק.
+• [12:15] 🍽 צהריים.
+• [13:30] 🚗 → ריבאוויל/ריקוויר: ~20–30 דק'. בחרו אחד!
+• [14:00] 🚶 כפר: גלידה, בתים, שוק יין.
 • [16:00] 🚗 חזרה: ~20–30 דק'.`,
-        e:`• [16:30] 🛋 מנוחה. אריזה סופית — טיסה מחר!
-• [18:30] 🍽 ארוחת ערב ספיישל — הזמינו 2–3 ימים מראש!
-  ◦ sans gluten pour chaque personne.
-• 🧩 פיצול: הורה + ילד 8 בקפה שקט.`, sp:`הזמינו ארוחה 2–3 ימים מראש. sans gluten לכל אחד.` },
-      { d:'25.8', t:`אלזס → לוהרר החזרת רכב → BSL EuroAirport 19:50`, z:'zx',
-        m:`• [08:30] 🍳 ארוחת בוקר + אריזה סופית. דרכונים + GF בתיק יד.
-• [10:30] ⏰ הליכה קצרה — אופציונלי בלבד!
-• 💰 עלות יום (ללא טיסות): ~€180–430.`,
-        n:`• [12:00] 🍽 ארוחת צהריים מוקדמת באלזס. ארוחה אחרונה!
-• [13:00] 🚗 נסיעה: → לוהרר. ~65–80 ק"מ. ~60–75 דק'. תנו 90 דק' עם תנועה!`,
-        e:`• [14:15] ⛽ מילוי דלק ליד לוהרר.
-• [15:00] 🚗 החזרת רכב. 🚕 מונית → BSL: ~10 ק"מ. ~€20–30.
-• [16:00] ✈ הגעה BSL. צ'ק אין + ביטחון: 3 שעות. ב-16:50 לכל המאוחר! ✅
-• [17:00] 🍫 ארוחת ערב + Läderach שוקולד שווייצי.
-• [19:50] ✈ BSL → TLV. נחיתה TLV ~00:10+1.
-• 🧩 פיצול: הורה דלק/רכב. הורה + ילדים בקפה.`, sp:`ודאו עיר החזרת רכב: לוהרר או BSL שדה צד גרמני.` }
+        e:`• [16:30] 🛋 מנוחה. אריזה סופית — מחר טיסה!
+• [18:30] 🍽 ארוחת ערב ספיישל. הזמינו 2–3 ימים מראש! sans gluten pour chaque personne.
+• 🧩 פיצול: הורה + ילד 8 בקפה שקט.`, sp:`הזמינו 2–3 ימים מראש. sans gluten לכל אחד.` },
+      { d:'25.8', t:`אלזס → לוהרר → BSL EuroAirport 19:50`, z:'zx',
+        m:`• [08:30] 🍳 ארוחת בוקר + אריזה. דרכונים + GF בתיק יד.
+• [10:30] ⏰ הליכה קצרה — אופציונלי!
+• 💰 €180–430.`,
+        n:`• [12:00] 🍽 ארוחת צהריים מוקדמת באלזס.
+• [13:00] 🚗 → לוהרר: ~65–80 ק"מ. ~60–75 דק'. תנו 90 דק'!`,
+        e:`• [14:15] ⛽ מילוי דלק.
+• [15:00] 🚗 החזרת רכב. 🚕 מונית → BSL: ~€20–30.
+• [16:00] ✈ BSL. צ'ק אין + ביטחון: 3 שעות. ב-16:50 לכל המאוחר! ✅
+• [17:00] 🍫 ארוחת ערב + Läderach שוקולד.
+• [19:50] ✈ BSL → TLV.
+• 🧩 פיצול: הורה דלק/רכב, הורה + ילדים בקפה.`, sp:`ודאו עיר החזרת רכב: לוהרר או BSL שדה.` }
     ],
     qa: [
-      { q:`מה השתנה ב-J3 לעומת J2?`, a:`שינוי מרכזי אחד: יום 3 כולל Sommerrodelbahn Gutach — מגלשת הר 850 מ' בין טריברג לבסיס טיטיזי. Gutach ממוקמת 7 ק"מ מטריברג — כמעט על הדרך! מחיר: ~75–90 דק' פחות מנוחה ביום המעבר. שאר הימים זהים.` },
-      { q:`מה זה Sommerrodelbahn Gutach?`, a:`מגלשת הר (Summer Toboggan / Mountain Coaster) באורך ~850 מ' ב-Gutach, יער שחור.
-• בקרונית עצמאית על מסילה — שולטים במהירות בעצמכם.
-• לא כבל, לא גבהים!
-• גיל 3+ עם מבוגר; גיל 8+ לבד לפי כללים (אמתו 2026).
-• מחיר: ~€4–5/הורד (אמתו לפני הנסיעה).
-• ליד המגלשה: אזור משחק/מנוחה.` },
-      { q:`מה ה-Tradeoff של J3?`, a:`Gutach מוסיפה ~75–90 דק' ליום המעבר. על ידי קיצור בטריברג (פלטפורמה תחתונה בלבד), הצ'ק אין בטיטיזי ~16:00 במקום ~15:00. ארוחת הערב — דירה. כמעט לא שוברת את המסלול. ✅` },
-      { q:`MerkurBergbahn — מה זה?`, a:`פוניקולר (על מסילות, לא כבל/גונדולה) ב-Baden-Baden. פסגה 668 מ'. ~€6 הלוך-חזור/מבוגר. ילדים מוזל/חינם. מזומן בלבד! שעות: ~10:00–22:00.` },
-      { q:`כמה עולות המסעדות — מחיר ריאלי?`, a:`6–7 ארוחות ערב + 3 ארוחות צהריים.
-מחיר ריאלי: 2 מבוגרים + 3 ילדים:
-• גרמניה: 2×€18 + 3×€10 = ~€76/ערב.
-• אלזס: 2×€25 + 3×€13 = ~€104/ערב.
-• פינאלה: ~€150.
-סה"כ: ~€620–720 (מוזל ~25% מהגרסה המקורית).` },
-      { q:`האם יש רכבלים?`, a:`אין רכבל חובה:
-• MerkurBergbahn = פוניקולר על מסילות ✅
-• שאינלוף = לא בתכנית ✅
-• BLACKFORESTLINE = אופציונלי ✅` },
-      { q:`KONUS card — שווה?`, a:`כרטיס תחבורה ציבורית חינמית ביער שחור לאורחי לינות מסוימות. רכבת לפרייבורג ובחזרה חינם! ~€16–30 למשפחה. בדקו עם הלינה לפני ההזמנה.` }
+      { q:`מה Variant A / Gemini Alsace v4?`, a:`2 לילות Baden-Baden + 3 לילות Titisee/Lenzkirch + 2 לילות Rust + 2 לילות אלזס.
+יתרון מרכזי: אירופה פארק מ-Rust (5–15 דק') במקום Titisee (60–75 דק').
+אחד מעבר מלון נוסף — אך מקבל הדרכה: ילד 8 לא מתקשה מעברים, הקושי הוא רעש/עומס/עצימות.` },
+      { q:`למה Variant A עדיפה על J3 לאירופה פארק?`, a:`מ-Rust: 5–15 דק' לפארק. מ-Titisee: 60–75 דק'.
+✅ אין נסיעה 7:30 בבוקר.
+✅ ילד 8 נטען — הורה לוקח אותו ללינה ב-5 דק', נח שעה, חוזרים.
+✅ מגיעים ב-8:30–8:50 בלי לחץ.
+✅ קל יותר לוגיסטית ביום האינטנסיבי ביותר בטיול.` },
+      { q:`למה J3 עדיפה על Variant A?`, a:`J3 עדיפה אם: רוצים פחות מעברי מלון (3 לעומת 4), חשוב 5 לילות בסיס יציב בדרום, רוצים רכבת לפרייבורג כחוויה, לא מוכנים לישון ב-Rust (פחות אטמוספרי).` },
+      { q:`פרייבורג ב-Variant A — למה ברכב ולא רכבת?`, a:`ב-Variant A יום 6 הוא יום מעבר (Titisee → Freiburg → Rust) עם מזוודות. לכן הרכב הגיוני. הרכבת עדיפה ב-J3 (הלוך-חזור מבסיס יציב).` },
+      { q:`כמה מעברי מלון?`, a:`J3: 2 מעברים (צפון → דרום → אלזס).
+Variant A: 3 מעברים (צפון → דרום → Rust → אלזס).
+ילד 8 מתמודד עם מעברים — הקשיים שלו הם רעש/עומס/עצימות.` },
+      { q:`Rust — איפה לישון?`, a:`Rust עצמה: 5–15 דק' לפארק. יקר יותר. Ringsheim: 10–20 דק'. יותר פרקטי. Kappel-Grafenhausen: אמצע.
+חשוב: חניה + ארוחת בוקר + גיבוי GF. בדקו Ferienwohnung עם מטבח.` },
+      { q:`Sommerrodelbahn Gutach?`, a:`מגלשת הר ~850 מ' ב-Gutach. בקרונית על מסילה. לא כבל! גיל 3+ עם מבוגר, גיל 8+ לבד (בדקו 2026). ~€4–5/הורד. 7 ק"מ מטריברג.` },
+      { q:`KONUS card?`, a:`ב-J3: רכבת Titisee/Hinterzarten → Freiburg חינם עם KONUS. ב-Variant A: הרכבת פחות רלוונטית (יום מעבר ברכב). בדקו עם הלינה.` }
     ]
   }};
 
@@ -2435,6 +2754,34 @@ const MAP_DATA = {
       { lat:48.0794, lng:7.3585, label:'Colmar',                     day:'23-24.8', base:'Eguisheim / Colmar / Ribeauville' },
       { lat:48.1953, lng:7.3190, label:'Ribeauville',                day:'24.8',    base:'Eguisheim / Colmar / Ribeauville' },
       { lat:48.1668, lng:7.2973, label:'Riquewihr',                  day:'24.8',    base:'Eguisheim / Colmar / Ribeauville' }
+    ]
+  },
+
+  pN: {
+    sleeps: [
+      { lat:50.0379, lng:8.5622, label:'Frankfurt Airport',               nights:null,  color:'#888888' },
+      { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden',      nights:[1,2], color:'#b7791f' },
+      { lat:47.8682, lng:8.2021, label:'Titisee / Lenzkirch Base',         nights:[3,5], color:'#2f855a' },
+      { lat:48.2660, lng:7.7220, label:'Rust / Ringsheim (Europa-Park)',   nights:[6,7], color:'#805ad5' },
+      { lat:48.0420, lng:7.3060, label:'Eguisheim / Colmar / Ribeauville', nights:[8,9], color:'#c53030' },
+      { lat:47.6140, lng:7.6646, label:'Loerrach Car Return',              nights:null,  color:'#888888' },
+      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport',               nights:null,  color:'#888888' }
+    ],
+    attractions: [
+      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee',        day:'16.8',    base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.5976, lng:8.2015, label:'Mummelsee',                 day:'17.8',    base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn',            day:'17.8',    base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.1301, lng:8.2319, label:'Triberg Waterfalls',        day:'18.8',    base:'Titisee / Lenzkirch Base' },
+      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach',    day:'18.8',    base:'Titisee / Lenzkirch Base' },
+      { lat:47.9022, lng:8.1549, label:'Titisee',                   day:'18.8',    base:'Titisee / Lenzkirch Base' },
+      { lat:47.8167, lng:8.1833, label:'Schluchsee',                day:'19.8',    base:'Titisee / Lenzkirch Base' },
+      { lat:47.8299, lng:7.9436, label:'Todtnau / Horses',          day:'20.8',    base:'Titisee / Lenzkirch Base' },
+      { lat:47.9990, lng:7.8421, label:'Freiburg transit stop',     day:'21.8',    base:'Rust / Ringsheim (Europa-Park)' },
+      { lat:48.2660, lng:7.7220, label:'Europa Park Rust',          day:'22.8',    base:'Rust / Ringsheim (Europa-Park)' },
+      { lat:48.0448, lng:7.3072, label:'Eguisheim',                 day:'23.8',    base:'Eguisheim / Colmar / Ribeauville' },
+      { lat:48.0794, lng:7.3585, label:'Colmar',                    day:'23-24.8', base:'Eguisheim / Colmar / Ribeauville' },
+      { lat:48.1953, lng:7.3190, label:'Ribeauville',               day:'24.8',    base:'Eguisheim / Colmar / Ribeauville' },
+      { lat:48.1668, lng:7.2973, label:'Riquewihr',                 day:'24.8',    base:'Eguisheim / Colmar / Ribeauville' }
     ]
   }};
 
@@ -2670,6 +3017,7 @@ renderTable('tbJ','pJ'); renderDetail('detJ','pJ'); renderQA('qa-pJ','pJ');
 renderTable('tbK','pK'); renderDetail('detK','pK'); renderQA('qa-pK','pK');
 renderTable('tbL','pL'); renderDetail('detL','pL'); renderQA('qa-pL','pL');
 renderTable('tbM','pM'); renderDetail('detM','pM'); renderQA('qa-pM','pM');
+renderTable('tbN','pN'); renderDetail('detN','pN'); renderQA('qa-pN','pN');
 
 // activate first panel
 document.getElementById('panel-pG').classList.add('active');
