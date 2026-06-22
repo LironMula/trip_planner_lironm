@@ -1062,9 +1062,72 @@ body { background: var(--bg, #f0f4f8); }
             </div>
           </div>
         </div>
+
+        <div class="alt-panel" id="panel-pO">
+          <div class="alt-card">
+            <div class="alt-hdr">
+              <div>
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pO">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
+                  PM 4 Bases — יער שחור + Rust + אלזס
+                </div>
+                <div class="alt-meta">16–25.8 &middot; Baden-Baden 2n + Titisee 3n + Rust 2n + אלזס 2n</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pO" onclick="setChosen('pO')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
+            </div>
+            <div class="alt-body">
+              <div class="qa-section" id="qa-pO"></div>
+              <div class="section-hdr" style="margin-top:16px"><span class="section-hdr-title">&#x1F4CB; &#x05EA;&#x05E7;&#x05E6;&#x05D9;&#x05E8;</span></div>
+              <div class="tbl-wrap"><table><thead><tr>
+                <th>&#x05EA;&#x05D0;&#x05E8;&#x05D9;&#x05DA;</th><th>&#x05E4;&#x05E2;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</th>
+                <th>Drive time</th><th>&#x05DC;&#x05D9;&#x05E0;&#x05D4;</th>
+              </tr></thead><tbody id="tbO"></tbody></table></div>
+              <div class="section-hdr" style="margin-top:24px"><span class="section-hdr-title">&#x1F5FA; &#x05DE;&#x05E4;&#x05D4;</span></div>
+              <div style="margin-top:10px"><div class="vwrap" id="pOm">
+                <div class="map-box" id="map-pO" style="height:340px"></div>
+                <button class="fs-map-btn" onclick="openFS('pO')" title="fullscreen">&#x26F6;</button>
+              </div></div>
+              <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detO"></div></div>
+              <div class="chat-sec">
+                <div class="chat-msgs" id="chatO"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="alt-panel" id="panel-pP">
+          <div class="alt-card">
+            <div class="alt-hdr">
+              <div>
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pP">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
+                  PM 4 Bases Extended — Rhine Falls + Mainau + Rulantica
+                </div>
+                <div class="alt-meta">16–25.8 &middot; Baden-Baden 2n + Titisee 3n + Rust 3n + אלזס 1n &middot; Rhine Falls, Mainau, Rulantica</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pP" onclick="setChosen('pP')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
+            </div>
+            <div class="alt-body">
+              <div class="qa-section" id="qa-pP"></div>
+              <div class="section-hdr" style="margin-top:16px"><span class="section-hdr-title">&#x1F4CB; &#x05EA;&#x05E7;&#x05E6;&#x05D9;&#x05E8;</span></div>
+              <div class="tbl-wrap"><table><thead><tr>
+                <th>&#x05EA;&#x05D0;&#x05E8;&#x05D9;&#x05DA;</th><th>&#x05E4;&#x05E2;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</th>
+                <th>Drive time</th><th>&#x05DC;&#x05D9;&#x05E0;&#x05D4;</th>
+              </tr></thead><tbody id="tbP"></tbody></table></div>
+              <div class="section-hdr" style="margin-top:24px"><span class="section-hdr-title">&#x1F5FA; &#x05DE;&#x05E4;&#x05D4;</span></div>
+              <div style="margin-top:10px"><div class="vwrap" id="pPm">
+                <div class="map-box" id="map-pP" style="height:340px"></div>
+                <button class="fs-map-btn" onclick="openFS('pP')" title="fullscreen">&#x26F6;</button>
+              </div></div>
+              <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detP"></div></div>
+              <div class="chat-sec">
+                <div class="chat-msgs" id="chatP"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
 </main>
 
-<div id="build-ver">v2.23.0</div>
+<div id="build-ver">v2.24.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -2659,6 +2722,363 @@ Titisee: דירה €220–450/לילה. Lenzkirch (זול), Hinterzarten (KONUS
       { q:`מהי אסטרטגיית הביקור בפארק אירופה ומחיר הכרטיסים הריאלי?`, a:`האסטרטגיה מבוססת על לינה במרחק של עד 10 דקות מהכניסה, המאפשרת הגעה מוקדמת ללא עייפות נסיעה. מחיר הכרטיסים המשפחתי המשולב ל-5 נפשות יעמוד על כ-€280–320. התוכנית כוללת "שעה נמוכת-גירויים" חובה בצהריים ותוכנית פיצול קריטית המאפשרת להורה אחד לחזור עם הילד ללינה הקרובה במקרה של הצפה חושית מבלי לפגוע בשאר הילדים.` },
       { q:`מהו אומדן העלויות הריאלי למסעדות בגרמניה ובאלזס עבור משפחה זו?`, a:`העלות המשפחתית הריאלית מחושבת לפי כ-€66–88 לארוחת ערב מלאה בגרמניה, וכ-€89–115 לארוחה באלזס הצרפתית. בהתחשב בשילוב של פיקניקים עצמאיים בצהריים (שהם גם הבטוחים ביותר מבחינת בקרת גלוטן), העלות הכוללת של מסעדות לכל הטיול (6-7 ארוחות בחוץ) תנוע בין €600 ל-€800 בלבד.` }
     ]
+  },
+
+  pO: {
+    rows: [
+      { d:'16.8', r:"הגעה FRA → Baden-Baden", dr:'🚗 1h40–2h15', s:'Baden-Baden / Sasbachwalden', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'17.8', r:"Mummelsee + MerkurBergbahn", dr:'🚗 1h30–2h10', s:'Baden-Baden / Sasbachwalden', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'18.8', r:"מעבר: טריברג + Gutach → Titisee", dr:'🚗 2h20–2h50', s:'Titisee / Lenzkirch Base', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'19.8', r:"Schluchsee recovery day", dr:'🚗 30m–1h', s:'Titisee / Lenzkirch Base', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'20.8', r:"רכיבה על סוסים + Todtnau", dr:'🚗 1h–1h45', s:'Titisee / Lenzkirch Base', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'21.8', r:"Freiburg בדרך לרוסט", dr:'🚗 1h20–1h50', s:'Rust / Ringsheim', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'22.8', r:"Europa-Park ליד הלינה", dr:'🚗 5–20m לכל כיוון', s:'Rust / Ringsheim', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'23.8', r:"Rust → Alsace + Eguisheim/Colmar", dr:'🚗 50m–1h15', s:'Eguisheim / Colmar', z:'zi', act:'', cost:'', daycost:'' },
+      { d:'24.8', r:"Colmar + כפר אלזסי אחד", dr:'🚗 30m–1h30', s:'Eguisheim / Colmar', z:'zi', act:'', cost:'', daycost:'' },
+      { d:'25.8', r:"Lörrach החזרת רכב + Basel flight", dr:'🚗 1h15–1h40', s:'Flight day', z:'zx', act:'', cost:'', daycost:'' }
+    ],
+    det: [
+      { d:'16.8', t:`הגעה FRA → Baden-Baden`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €150–260
+◦ דלק + חניה: €35–60
+◦ אוכל: €60–110
+◦ קניות GF ראשונות: €50–90
+• [07:10] ✈ טיסה: Tel Aviv TLV → Frankfurt FRA.
+• [10:40] 🧳 נחיתה, דרכונים, מזוודות ושירותים. לתכנן ~60–75 דק'.
+• [11:45] 🚗 נסיעה: Frankfurt Airport → Baden-Baden / Sasbachwalden. מרחק ~170 ק״מ. משך ~1h40–2h15.`,
+        n:`• [13:45] 🍽 צהריים קל: קפה/מסעדה פשוטה בדרך או בבאדן-באדן.
+• [15:00] 🌳 Lichtentaler Allee: פארק מוצל ושטוח לאורך נחל. ~75–90 דק'.
+◦ תיאור: פארק עירוני אלגנטי, בלי תורים, מתאים מאוד לפריקת אנרגיה אחרי טיסה.`,
+        e:`• [16:30] 🚗 נסיעה: פארק → Edeka/Rewe/DM. מרחק ~2–8 ק״מ. משך ~5–15 דק'.
+• [16:45] 🛒 קניות GF ראשונות: לחם/קרקרים, פירות, יוגורט, חטיפים, ארוחת ערב קלה.
+• [17:45] 🏨 צ׳ק אין, מקלחות, סידור חדרים.
+• [19:00] 🍽 ארוחת ערב קלה בדירה או מסעדה קרובה. אין תכנית ערב נוספת.`, sp:`🧩 פיצול: אם הטיסה מעייפת, הורה + ילד 8 נשארים בחדר. הורה שני קונה GF ומסדר לוגיסטיקה.` },
+      { d:'17.8', t:`Mummelsee + MerkurBergbahn`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €180–360
+◦ כרטיסים MerkurBergbahn: €25–35
+◦ דלק + חניה: €25–45
+◦ אוכל: €100–180
+• [08:30] 🍳 ארוחת בוקר איטית. אין השכמה מוקדמת.
+• [10:00] 🚗 נסיעה: Baden-Baden/Sasbachwalden → Mummelsee. מרחק ~35–45 ק״מ. משך ~40–50 דק'.`,
+        n:`• [10:50] 🌊 Mummelsee: אגם הררי קטן, טיילת קצרה, חנויות ונוף יער. ~75 דק'.
+• [12:15] 🚗 נסיעה: Mummelsee → Baden-Baden. מרחק ~35–45 ק״מ. משך ~45–60 דק'.
+• [13:15] 🍽 צהריים בבאדן-באדן. לבדוק glutenfrei / Zöliakie.`,
+        e:`• [14:30] 🚗 נסיעה: מרכז Baden-Baden → MerkurBergbahn. מרחק ~3–6 ק״מ. משך ~10–15 דק'.
+• [15:00] 🚞 MerkurBergbahn: פוניקולר על מסילה, לא רכבל. נוף, משחקים ומרחב פתוח. ~90–120 דק'.
+• [17:00] 🚗 חזרה ללינה. ~10–15 דק'.
+• [19:00] 🍽 ארוחת ערב רגועה.`, sp:`🧩 פיצול: בהר מרקור הורה + ילד 8 נשארים במגרש/אזור פתוח; האחרים ממשיכים לתצפית או למגדל.` },
+      { d:'18.8', t:`מעבר: טריברג + Gutach → Titisee`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €270–480
+◦ מפלי טריברג: ~€20–30
+◦ Gutach: ~€20–45 לפי מספר הורדות
+◦ דלק + חניה: €45–75
+◦ אוכל + קניות GF: €150–250
+• [08:30] 🍳 ארוחת בוקר + צ׳ק אאוט. קחו פיקניק GF.
+• [09:30] 🚗 נסיעה: Baden-Baden/Sasbachwalden → Triberg דרך B500/B33. מרחק ~65–85 ק״מ. משך ~65–80 דק'.`,
+        n:`• [10:45] 🌊 מפלי טריברג: מסלול תחתון בלבד, ~75 דק' כולל חניה.
+◦ תיאור: מפלים גבוהים ביער עם תצפיות ושבילים; לא להפוך לטיול ארוך.
+◦ 🧩 פיצול: הורה + ילד 8 → פלטפורמה ראשונה + קפה.
+• [12:00] 🚗 נסיעה: Triberg → Gutach. מרחק ~20 ק״מ. משך ~20–25 דק'.
+• [12:25] 🍽 פיקניק GF ליד Gutach.
+• [13:15] 🎿 Sommerrodelbahn Gutach: מגלשת הר 850 מ׳ בקרונית נשלטת. ~60–75 דק'.
+◦ גיל 3+ עם מבוגר, גיל 8+ לבד לפי כללים מקומיים.`,
+        e:`• [14:30] 🚗 נסיעה: Gutach → Titisee/Lenzkirch. מרחק ~55–65 ק״מ. משך ~55–70 דק'.
+• [15:40] 🏨 צ׳ק אין בבסיס דרום. 3 לילות — לפרוק מסודר.
+• [16:30] 🚗 נסיעה: ל-Edeka/Rewe. מרחק ~2–8 ק״מ. משך ~5–15 דק'.
+• [16:45] 🛒 קנייה גדולה GF לשלושה לילות.
+• [19:00] 🍽 ארוחת דירה. אין מסעדה ביום מעבר.`, sp:`🧩 פיצול: טריברג קצר; Gutach — ילד 8 יכול לרכוב פעם אחת עם הורה או לצפות/לשחק בצד.` },
+      { d:'19.8', t:`Schluchsee recovery day`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €100–230
+◦ כרטיסים: €0–40
+◦ דלק + חניה: €5–20
+◦ אוכל: €80–150
+• [09:00] 🍳 בוקר איטי אחרי יום מעבר.
+• [10:30] 🚗 נסיעה: Titisee/Lenzkirch → Schluchsee. מרחק ~10–20 ק״מ. משך ~10–25 דק'.`,
+        n:`• [11:00] 🌊 Schluchsee: אגם שקט יותר מטיטיזי, מתאים לשחייה, סירות ופיקניק. ~90 דק'.
+• [12:30] 🍽 פיקניק GF ליד האגם.
+• [13:30] 🚤 סירת פדלים/חשמלית אופציונלית: פעילות קצרה, לא חובה. ~30–45 דק'.`,
+        e:`• [15:00] 🚗 חזרה ללינה. מרחק ~10–20 ק״מ. משך ~10–25 דק'.
+• [15:30] 🧺 כביסה, מנוחה, משחקי קופסה.
+• [17:30] 🚶 הליכה מקומית קצרה או Titisee promenade אם יש כוח.
+• [19:00] 🍽 ארוחת דירה או מסעדה קרובה.`, sp:`🧩 פיצול: הורה + ילד 8 נשארים בצל/פיקניק; אחרים עושים סירה או שחייה.` },
+      { d:'20.8', t:`רכיבה על סוסים + Todtnau Waterfall`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €260–560
+◦ רכיבת סוסים: €150–320
+◦ דלק + חניה: €15–35
+◦ אוכל: €80–150
+• [08:30] 🍳 ארוחת בוקר + הכנת פיקניק GF.
+• [09:30] 🚗 נסיעה: Titisee/Lenzkirch → חוות רכיבה באזור Feldberg/Todtnau. מרחק ~20–35 ק״מ. משך ~25–45 דק'.`,
+        n:`• [10:15] 🐴 רכיבה על סוסים: חוויה רגועה למתחילים, היכרות, רכיבה איטית או פוני. ~90–120 דק'.
+◦ תיאור: פעילות שקטה יותר מפארקים, אבל לא ללחוץ על השתתפות.
+• [12:15] 🍽 פיקניק GF ליד החווה.
+• [13:15] 🚗 נסיעה: חווה → Todtnau Waterfall. מרחק ~10–25 ק״מ. משך ~20–40 דק'.`,
+        e:`• [14:00] 🌊 Todtnau Waterfall: מפל טבע יפה ומוצל. ביקור קצר בלבד, ~60–75 דק'.
+• [15:15] 🚗 חזרה ללינה. מרחק ~20–35 ק״מ. משך ~30–45 דק'.
+• [16:00] 🧳 מנוחה ואריזה קלה לקראת מעבר לרוסט מחר.
+• [19:00] 🍽 ארוחת ערב אחרונה בדרום היער.`, sp:`🧩 פיצול: ברכיבה — ילד 8 יכול לצפות/ללטף בלבד. במפל — הורה אחד נשאר בתצפית קלה.` },
+      { d:'21.8', t:`Freiburg בדרך לרוסט`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €180–380
+◦ כרטיסים: €0–30
+◦ דלק + חניה: €35–60
+◦ אוכל: €100–180
+• [08:30] 🍳 ארוחת בוקר + צ׳ק אאוט.
+• [09:30] 🚗 נסיעה: Titisee/Lenzkirch → Freiburg Münsterplatz. מרחק ~40–55 ק״מ. משך ~40–60 דק'.`,
+        n:`• [10:30] 🏛 Freiburg Münsterplatz: שוק, קתדרלה, Bächle ותעלות מים קטנות. ~90 דק'.
+• [12:00] 🍽 צהריים בפרייבורג — סיכוי טוב יותר ל-GF בעיר.
+• [13:15] 🚶 גלידה/חנות צעצועים/פארק קצר. ~45–60 דק'.
+• [14:15] 🚗 נסיעה: Freiburg → Rust/Ringsheim. מרחק ~40–50 ק״מ. משך ~35–50 דק'.`,
+        e:`• [15:00] 🏨 צ׳ק אין ברוסט/רינגסהיים.
+• [16:00] 🧺 מנוחה והכנת תיק Europa-Park למחר.
+• [18:00] 🍽 ארוחת ערב קרובה ללינה.
+• [19:30] 💤 ערב מוקדם — מחר פארק גדול.`, sp:`🧩 פיצול: אם Freiburg צפופה, הורה + ילד 8 יושבים בקפה/פארק; האחרים עושים שוק וקתדרלה.` },
+      { d:'22.8', t:`Europa-Park ליד הלינה`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €520–850
+◦ כרטיסים Europa-Park: בערך €303.50–347 למשפחה לפי תמחור שיא/סטנדרט
+◦ חניה: ~€10–20
+◦ אוכל: €120–220
+• [08:00] 🍳 ארוחת בוקר ואריזת GF.
+• [08:30] 🚗 נסיעה: Rust/Ringsheim → Europa-Park. מרחק ~2–12 ק״מ. משך ~5–20 דק'.`,
+        n:`• [09:15] 🎢 Europa-Park: פארק שעשועים ענק, מתקנים לכל גיל, חובה פיצול. בלוק ראשון ~105 דק'.
+• [11:00] 🍎 הפסקת חטיף שקטה.
+• [11:30] 🎡 בלוק מתקנים שני: להשתמש באפליקציה ולצמצם תורים.
+• [13:00] 🍽 ארוחת צהריים בפארק. לבדוק אלרגנים מראש.`,
+        e:`• [14:00] 🧘 שעת רגיעה חובה: רכבת פנימית, סירה, מופע או אזור שקט.
+• [15:00] 🎢 מתקנים אחרונים לפי אנרגיה.
+• [17:30] 🚗 יציאה גמישה: חזרה ללינה תוך 5–20 דק'.
+• [19:00] 🍽 ארוחת ערב קלה ושקט.`, sp:`🧩 פיצול: צוות א׳ — הורה + ילד 10 למתקנים גדולים. צוות ב׳ — הורה + ילד 8 למתקנים רגועים/חזרה לחדר.` },
+      { d:'23.8', t:`Rust → Alsace + Eguisheim/Colmar`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €240–520
+◦ כרטיסים: €0–45
+◦ דלק + חניה: €25–50
+◦ אוכל: €140–260
+• [09:00] 🍳 ארוחת בוקר + צ׳ק אאוט.
+• [10:00] 🚗 נסיעה: Rust/Ringsheim → Eguisheim/Colmar. מרחק ~70–95 ק״מ. משך ~50–75 דק'.`,
+        n:`• [11:15] 🏘 Eguisheim: כפר אלזסי מעגלי, צבעוני, הליכה קצרה ויפה. ~75 דק'.
+• [12:30] 🍽 צהריים באגיסהיים או פיקניק.
+• [13:30] 🏨 צ׳ק אין / הורדת מזוודות.
+• [14:30] 💤 מנוחה.`,
+        e:`• [16:30] 🚗 נסיעה: Eguisheim → Colmar Little Venice. מרחק ~7–10 ק״מ. משך ~10–20 דק'.
+• [17:00] 🌉 Colmar Little Venice: תעלות, גשרים ובתים צבעוניים. ~90 דק'.
+• [18:30] 🍽 ארוחת ערב באלזס, להזמין מראש ולציין sans gluten.`, sp:`🧩 פיצול: אם Colmar צפופה, הורה + ילד 8 נשארים בקפה ליד תעלה; האחרים עושים סיבוב קצר.` },
+      { d:'24.8', t:`Colmar + כפר אלזסי אחד`, z:'zi',
+        m:`• 💰 עלות יום (ללא לינה): €230–520
+◦ כרטיסים/שייט: €0–45
+◦ חניה: €20–40
+◦ אוכל: €150–280
+• [08:30] 🍳 ארוחת בוקר.
+• [09:30] 🚗/🚶 נסיעה/הליכה: ל-Colmar centre. משך ~0–20 דק' לפי לינה.`,
+        n:`• [09:45] 🏛 Colmar centre + covered market: שוק, סמטאות ותעלות. ~120 דק'.
+• [12:00] 🍽 צהריים בשוק/מסעדה/פיקניק.
+• [13:30] 🚗 נסיעה: Colmar → Ribeauvillé או Riquewihr. מרחק ~15–20 ק״מ. משך ~20–30 דק'.
+• [14:00] 🏘 כפר אלזסי אחד בלבד: Ribeauvillé מרווח יותר, Riquewihr ציורי וצפוף יותר.`,
+        e:`• [16:00] 🚗 חזרה ללינה. מרחק ~15–20 ק״מ. משך ~20–30 דק'.
+• [16:30] 🧳 מנוחה ואריזה אחרונה.
+• [18:30] 🍽 ארוחת סיום באלזס, עם בירור sans gluten.
+• [20:30] 💤 שינה מוקדמת לקראת טיסה.`, sp:`🧩 פיצול: אם הכפר עמוס, הורה + ילד 8 נשארים בקפה/ספסל; האחרים עושים לולאה קצרה.` },
+      { d:'25.8', t:`Alsace → Lörrach → Basel flight`, z:'zx',
+        m:`• 💰 עלות יום (ללא לינה): €180–430
+◦ דלק/חניה/מונית: €50–120
+◦ אוכל: €80–160
+◦ בלת״ם: €50–150
+• [08:30] 🍳 ארוחת בוקר.
+• [09:30] 🧳 אריזה אחרונה. דרכונים ואוכל GF לטיסה בתיק נגיש.
+• [10:30] 🚶 הליכת בוקר קצרה באלזס, אופציונלית בלבד.`,
+        n:`• [12:00] 🍽 צהריים מוקדם לפני לוגיסטיקת שדה.
+• [13:00] 🚗 נסיעה: Eguisheim/Colmar → Lörrach Car Return. מרחק ~80–95 ק״מ. משך ~60–75 דק', להשאיר 90.
+• [14:15] ⛽ תדלוק, שירותים והכנת החזרת רכב.`,
+        e:`• [15:00] 🚗 החזרת רכב בלוראך / צד גרמני ליד Basel.
+• [15:30] 🚕 מעבר: Lörrach → Basel EuroAirport. מרחק ~15–25 ק״מ. משך ~15–25 דק'.
+• [16:00] ✈ הגעה לשדה, צ׳ק אין ובידוק.
+• [19:50] ✈ טיסה Basel BSL → Tel Aviv TLV.`, sp:`🧩 פיצול: הורה אחד מחזיר רכב; ההורה השני עם הילדים בקפה/אזור ישיבה בשדה.` }
+    ],
+    qa: [
+      { q:`מה ייחודי ב-PM_4_bases?`, a:`זו גרסת 4 בסיסים: Baden-Baden, Titisee/Lenzkirch, Rust ו-Alsace. היא מקרבת את Europa-Park ללינה ומצמצמת עומס ביום הפארק.` },
+      { q:`כמה מעברי מלון יש?`, a:`שלושה מעברי מלון: אחרי לילה 2 לדרום היער, אחרי לילה 5 לרוסט, אחרי לילה 7 לאלזס.` },
+      { q:`האם יש רכבלים/גונדולות?`, a:`אין רכבל חובה. MerkurBergbahn היא פוניקולר על מסילה ולכן מתאימה לאילוץ.` },
+      { q:`איך מתמודדים עם Europa-Park?`, a:`ישנים ליד Rust, יוצאים מוקדם, מתפצלים לצוות מתקנים גדולים וצוות רגוע, וחוזרים לחדר במהירות אם יש הצפה.` },
+      { q:`מה מחיר Europa-Park?`, a:`לפי ההנחיות: אומדן משפחתי סטנדרט €303.50, ובימי שיא עד כ-€347, לפני אוכל וחניה. לבדוק 2026 לפני רכישה.` },
+      { q:`מה זה Sommerrodelbahn Gutach?`, a:`מגלשת הר בקרונית נשלטת, כ-850 מ׳. ילדים מגיל 3 עם מבוגר, מגיל 8 לבד לפי כללי המקום.` },
+      { q:`האם KONUS card רלוונטי?`, a:`כן אם הלינה בדרום היער מעניקה אותו; יכול לעזור בתחבורה אזורית, אך בגרסה זו Freiburg הוא עצירת רכב בדרך לרוסט.` },
+      { q:`מה מחיר מסעדות ריאלי?`, a:`למשפחה של 5: ארוחת Gasthof בגרמניה כ-€66–82, אלזס כ-€96–115, ערב פינאלה כ-€140–180.` }
+    ]
+  },
+
+  pP: {
+    rows: [
+      { d:'16.8', r:"הגעה FRA → Baden-Baden", dr:'🚗 1h40–2h15', s:'Baden-Baden / Sasbachwalden', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'17.8', r:"Mummelsee + MerkurBergbahn", dr:'🚗 1h30–2h10', s:'Baden-Baden / Sasbachwalden', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'18.8', r:"מעבר דרך מפלי הריין → Titisee", dr:'🚗 3h00–3h45', s:'Titisee / Lenzkirch Base', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'19.8', r:"Triberg + Gutach + Schluchsee אופציונלי", dr:'🚗 1h45–2h30', s:'Titisee / Lenzkirch Base', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'20.8', r:"רכיבה על סוסים + Todtnau אופציונלי", dr:'🚗 1h–1h45', s:'Titisee / Lenzkirch Base', z:'zf', act:'', cost:'', daycost:'' },
+      { d:'21.8', r:"Mainau Island → Rust", dr:'🚗 3h15–4h15', s:'Rust / Ringsheim', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'22.8', r:"Europa-Park ליד הלינה", dr:'🚗 5–20m לכל כיוון', s:'Rust / Ringsheim', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'23.8', r:"Rulantica full day", dr:'🚗 5–20m לכל כיוון', s:'Rust / Ringsheim', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'24.8', r:"Rust → Alsace + Eguisheim/Colmar", dr:'🚗 50m–1h20', s:'Eguisheim / Colmar', z:'zi', act:'', cost:'', daycost:'' },
+      { d:'25.8', r:"Lörrach החזרת רכב + Basel flight", dr:'🚗 1h15–1h40', s:'Flight day', z:'zx', act:'', cost:'', daycost:'' }
+    ],
+    det: [
+      { d:'16.8', t:`הגעה FRA → Baden-Baden`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €150–260
+◦ דלק + חניה: €35–60
+◦ אוכל: €60–110
+◦ קניות GF ראשונות: €50–90
+• [07:10] ✈ טיסה: Tel Aviv TLV → Frankfurt FRA.
+• [10:40] 🧳 נחיתה, דרכונים, מזוודות ושירותים. לתכנן ~60–75 דק'.
+• [11:45] 🚗 נסיעה: Frankfurt Airport → Baden-Baden / Sasbachwalden. מרחק ~170 ק״מ. משך ~1h40–2h15.`,
+        n:`• [13:45] 🍽 צהריים קל: קפה/מסעדה פשוטה בדרך או בבאדן-באדן.
+• [15:00] 🌳 Lichtentaler Allee: פארק מוצל ושטוח לאורך נחל. ~75–90 דק'.
+◦ תיאור: פארק עירוני אלגנטי, בלי תורים, מתאים מאוד לפריקת אנרגיה אחרי טיסה.`,
+        e:`• [16:30] 🚗 נסיעה: פארק → Edeka/Rewe/DM. מרחק ~2–8 ק״מ. משך ~5–15 דק'.
+• [16:45] 🛒 קניות GF ראשונות: לחם/קרקרים, פירות, יוגורט, חטיפים, ארוחת ערב קלה.
+• [17:45] 🏨 צ׳ק אין, מקלחות, סידור חדרים.
+• [19:00] 🍽 ארוחת ערב קלה בדירה או מסעדה קרובה. אין תכנית ערב נוספת.`, sp:`🧩 פיצול: אם הטיסה מעייפת, הורה + ילד 8 נשארים בחדר. הורה שני קונה GF ומסדר לוגיסטיקה.` },
+      { d:'17.8', t:`Mummelsee + MerkurBergbahn`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €180–360
+◦ כרטיסים MerkurBergbahn: €25–35
+◦ דלק + חניה: €25–45
+◦ אוכל: €100–180
+• [08:30] 🍳 ארוחת בוקר איטית. אין השכמה מוקדמת.
+• [10:00] 🚗 נסיעה: Baden-Baden/Sasbachwalden → Mummelsee. מרחק ~35–45 ק״מ. משך ~40–50 דק'.`,
+        n:`• [10:50] 🌊 Mummelsee: אגם הררי קטן, טיילת קצרה, חנויות ונוף יער. ~75 דק'.
+• [12:15] 🚗 נסיעה: Mummelsee → Baden-Baden. מרחק ~35–45 ק״מ. משך ~45–60 דק'.
+• [13:15] 🍽 צהריים בבאדן-באדן. לבדוק glutenfrei / Zöliakie.`,
+        e:`• [14:30] 🚗 נסיעה: מרכז Baden-Baden → MerkurBergbahn. מרחק ~3–6 ק״מ. משך ~10–15 דק'.
+• [15:00] 🚞 MerkurBergbahn: פוניקולר על מסילה, לא רכבל. נוף, משחקים ומרחב פתוח. ~90–120 דק'.
+• [17:00] 🚗 חזרה ללינה. ~10–15 דק'.
+• [19:00] 🍽 ארוחת ערב רגועה.`, sp:`🧩 פיצול: בהר מרקור הורה + ילד 8 נשארים במגרש/אזור פתוח; האחרים ממשיכים לתצפית או למגדל.` },
+      { d:'18.8', t:`מעבר דרך מפלי הריין → Titisee`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €250–500
+◦ מפלי הריין/Schloss Laufen: €40–100 לפי כניסה/חניה/סירה
+◦ דלק + חניה: €70–110
+◦ אוכל + קניות GF: €140–260
+• [08:00] 🍳 ארוחת בוקר + צ׳ק אאוט. להכין פיקניק GF.
+• [09:00] 🚗 נסיעה: Baden-Baden/Sasbachwalden → Rhine Falls / Schloss Laufen. מרחק ~165–195 ק״מ. משך ~1h50–2h15.`,
+        n:`• [11:15] 🌊 Rhine Falls: מפלים עצומים ליד Schaffhausen, תצפיות קרובות, רעש מים חזק. ~90 דק'.
+• [12:45] 🏰 Schloss Laufen viewpoints: טירה ומרפסות תצפית מסודרות מעל המפלים. ~30–45 דק'.
+• [13:15] 🍽 פיקניק GF / צהריים פשוט. לא למשוך מעבר לשעתיים-שעתיים וחצי באזור.`,
+        e:`• [14:00] 🚗 נסיעה: Rhine Falls → Titisee/Lenzkirch. מרחק ~90–120 ק״מ. משך ~1h20–1h40.
+• [15:40] 🏨 צ׳ק אין בבסיס הדרומי.
+• [16:30] 🛒 קנייה גדולה GF ל-3 לילות ב-Edeka/Rewe.
+• [19:00] 🍽 ארוחת דירה ושינה מוקדמת. לא להוסיף Triberg/Gutach ביום זה.`, sp:`🧩 פיצול: במפלים הורה + ילד 8 נשארים בתצפית עליונה/קפה; האחרים יורדים לפלטפורמות קרובות יותר.` },
+      { d:'19.8', t:`Triberg + Gutach + Schluchsee אופציונלי`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €250–480
+◦ טריברג: €20–30
+◦ Gutach: €20–45
+◦ דלק + חניה: €45–75
+◦ אוכל: €120–220
+• [08:30] 🍳 ארוחת בוקר רגועה אחרי יום מעבר ארוך.
+• [09:30] 🚗 נסיעה: Titisee/Lenzkirch → Triberg. מרחק ~45–60 ק״מ. משך ~45–60 דק'.`,
+        n:`• [10:30] 🌊 מפלי טריברג: מסלול תחתון בלבד, ~75 דק'. לא לעשות מסלול ארוך.
+• [11:45] 🚗 נסיעה: Triberg → Gutach. מרחק ~20 ק״מ. משך ~20–25 דק'.
+• [12:15] 🍽 פיקניק GF ליד Gutach.
+• [13:00] 🎿 Sommerrodelbahn Gutach: מגלשת הר 850 מ׳, בקרונית נשלטת. ~60–90 דק'.`,
+        e:`• [14:30] 🚗 נסיעה: Gutach → Titisee/Lenzkirch. מרחק ~55–65 ק״מ. משך ~55–70 דק'.
+• [15:45] 💤 מנוחה אמיתית בלינה.
+• [17:30] 🌊 Schluchsee אופציונלי בלבד: הליכה קצרה/אגם שקט אם יש כוח. ~45–60 דק'.
+• [19:00] 🍽 ארוחת דירה.`, sp:`🧩 פיצול: טריברג — פלטפורמה תחתונה. Gutach — ילד 8 פעם אחת עם הורה או צופה. Schluchsee רק אם כולם רגועים.` },
+      { d:'20.8', t:`רכיבה על סוסים + Todtnau Waterfall`, z:'zf',
+        m:`• 💰 עלות יום (ללא לינה): €260–560
+◦ רכיבת סוסים: €150–320
+◦ דלק + חניה: €15–35
+◦ אוכל: €80–150
+• [08:30] 🍳 ארוחת בוקר + הכנת פיקניק GF.
+• [09:30] 🚗 נסיעה: Titisee/Lenzkirch → חוות רכיבה באזור Feldberg/Todtnau. מרחק ~20–35 ק״מ. משך ~25–45 דק'.`,
+        n:`• [10:15] 🐴 רכיבה על סוסים: חוויה רגועה למתחילים, היכרות, רכיבה איטית או פוני. ~90–120 דק'.
+◦ תיאור: פעילות שקטה יותר מפארקים, אבל לא ללחוץ על השתתפות.
+• [12:15] 🍽 פיקניק GF ליד החווה.
+• [13:15] 🚗 נסיעה: חווה → Todtnau Waterfall. מרחק ~10–25 ק״מ. משך ~20–40 דק'.`,
+        e:`• [14:00] 🌊 Todtnau Waterfall: מפל טבע יפה ומוצל. ביקור קצר בלבד, ~60–75 דק'.
+• [15:15] 🚗 חזרה ללינה. מרחק ~20–35 ק״מ. משך ~30–45 דק'.
+• [16:00] 🧳 מנוחה ואריזה קלה לקראת מעבר לרוסט מחר.
+• [19:00] 🍽 ארוחת ערב אחרונה בדרום היער.`, sp:`🧩 פיצול: ברכיבה — ילד 8 יכול לצפות/ללטף בלבד. במפל — הורה אחד נשאר בתצפית קלה.` },
+      { d:'21.8', t:`Mainau Island → Rust`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €300–600
+◦ Mainau: €70–140 לפי כרטיסים/עונה
+◦ דלק + חניה: €80–130
+◦ אוכל: €120–230
+• [08:00] 🍳 ארוחת בוקר + צ׳ק אאוט.
+• [09:00] 🚗 נסיעה: Titisee/Lenzkirch → Mainau Island. מרחק ~100–130 ק״מ. משך ~1h20–1h45.`,
+        n:`• [10:45] 🌸 Mainau Island: אי פרחים באגם קונסטנץ, גנים, פרפרים, מתקני משחק ושבילים. ~3h.
+• [11:30] 🦋 Butterfly House: בית פרפרים צבעוני וחם; להיכנס רק אם לא צפוף מדי.
+• [12:30] 🛝 Mainau playground: אזורי משחק טובים להפסקה מהליכה.
+• [14:30] 🍽 צהריים מאוחר/חטיף ויציאה.`,
+        e:`• [15:15] 🚗 נסיעה: Mainau → Rust/Ringsheim. מרחק ~170–210 ק״מ. משך ~1h50–2h30.
+• [17:30] 🏨 צ׳ק אין ברוסט/רינגסהיים.
+• [18:30] 🍽 ארוחת ערב ליד הלינה.
+• [19:30] 🎒 הכנת תיק Europa-Park ושינה מוקדמת.`, sp:`🧩 פיצול: אם בית הפרפרים לח/צפוף, הורה + ילד 8 מחכים בחוץ/קפה; האחרים נכנסים. לא מוסיפים Freiburg.` },
+      { d:'22.8', t:`Europa-Park ליד הלינה`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €520–850
+◦ כרטיסים Europa-Park: בערך €303.50–347 למשפחה לפי תמחור שיא/סטנדרט
+◦ חניה: ~€10–20
+◦ אוכל: €120–220
+• [08:00] 🍳 ארוחת בוקר ואריזת GF.
+• [08:30] 🚗 נסיעה: Rust/Ringsheim → Europa-Park. מרחק ~2–12 ק״מ. משך ~5–20 דק'.`,
+        n:`• [09:15] 🎢 Europa-Park: פארק שעשועים ענק, מתקנים לכל גיל, חובה פיצול. בלוק ראשון ~105 דק'.
+• [11:00] 🍎 הפסקת חטיף שקטה.
+• [11:30] 🎡 בלוק מתקנים שני: להשתמש באפליקציה ולצמצם תורים.
+• [13:00] 🍽 ארוחת צהריים בפארק. לבדוק אלרגנים מראש.`,
+        e:`• [14:00] 🧘 שעת רגיעה חובה: רכבת פנימית, סירה, מופע או אזור שקט.
+• [15:00] 🎢 מתקנים אחרונים לפי אנרגיה.
+• [17:30] 🚗 יציאה גמישה: חזרה ללינה תוך 5–20 דק'.
+• [19:00] 🍽 ארוחת ערב קלה ושקט.`, sp:`🧩 פיצול: צוות א׳ — הורה + ילד 10 למתקנים גדולים. צוות ב׳ — הורה + ילד 8 למתקנים רגועים/חזרה לחדר.` },
+      { d:'23.8', t:`Rulantica full day`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €350–700
+◦ כרטיסי Rulantica: לבדוק 2026; אומדן משפחתי גבוה
+◦ חניה/לוקרים: €10–30
+◦ אוכל: €100–180
+• [08:30] 🍳 ארוחת בוקר.
+• [09:15] 🚗 נסיעה: Rust/Ringsheim → Rulantica. מרחק ~2–12 ק״מ. משך ~5–20 דק'.
+• [09:45] 🩱 כניסה, לוקרים והחלפה.`,
+        n:`• [10:15] 🌊 Rulantica: פארק מים מקורה ענק עם מגלשות, בריכות ונהר עצל. בלוק ראשון ~2h.
+• [12:30] 🍽 צהריים / הפסקת רעש ומים.
+• [13:30] 🎢 מגלשות מים: מתאים למי שאוהב פעילות פיזית ומים. ~90 דק'.`,
+        e:`• [15:00] 🧘 אזורי מים רגועים: בריכות וציפה להפחתת עומס אחרי המגלשות.
+• [16:00] 🚪 החלטת יציאה גמישה; לא למשוך עד קריסה.
+• [17:00] 🚗 חזרה ללינה. ~5–20 דק'.
+• [18:30] 🍽 ארוחת ערב קלה, בלי אטרקציה נוספת.`, sp:`🧩 פיצול: צוות מגלשות עם ילד 10; צוות בריכות רגועות עם ילד 8. יציאה מוקדמת לגמרי לגיטימית.` },
+      { d:'24.8', t:`Rust → Alsace + Eguisheim/Colmar`, z:'zi',
+        m:`• 💰 עלות יום (ללא לינה): €240–520
+◦ כרטיסים: €0–20
+◦ דלק + חניה: €25–50
+◦ אוכל: €150–280
+• [09:00] 🍳 ארוחת בוקר + צ׳ק אאוט מרוסט.
+• [10:00] 🚗 נסיעה: Rust/Ringsheim → Eguisheim/Colmar. מרחק ~70–95 ק״מ. משך ~50–80 דק'.`,
+        n:`• [11:15] 🏘 Eguisheim: כפר אלזסי צבעוני ושקט יחסית, הליכה מעגלית קצרה. ~75 דק'.
+• [12:30] 🍽 צהריים באגיסהיים או פיקניק.
+• [13:30] 🏨 צ׳ק אין / הורדת מזוודות.
+• [14:30] 💤 מנוחה. אלזס כאן דחוסה — מנוחה חשובה.`,
+        e:`• [16:00] 🚗 נסיעה: Eguisheim → Colmar Little Venice. מרחק ~7–10 ק״מ. משך ~10–20 דק'.
+• [16:30] 🌉 Colmar Little Venice: תעלות, גשרים, בתים צבעוניים ואווירת ערב.
+• [18:30] 🍽 ארוחת סיום באלזס, להזמין מראש ולציין sans gluten.
+• [20:30] 🧳 אריזה אחרונה.`, sp:`🧩 פיצול: אם Colmar צפופה, הורה + ילד 8 יושבים ליד תעלה/קפה; האחרים עושים לולאה קצרה.` },
+      { d:'25.8', t:`Alsace → Lörrach → Basel flight`, z:'zx',
+        m:`• 💰 עלות יום (ללא לינה): €180–430
+◦ דלק/חניה/מונית: €50–120
+◦ אוכל: €80–160
+◦ בלת״ם: €50–150
+• [08:30] 🍳 ארוחת בוקר.
+• [09:30] 🧳 אריזה אחרונה. דרכונים ואוכל GF לטיסה בתיק נגיש.
+• [10:30] 🚶 הליכת בוקר קצרה באלזס, אופציונלית בלבד.`,
+        n:`• [12:00] 🍽 צהריים מוקדם לפני לוגיסטיקת שדה.
+• [13:00] 🚗 נסיעה: Eguisheim/Colmar → Lörrach Car Return. מרחק ~80–95 ק״מ. משך ~60–75 דק', להשאיר 90.
+• [14:15] ⛽ תדלוק, שירותים והכנת החזרת רכב.`,
+        e:`• [15:00] 🚗 החזרת רכב בלוראך / צד גרמני ליד Basel.
+• [15:30] 🚕 מעבר: Lörrach → Basel EuroAirport. מרחק ~15–25 ק״מ. משך ~15–25 דק'.
+• [16:00] ✈ הגעה לשדה, צ׳ק אין ובידוק.
+• [19:50] ✈ טיסה Basel BSL → Tel Aviv TLV.`, sp:`🧩 פיצול: הורה אחד מחזיר רכב; ההורה השני עם הילדים בקפה/אזור ישיבה בשדה.` }
+    ],
+    qa: [
+      { q:`מה ייחודי ב-PM_4_bases_extended1?`, a:`זו גרסת 4 בסיסים מורחבת שמוסיפה Rhine Falls, Mainau Island ו-Rulantica, תוך שמירה על 9 לילות.` },
+      { q:`מה נחתך כדי להכניס את התוספות?`, a:`Freiburg יורדת כיום עיקרי, Alsace מתקצרת ללילה אחד, ו-Schluchsee הופך לאופציה קצרה בלבד.` },
+      { q:`כמה מעברי מלון יש?`, a:`שלושה מעברי מלון: אחרי לילה 2 לדרום היער, אחרי לילה 5 לרוסט, אחרי לילה 8 לאלזס.` },
+      { q:`האם יש רכבלים/גונדולות?`, a:`אין רכבל חובה. MerkurBergbahn היא פוניקולר על מסילה ולכן מתאימה לאילוץ.` },
+      { q:`איך מתמודדים עם Europa-Park ו-Rulantica?`, a:`ישנים שלושה לילות ליד Rust. בכל פארק יש פיצול, הפסקות מתוכננות, ויציאה מוקדמת לגיטימית.` },
+      { q:`מה מחיר Europa-Park?`, a:`לפי ההנחיות: אומדן משפחתי סטנדרט €303.50, ובימי שיא עד כ-€347, לא כולל אוכל וחניה. לבדוק 2026.` },
+      { q:`מה זה Sommerrodelbahn Gutach?`, a:`מגלשת הר באורך כ-850 מ׳ בקרונית נשלטת; גיל 3+ עם מבוגר וגיל 8+ לבד לפי כללי המקום.` },
+      { q:`האם Mainau היא תוספת קלה?`, a:`לא. זה יום מעבר ארוך ל-Rust. להתמקד בבית הפרפרים, גנים, משחקים ונוף, ולא להוסיף Freiburg.` },
+      { q:`מה מחיר מסעדות ריאלי?`, a:`לפי ההנחיות: Gasthof גרמני כ-€66–82 למשפחה, אלזס כ-€96–115, ופינאלה כ-€140–180.` },
+      { q:`האם KONUS card רלוונטי?`, a:`פחות מגרסת PM_4 כי Freiburg יורדת, אבל עדיין כדאי לבדוק אם הלינה בדרום היער נותנת אותו.` }
+    ]
   }};
 
 // ════════════════════════════════════════════════
@@ -2869,6 +3289,79 @@ const MAP_DATA = {
       { lat:48.0794, lng:7.3585, label:'Colmar centre', day:'24.8', base:'Eguisheim / Colmar' },
       { lat:48.1953, lng:7.3190, label:'Ribeauvillé', day:'24.8', base:'Eguisheim / Colmar' },
       { lat:48.1668, lng:7.2973, label:'Riquewihr', day:'24.8', base:'Eguisheim / Colmar' }
+    ]
+  },
+
+  pO: {
+    sleeps: [
+      { lat:50.0379, lng:8.5622, label:'Frankfurt Airport', nights:null, color:'#888888' },
+      { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
+      { lat:47.8682, lng:8.2021, label:'Titisee / Lenzkirch Base', nights:[3,5], color:'#2f855a' },
+      { lat:48.2500, lng:7.7100, label:'Rust / Ringsheim', nights:[6,7], color:'#805ad5' },
+      { lat:48.0420, lng:7.3060, label:'Eguisheim / Colmar', nights:[8,9], color:'#c53030' },
+      { lat:47.6140, lng:7.6646, label:'Lörrach Car Return', nights:null, color:'#888888' },
+      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport', nights:null, color:'#888888' }
+    ],
+    attractions: [
+      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee', day:'16.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.7606, lng:8.2398, label:'Edeka/Rewe Baden-Baden GF', day:'16.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.5976, lng:8.2015, label:'Mummelsee', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.1301, lng:8.2319, label:'מפלי טריברג', day:'18.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.1350, lng:8.2280, label:'Cuckoo Clock shop', day:'18.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach', day:'18.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.9022, lng:8.1549, label:'Titisee lake arrival', day:'18.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8167, lng:8.1833, label:'Schluchsee', day:'19.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8200, lng:8.1900, label:'Schluchsee Strandbad', day:'19.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8500, lng:7.9700, label:'Horse riding Feldberg area', day:'20.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8299, lng:7.9436, label:'Todtnau Waterfall', day:'20.8', base:'Titisee / Lenzkirch Base' },
+      { lat:48.0003, lng:7.8522, label:'Freiburg Münsterplatz', day:'21.8', base:'Titisee / Lenzkirch Base' },
+      { lat:48.0050, lng:7.8600, label:'Schlossbergbahn Freiburg פוניקולר', day:'21.8', base:'Titisee / Lenzkirch Base' },
+      { lat:48.2500, lng:7.7100, label:'Rust / Ringsheim check-in', day:'21.8', base:'Rust / Ringsheim' },
+      { lat:48.2660, lng:7.7220, label:'Europa-Park Rust', day:'22.8', base:'Rust / Ringsheim' },
+      { lat:48.0448, lng:7.3072, label:'Eguisheim', day:'23.8', base:'Eguisheim / Colmar' },
+      { lat:48.0752, lng:7.3551, label:'Colmar Little Venice', day:'23.8', base:'Eguisheim / Colmar' },
+      { lat:48.0794, lng:7.3585, label:'Colmar centre', day:'24.8', base:'Eguisheim / Colmar' },
+      { lat:48.1953, lng:7.3190, label:'Ribeauvillé', day:'24.8', base:'Eguisheim / Colmar' },
+      { lat:48.1668, lng:7.2973, label:'Riquewihr', day:'24.8', base:'Eguisheim / Colmar' },
+      { lat:47.6140, lng:7.6646, label:'Lörrach Car Return', day:'25.8', base:'Lörrach Car Return' },
+      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport', day:'25.8', base:'Basel EuroAirport' }
+    ]
+  },
+
+  pP: {
+    sleeps: [
+      { lat:50.0379, lng:8.5622, label:'Frankfurt Airport', nights:null, color:'#888888' },
+      { lat:48.7606, lng:8.2398, label:'Baden-Baden / Sasbachwalden', nights:[1,2], color:'#b7791f' },
+      { lat:47.8682, lng:8.2021, label:'Titisee / Lenzkirch Base', nights:[3,5], color:'#2f855a' },
+      { lat:48.2500, lng:7.7100, label:'Rust / Ringsheim', nights:[6,8], color:'#805ad5' },
+      { lat:48.0420, lng:7.3060, label:'Eguisheim / Colmar', nights:[9,9], color:'#c53030' },
+      { lat:47.6140, lng:7.6646, label:'Lörrach Car Return', nights:null, color:'#888888' },
+      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport', nights:null, color:'#888888' }
+    ],
+    attractions: [
+      { lat:48.7643, lng:8.2389, label:'Lichtentaler Allee', day:'16.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.7606, lng:8.2398, label:'Edeka/Rewe Baden-Baden GF', day:'16.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.5976, lng:8.2015, label:'Mummelsee', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:48.7629, lng:8.2800, label:'MerkurBergbahn', day:'17.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:47.6779, lng:8.6150, label:'Rhine Falls / Rheinfall', day:'18.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:47.6786, lng:8.6156, label:'Schloss Laufen viewpoints', day:'18.8', base:'Baden-Baden / Sasbachwalden' },
+      { lat:47.8682, lng:8.2021, label:'Titisee / Lenzkirch check-in', day:'18.8', base:'Titisee / Lenzkirch Base' },
+      { lat:48.1301, lng:8.2319, label:'מפלי טריברג', day:'19.8', base:'Titisee / Lenzkirch Base' },
+      { lat:48.2590, lng:8.1980, label:'Sommerrodelbahn Gutach', day:'19.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8167, lng:8.1833, label:'Schluchsee optional evening', day:'19.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8500, lng:7.9700, label:'Horse riding Feldberg area', day:'20.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.8299, lng:7.9436, label:'Todtnau Waterfall optional', day:'20.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.7048, lng:9.1950, label:'Mainau Island', day:'21.8', base:'Titisee / Lenzkirch Base' },
+      { lat:47.7049, lng:9.1947, label:'Mainau Butterfly House', day:'21.8', base:'Titisee / Lenzkirch Base' },
+      { lat:48.2500, lng:7.7100, label:'Rust / Ringsheim check-in', day:'21.8', base:'Rust / Ringsheim' },
+      { lat:48.2660, lng:7.7220, label:'Europa-Park Rust', day:'22.8', base:'Rust / Ringsheim' },
+      { lat:48.2684, lng:7.7207, label:'Rulantica', day:'23.8', base:'Rust / Ringsheim' },
+      { lat:48.0448, lng:7.3072, label:'Eguisheim', day:'24.8', base:'Eguisheim / Colmar' },
+      { lat:48.0752, lng:7.3551, label:'Colmar Little Venice', day:'24.8', base:'Eguisheim / Colmar' },
+      { lat:48.0794, lng:7.3585, label:'Colmar centre / final dinner', day:'24.8', base:'Eguisheim / Colmar' },
+      { lat:47.6140, lng:7.6646, label:'Lörrach Car Return', day:'25.8', base:'Lörrach Car Return' },
+      { lat:47.5980, lng:7.5292, label:'Basel EuroAirport', day:'25.8', base:'Basel EuroAirport' }
     ]
   }
 
@@ -3178,6 +3671,8 @@ renderTable('tbK','pK'); renderDetail('detK','pK'); renderQA('qa-pK','pK');
 renderTable('tbL','pL'); renderDetail('detL','pL'); renderQA('qa-pL','pL');
 renderTable('tbM','pM'); renderDetail('detM','pM'); renderQA('qa-pM','pM');
 renderTable('tbN','pN'); renderDetail('detN','pN'); renderQA('qa-pN','pN');
+renderTable('tbO','pO'); renderDetail('detO','pO'); renderQA('qa-pO','pO');
+renderTable('tbP','pP'); renderDetail('detP','pP'); renderQA('qa-pP','pP');
 
 // activate first panel
 document.getElementById('panel-pG').classList.add('active');
