@@ -1171,7 +1171,7 @@ body { background: var(--bg, #f0f4f8); }
         </div>
 </main>
 
-<div id="build-ver">v2.27.0</div>
+<div id="build-ver">v2.28.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -3176,20 +3176,42 @@ function esc(s) {
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
 }
-function formatDet(raw) {
+function formatDet(raw, withLinks) {
   if (!raw) return '';
   return raw.split('\n').map(line => {
     const s = esc(line);
-    if (s.startsWith('&#x25E6; ')) return '<div class="det-sub">'  + s.slice(9) + '</div>';
-    if (s.startsWith('&#x2022; ')) return '<div class="det-bull">' + s.slice(9) + '</div>';
-    if (s.startsWith('&#x25E6;'))  return '<div class="det-sub">'  + s.slice(7) + '</div>';
-    if (s.startsWith('&#x2022;'))  return '<div class="det-bull">' + s.slice(7) + '</div>';
-    if (s.startsWith('• '))  return '<div class="det-bull">' + s.slice(2) + '</div>';
-    if (s.startsWith('◦ '))  return '<div class="det-sub">'  + s.slice(2) + '</div>';
-    if (s.startsWith('  -- ')) return '<div class="det-sub">' + s.slice(5) + '</div>';
-    if (s.startsWith('-- ')) return '<div class="det-bull">' + s.slice(3) + '</div>';
-    if (s.trim() === '') return '';
-    return '<div class="det-line">' + s + '</div>';
+    var content, cls;
+    if      (s.startsWith('&#x25E6; ')) { cls='det-sub';  content=s.slice(9); }
+    else if (s.startsWith('&#x2022; ')) { cls='det-bull'; content=s.slice(9); }
+    else if (s.startsWith('&#x25E6;'))  { cls='det-sub';  content=s.slice(7); }
+    else if (s.startsWith('&#x2022;'))  { cls='det-bull'; content=s.slice(7); }
+    else if (s.startsWith('• '))        { cls='det-bull'; content=s.slice(2); }
+    else if (s.startsWith('◦ '))        { cls='det-sub';  content=s.slice(2); }
+    else if (s.startsWith('  -- '))     { cls='det-sub';  content=s.slice(5); }
+    else if (s.startsWith('-- '))       { cls='det-bull'; content=s.slice(3); }
+    else if (s.trim() === '')           { return ''; }
+    else                                { return '<div class="det-line">' + s + '</div>'; }
+
+    /* Add Google search link to main bullet lines (not sub-bullets) */
+    if (withLinks && cls === 'det-bull') {
+      /* Extract search term: text after time-stamp [HH:MM] and emoji, up to first ':' */
+      var stripped = content
+        .replace(/^\[[^\]]+\]\s*/, '')        /* remove [HH:MM] */
+        .replace(/^[\u{1F300}-\u{1FFFF}\u2600-\u27BF\uFE00-\uFE0F\s]+/u, '') /* remove leading emojis */
+        .trim();
+      var term = stripped.split(/[:,–\(]/)[0].trim();
+      if (term.length > 3) {
+        var url = 'https://www.google.com/search?q=' + encodeURIComponent(term);
+        var link = ' <a href="' + url + '" target="_blank" rel="noopener" '
+          + 'style="font-size:.72rem;opacity:.55;text-decoration:none;'
+          + 'border:1px solid currentColor;border-radius:3px;padding:0 3px;'
+          + 'margin-right:2px;vertical-align:middle;color:inherit" '
+          + 'title="חפש ב-Google: ' + term.replace(/"/g,'') + '">&#x1F50D;</a>';
+        /* Insert link right before the content text starts */
+        content = link + content;
+      }
+    }
+    return '<div class="' + cls + '">' + content + '</div>';
   }).filter(Boolean).join('');
 }
 
@@ -3215,12 +3237,13 @@ function renderTable(id, pk) {
 function renderDetail(id, pk) {
   const el = document.getElementById(id);
   if (!el) return;
+  var withLinks = (pk === 'pO' || pk === 'pP' || pk === 'pQ');
   el.innerHTML = PLANS[pk].det.map(function(d) {
     return '<div class="dblock ' + d.z + '">' +
       '<div class="dtitle"><span class="dbadge">' + esc(d.d) + '</span>' + esc(d.t) + '</div>' +
-      '<div class="trow"><span class="tlabel">&#x05D1;&#x05D5;&#x05E7;&#x05E8;</span><div class="det-content">' + formatDet(d.m) + '</div></div>' +
-      '<div class="trow"><span class="tlabel">&#x05E6;&#x05D4;&#x05E8;&#x05D9;&#x05D9;&#x05DD;</span><div class="det-content">' + formatDet(d.n) + '</div></div>' +
-      '<div class="trow"><span class="tlabel">&#x05E2;&#x05E8;&#x05D1;</span><div class="det-content">' + formatDet(d.e) + '</div></div>' +
+      '<div class="trow"><span class="tlabel">&#x05D1;&#x05D5;&#x05E7;&#x05E8;</span><div class="det-content">' + formatDet(d.m, withLinks) + '</div></div>' +
+      '<div class="trow"><span class="tlabel">&#x05E6;&#x05D4;&#x05E8;&#x05D9;&#x05D9;&#x05DD;</span><div class="det-content">' + formatDet(d.n, withLinks) + '</div></div>' +
+      '<div class="trow"><span class="tlabel">&#x05E2;&#x05E8;&#x05D1;</span><div class="det-content">' + formatDet(d.e, withLinks) + '</div></div>' +
       '</div>';
   }).join('');
 }
