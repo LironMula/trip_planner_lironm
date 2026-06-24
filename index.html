@@ -1182,7 +1182,7 @@ body { background: var(--bg, #f0f4f8); }
                   <span class="chosen-badge" id="chosen-badge-pR">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
                   Lake Garda 🇮🇹 — 2 בסיסים, וילות משותפות
                 </div>
-                <div class="alt-meta">15–25.8 2026 &middot; BGY &middot; דרום גארדה 6n + צפון גארדה 4n &middot; Gardaland · Caneva · Busatte · Tenno · Varone</div>
+                <div class="alt-meta">15–25.8 2026 &middot; TLV→BGY 14:45 · MXP→TLV 13:05 &middot; דרום גארדה 6n + צפון גארדה 4n &middot; Gardaland · Caneva · Busatte</div>
               </div>
               <button class="choose-btn" id="choose-btn-pR" onclick="setChosen('pR')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
             </div>
@@ -1250,7 +1250,7 @@ body { background: var(--bg, #f0f4f8); }
         </div>
 </main>
 
-<div id="build-ver">v2.30.0</div>
+<div id="build-ver">v2.31.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -2927,7 +2927,7 @@ pQ: {
 
   pR: {
     rows: [
-      { d:'15.8', r:"✈ נחיתה BGY → וילה דרום גארדה", dr:'🚗 1:45-2:30 (Ferragosto!)', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'15.8', r:"✈ TLV 14:45 → BGY 18:00 → וילה דרום גארדה", dr:'✈ 3:15h + 🚗 1:45-2:30', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
       { d:'16.8', r:"יום אגם רגוע — Lazise / Peschiera", dr:'🚗 0-25 min', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
       { d:'17.8', r:"Gardaland — יום פארק מרכזי", dr:'🚗 5-20 min + חניה', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
       { d:'18.8', r:"יום שחזור — סירמיונה מעבורת / Borghetto", dr:'🚢 10-15 min לנמל', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
@@ -2937,14 +2937,15 @@ pQ: {
       { d:'22.8', r:"Busatte Adventure + חוף צפון גארדה", dr:'🚗 10-25 min', s:'צפון גארדה', z:'zk', act:'', cost:'', daycost:'' },
       { d:'23.8', r:"Lago di Tenno + Canale di Tenno", dr:'🚗 15-25 min', s:'צפון גארדה', z:'zk', act:'', cost:'', daycost:'' },
       { d:'24.8', r:"Cascata del Varone + יום גמיש", dr:'🚗 10-20 min', s:'צפון גארדה', z:'zk', act:'', cost:'', daycost:'' },
-      { d:'25.8', r:"נסיעה לשדה BGY + החזרת רכב + ✈", dr:'🚗 2h00-3h00', s:'טיסה', z:'zx', act:'', cost:'', daycost:'' }
+      { d:'25.8', r:"נסיעה ל-MXP + החזרת רכב + ✈ MXP 13:05 → 18:00", dr:'🚗 1h30-2h00 ל-MXP', s:'טיסה', z:'zx', act:'', cost:'', daycost:'' }
     ],
     det: [
       { d:'15.8', t:`יום 1 — נחיתה BGY → וילה דרום גארדה | Ferragosto!`, z:'zk',
         m:`• 💰 עלות יום (ללא לינה): €285 | לינה Mid (חלקכם): €375 | סה"כ: €660
-• ✈ נחיתה Milan Bergamo Airport (BGY). תורים ארוכים — Ferragosto!
-• 🚗 נסיעה: BGY → Lazise / Peschiera del Garda. ~90-110 ק"מ. 1:45-2:30 שעות.
-• ⚠ Ferragosto: רוב הסופרים סגורים ב-15.8. הביאו GF מהארץ ל-24-36 שעות!`,
+• [14:45] ✈ המראה TLV → BGY. משך טיסה: ~3:15 שעות. נחיתה: 18:00.
+• [18:00] 🛬 נחיתה Milan Bergamo Airport (BGY). תורים ארוכים אפשריים — Ferragosto!
+• [18:00–19:15] 🚶 BGY: שחרור כבודה + איסוף רכב 7 מקומות. ~60–75 דק'.
+• ⚠ Ferragosto: רוב הסופרים סגורים ב-15.8. הביאו GF מהארץ ל-24–36 שעות!`,
         n:`• 🛒 קניות בסיסיות: וילה → Esselunga/Interspar. 5-20 דקות. Mid: €250.
   ◦ GF: חפשו senza glutine. AIC App Italy מסייעת.
 • 🏠 הגעה לווילה. סדר חדרים. בריכה אם יש כוח.`,
@@ -3047,14 +3048,16 @@ pQ: {
 • 📦 אריזה סופית. מחר טיסה!`, sp:`לא יותר מפעילות אחת ביום זה — מחר נסיעה ארוכה.` },
       { d:'25.8', t:`יום 11 — נסיעה ל-BGY, החזרת רכב, ✈ חזרה`, z:'zx',
         m:`• 💰 עלות יום: €165
-• [07:00-08:00] 📦 אריזה. GF ארוחת בוקר מהווילה — אל תסמכו על שדה BGY!
-• 🚗 צפון גארדה → Milan Bergamo Airport (BGY). ~120-140 ק"מ. 2:00-3:00 שעות. מרווח גדול!`,
+• [07:30] 📦 אריזה סופית. GF ארוחת בוקר מהווילה — BGY ו-MXP קטנים ו-GF מוגבל!
+• 🚗 נסיעה: צפון גארדה → Milan Malpensa Airport (MXP). מרחק ~130–155 ק"מ. משך: 1:30–2:00 שעות.
+  ◦ ⚠ MXP (לא BGY!) — ודאו לפני יציאה. MXP גדול יותר, שירות טוב יותר.`,
         n:`• ⛽ מילוי דלק לפני החזרת רכב — חובה!
-• 🚗 החזרת רכב 7 מקומות ב-BGY.
-• ✈ צ'ק אין + ביטחון: 2.5-3 שעות לפני המראה.`,
-        e:`• 🍫 ארוחה בשדה + קניות. €100.
-  ◦ BGY קטן — אוכל GF מוגבל. הביאו מהווילה!
-• ✈ המראה חזרה הביתה.`, sp:`לצאת עם 3+ שעות מרווח לפני המראה.` }
+• 🚗 החזרת רכב 7 מקומות ב-MXP.
+• [10:30–11:00] ✈ צ'ק אין MXP + ביטחון: לפחות 2.5–3 שעות לפני המראה. MXP גדול!
+• [13:05] ✈ המראה MXP → ישראל. משך טיסה: ~4:55 שעות. נחיתה: 18:00.`,
+        e:`• 🍫 ארוחה בשדה MXP + קניות אחרונות. €100.
+  ◦ MXP גדול יחסית — יש אפשרויות GF, אך הביאו גיבוי מהווילה!
+• ✈ נחיתה 18:00. ברוכים השבים!`, sp:`MXP = Malpensa, לא Bergamo! לצאת עם 3+ שעות מרווח. MXP גדול — תנו זמן לביטחון.` }
     ],
     qa: [
       { q:`למה Lake Garda ולא Maggiore/Como?`, a:`נחיתה ב-BGY + דגש ילדים = גארדה נותנת צפיפות גבוהה של פארקים, מים, חבלים, טבע ואטרקציות במרחקים קצרים. Gardaland, Caneva, Busatte, מפלים — הכל 10-60 דקות.` },
@@ -3392,6 +3395,7 @@ const MAP_DATA = {
     dayOffset: 15,
     sleeps: [
       { lat:45.6689, lng:9.7003,  label:'Milan Bergamo Airport BGY', nights:null,  color:'#888888' },
+      { lat:45.6306, lng:8.7231,  label:'Milan Malpensa Airport MXP', nights:null,  color:'#888888' },
       { lat:45.443,  lng:10.686,  label:'South Garda — Lazise / Peschiera', nights:[0,5],  color:'#2a9d8f' },
       { lat:45.890,  lng:10.844,  label:'North Garda — Riva / Arco / Torbole', nights:[6,9], color:'#e76f51' }
     ],
@@ -3408,7 +3412,8 @@ const MAP_DATA = {
       { lat:45.859,  lng:10.842,  label:'חוף Riva del Garda',               day:'22.8', base:'North Garda — Riva / Arco / Torbole' },
       { lat:45.936,  lng:10.814,  label:'Lago di Tenno',                     day:'23.8', base:'North Garda — Riva / Arco / Torbole' },
       { lat:45.916,  lng:10.813,  label:'Canale di Tenno',                   day:'23.8', base:'North Garda — Riva / Arco / Torbole' },
-      { lat:45.904,  lng:10.839,  label:'Cascata del Varone',                day:'24.8', base:'North Garda — Riva / Arco / Torbole' }
+      { lat:45.904,  lng:10.839,  label:'Cascata del Varone',                day:'24.8', base:'North Garda — Riva / Arco / Torbole' },
+      { lat:45.6306, lng:8.7231,  label:'Milan Malpensa MXP (יציאה)',    day:'25.8', base:'Milan Malpensa Airport MXP' }
     ]
   }
 
