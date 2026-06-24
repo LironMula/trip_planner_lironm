@@ -417,6 +417,10 @@ body { background: var(--bg, #f0f4f8); }
       <span style="font-size:.72rem;font-weight:400;color:var(--rock)">STR · Baden-Baden · Titisee · Rust · Alsace</span>
     </button>
 
+    <button class="alt-btn" id="sidebtn-pR" onclick="switchAlt('pR',this)">
+      <span class="chosen-star">&#x2B50;</span>Lake Garda 🇮🇹<br>
+      <span style="font-size:.72rem;font-weight:400;color:var(--rock)">15–25.8 · BGY · Gardaland · Caneva · Busatte</span>
+    </button>
     <details class="older-variants" style="margin-top:10px">
       <summary style="cursor:pointer;font-size:.78rem;color:var(--rock);padding:6px 8px;border-radius:6px;background:var(--card);border:1px solid var(--border);list-style:none;display:flex;align-items:center;gap:6px">
         <span style="font-size:.9rem">&#x1F4C2;</span> גרסאות ישנות (8)
@@ -1169,9 +1173,84 @@ body { background: var(--bg, #f0f4f8); }
             </div>
           </div>
         </div>
+
+        <div class="alt-panel" id="panel-pR">
+          <div class="alt-card">
+            <div class="alt-hdr">
+              <div>
+                <div class="alt-title">
+                  <span class="chosen-badge" id="chosen-badge-pR">&#x2713; &#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</span>
+                  Lake Garda 🇮🇹 — 2 בסיסים, וילות משותפות
+                </div>
+                <div class="alt-meta">15–25.8 2026 &middot; BGY &middot; דרום גארדה 6n + צפון גארדה 4n &middot; Gardaland · Caneva · Busatte · Tenno · Varone</div>
+              </div>
+              <button class="choose-btn" id="choose-btn-pR" onclick="setChosen('pR')">&#x05E7;&#x05D1;&#x05E2; &#x05DB;&#x05DE;&#x05D5;&#x05E2;&#x05D3;&#x05E3;</button>
+            </div>
+            <div class="alt-body">
+              <div class="qa-section" id="qa-pR"></div>
+              <div class="section-hdr" style="margin-top:16px"><span class="section-hdr-title">&#x1F4CB; &#x05EA;&#x05E7;&#x05E6;&#x05D9;&#x05E8;</span></div>
+              <div class="tbl-wrap"><table><thead><tr>
+                <th>&#x05EA;&#x05D0;&#x05E8;&#x05D9;&#x05DA;</th><th>&#x05E4;&#x05E2;&#x05D9;&#x05DC;&#x05D5;&#x05EA;</th>
+                <th>Drive time</th><th>&#x05DC;&#x05D9;&#x05E0;&#x05D4;</th>
+              </tr></thead><tbody id="tbR"></tbody></table></div>
+              <div class="section-hdr" style="margin-top:24px"><span class="section-hdr-title">&#x1F5FA; &#x05DE;&#x05E4;&#x05D4;</span></div>
+              <div style="margin-top:10px"><div class="vwrap" id="pRm">
+                <div class="map-box" id="map-pR" style="height:340px"></div>
+                <button class="fs-map-btn" onclick="openFS('pR')" title="fullscreen">&#x26F6;</button>
+              </div></div>
+              <div class="det-sec"><h3>&#x05EA;&#x05DB;&#x05E0;&#x05D9;&#x05EA; &#x05DE;&#x05E4;&#x05D5;&#x05E8;&#x05D8;&#x05EA;</h3><div id="detR"></div></div>
+              <div class="det-sec" style="margin-top:24px">
+                <h3>📅 תכנית יומית + עלויות</h3>
+                <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem;min-width:520px">
+                <thead><tr style="background:#2a9d8f;color:#fff">
+                  <th style="padding:6px 8px">יום</th><th style="padding:6px 8px">תאריך</th>
+                  <th style="padding:6px 8px">פעילות מרכזית</th>
+                  <th style="padding:6px 6px;text-align:center">לינה Mid</th>
+                  <th style="padding:6px 6px;text-align:center">ללא לינה</th>
+                  <th style="padding:6px 6px;text-align:center">סה"כ</th>
+                  <th style="padding:6px 6px;text-align:center">₪</th>
+                </tr></thead><tbody>
+                <tr><td style="padding:5px 8px;text-align:center;font-weight:700">1</td><td style="white-space:nowrap">שבת 15.8</td><td>נחיתה BGY → וילה דרום גארדה</td><td style="text-align:center">€375</td><td style="text-align:center">€285</td><td style="text-align:center;font-weight:600">€660</td><td style="text-align:center">₪2,244</td></tr>
+                <tr style="background:#f0faf9"><td style="padding:5px 8px;text-align:center;font-weight:700">2</td><td style="white-space:nowrap">ראשון 16.8</td><td>יום אגם — Lazise / Peschiera</td><td style="text-align:center">€375</td><td style="text-align:center">€280</td><td style="text-align:center;font-weight:600">€655</td><td style="text-align:center">₪2,227</td></tr>
+                <tr><td style="padding:5px 8px;text-align:center;font-weight:700">3</td><td style="white-space:nowrap">שני 17.8</td><td>⭐ Gardaland</td><td style="text-align:center">€375</td><td style="text-align:center">€630</td><td style="text-align:center;font-weight:600;color:#c0392b">€1,005</td><td style="text-align:center">₪3,417</td></tr>
+                <tr style="background:#f0faf9"><td style="padding:5px 8px;text-align:center;font-weight:700">4</td><td style="white-space:nowrap">שלישי 18.8</td><td>שחזור — סירמיונה מעבורת</td><td style="text-align:center">€375</td><td style="text-align:center">€270</td><td style="text-align:center;font-weight:600">€645</td><td style="text-align:center">₪2,193</td></tr>
+                <tr><td style="padding:5px 8px;text-align:center;font-weight:700">5</td><td style="white-space:nowrap">רביעי 19.8</td><td>🌊 Caneva Aquapark</td><td style="text-align:center">€375</td><td style="text-align:center">€440</td><td style="text-align:center;font-weight:600;color:#c0392b">€815</td><td style="text-align:center">₪2,771</td></tr>
+                <tr style="background:#f0faf9"><td style="padding:5px 8px;text-align:center;font-weight:700">6</td><td style="white-space:nowrap">חמישי 20.8</td><td>🌿 Cascate di Molina</td><td style="text-align:center">€375</td><td style="text-align:center">€165</td><td style="text-align:center;font-weight:600">€540</td><td style="text-align:center">₪1,836</td></tr>
+                <tr><td style="padding:5px 8px;text-align:center;font-weight:700">7</td><td style="white-space:nowrap">שישי 21.8</td><td>מעבר צפונה + סוסים</td><td style="text-align:center">€325</td><td style="text-align:center">€360</td><td style="text-align:center;font-weight:600">€685</td><td style="text-align:center">₪2,329</td></tr>
+                <tr style="background:#f0faf9"><td style="padding:5px 8px;text-align:center;font-weight:700">8</td><td style="white-space:nowrap">שבת 22.8</td><td>Busatte Adventure</td><td style="text-align:center">€325</td><td style="text-align:center">€270</td><td style="text-align:center;font-weight:600">€595</td><td style="text-align:center">₪2,023</td></tr>
+                <tr><td style="padding:5px 8px;text-align:center;font-weight:700">9</td><td style="white-space:nowrap">ראשון 23.8</td><td>💎 Lago di Tenno</td><td style="text-align:center">€325</td><td style="text-align:center">€220</td><td style="text-align:center;font-weight:600">€545</td><td style="text-align:center">₪1,853</td></tr>
+                <tr style="background:#f0faf9"><td style="padding:5px 8px;text-align:center;font-weight:700">10</td><td style="white-space:nowrap">שני 24.8</td><td>Cascata del Varone</td><td style="text-align:center">€325</td><td style="text-align:center">€175</td><td style="text-align:center;font-weight:600">€500</td><td style="text-align:center">₪1,700</td></tr>
+                <tr><td style="padding:5px 8px;text-align:center;font-weight:700">11</td><td style="white-space:nowrap">שלישי 25.8</td><td>✈ BGY — חזרה</td><td style="text-align:center">€0</td><td style="text-align:center">€165</td><td style="text-align:center;font-weight:600">€165</td><td style="text-align:center">₪561</td></tr>
+                <tr style="background:#2a9d8f;color:#fff;font-weight:700"><td colspan="5" style="padding:7px 8px">💰 סה"כ (ללא רכב + דלק)</td><td style="text-align:center;padding:7px">€7,610</td><td style="text-align:center;padding:7px">₪25,854</td></tr>
+                </tbody></table></div>
+                <h3 style="margin-top:20px">💰 עלויות כוללות לפי קטגוריה</h3>
+                <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.81rem;min-width:480px">
+                <thead><tr style="background:#e76f51;color:#fff">
+                  <th style="padding:7px 10px;text-align:right">קטגוריה</th>
+                  <th style="padding:7px 6px;text-align:center">Low €</th>
+                  <th style="padding:7px 6px;text-align:center;background:#f4a261">Mid ★</th>
+                  <th style="padding:7px 6px;text-align:center">High €</th>
+                  <th style="padding:7px 6px;text-align:center">Mid ₪</th>
+                </tr></thead><tbody>
+                <tr><td style="padding:6px 10px">🏡 וילה משותפת — חלקכם 50%</td><td style="text-align:center">€1,650</td><td style="text-align:center;background:#fdf6ec">€3,550</td><td style="text-align:center">€4,150</td><td style="text-align:center">₪12,750</td></tr>
+                <tr style="background:#fafafa"><td style="padding:6px 10px">🚗 רכב 7 מקומות (ללא דלק)</td><td style="text-align:center">€950</td><td style="text-align:center;background:#fdf6ec">€1,300</td><td style="text-align:center">€1,850</td><td style="text-align:center">₪4,420</td></tr>
+                <tr><td style="padding:6px 10px">⛽ דלק + חניה + אגרות</td><td style="text-align:center">€500</td><td style="text-align:center;background:#fdf6ec">€700</td><td style="text-align:center">€1,000</td><td style="text-align:center">₪2,380</td></tr>
+                <tr style="background:#fafafa"><td style="padding:6px 10px">🛒 מזון + מסעדות + GF</td><td style="text-align:center">€1,700</td><td style="text-align:center;background:#fdf6ec">€2,300</td><td style="text-align:center">€3,200</td><td style="text-align:center">₪7,820</td></tr>
+                <tr><td style="padding:6px 10px">🎢 אטרקציות + פארקים</td><td style="text-align:center">€900</td><td style="text-align:center;background:#fdf6ec">€1,950</td><td style="text-align:center">€2,400</td><td style="text-align:center">₪6,630</td></tr>
+                <tr style="background:#fafafa"><td style="padding:6px 10px">🛡 באפר ושונות</td><td style="text-align:center">€500</td><td style="text-align:center;background:#fdf6ec">€750</td><td style="text-align:center">€1,100</td><td style="text-align:center">₪2,550</td></tr>
+                <tr style="background:#e76f51;color:#fff;font-weight:700"><td style="padding:8px 10px">💰 סה"כ ללא טיסות</td><td style="text-align:center">€6,200</td><td style="text-align:center;background:#f4a261">€10,550</td><td style="text-align:center">€13,700</td><td style="text-align:center">₪35,870</td></tr>
+                <tr style="background:#c0392b;color:#fff;font-weight:700"><td style="padding:8px 10px">💰 סה"כ כולל טיסות (₪12,300)</td><td style="text-align:center">~₪33,380</td><td style="text-align:center;background:#e74c3c">~₪48,170</td><td style="text-align:center">~₪58,880</td><td style="text-align:center">₪48,170</td></tr>
+                </tbody></table></div>
+              </div>
+              <div class="chat-sec">
+                <div class="chat-msgs" id="chatR"><div class="chat-empty">&#x05D0;&#x05D9;&#x05DF; &#x05D4;&#x05D5;&#x05D3;&#x05E2;&#x05D5;&#x05EA;</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
 </main>
 
-<div id="build-ver">v2.28.0</div>
+<div id="build-ver">v2.29.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -2844,7 +2923,150 @@ pQ: {
     ]
   }
 
-};
+,
+
+  pR: {
+    rows: [
+      { d:'15.8', r:"✈ נחיתה BGY → וילה דרום גארדה", dr:'🚗 1:45-2:30 (Ferragosto!)', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'16.8', r:"יום אגם רגוע — Lazise / Peschiera", dr:'🚗 0-25 min', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'17.8', r:"Gardaland — יום פארק מרכזי", dr:'🚗 5-20 min + חניה', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'18.8', r:"יום שחזור — סירמיונה מעבורת / Borghetto", dr:'🚢 10-15 min לנמל', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'19.8', r:"Caneva Aquapark — פארק מים", dr:'🚗 10-25 min', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'20.8', r:"Parco delle Cascate di Molina — מפלים", dr:'🚗 35-60 min', s:'דרום גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'21.8', r:"מעבר צפונה + רכיבת סוסים Arco/Sarca", dr:'🚗 2h00-2h30 מעבר', s:'צפון גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'22.8', r:"Busatte Adventure + חוף צפון גארדה", dr:'🚗 10-25 min', s:'צפון גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'23.8', r:"Lago di Tenno + Canale di Tenno", dr:'🚗 15-25 min', s:'צפון גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'24.8', r:"Cascata del Varone + יום גמיש", dr:'🚗 10-20 min', s:'צפון גארדה', z:'zk', act:'', cost:'', daycost:'' },
+      { d:'25.8', r:"נסיעה לשדה BGY + החזרת רכב + ✈", dr:'🚗 2h00-3h00', s:'טיסה', z:'zx', act:'', cost:'', daycost:'' }
+    ],
+    det: [
+      { d:'15.8', t:`יום 1 — נחיתה BGY → וילה דרום גארדה | Ferragosto!`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €285 | לינה Mid (חלקכם): €375 | סה"כ: €660
+• ✈ נחיתה Milan Bergamo Airport (BGY). תורים ארוכים — Ferragosto!
+• 🚗 נסיעה: BGY → Lazise / Peschiera del Garda. ~90-110 ק"מ. 1:45-2:30 שעות.
+• ⚠ Ferragosto: רוב הסופרים סגורים ב-15.8. הביאו GF מהארץ ל-24-36 שעות!`,
+        n:`• 🛒 קניות בסיסיות: וילה → Esselunga/Interspar. 5-20 דקות. Mid: €250.
+  ◦ GF: חפשו senza glutine. AIC App Italy מסייעת.
+• 🏠 הגעה לווילה. סדר חדרים. בריכה אם יש כוח.`,
+        e:`• 🍽 ארוחת ערב קלה מהבית — ללא מסעדה ביום זה.
+• 🧩 שינה מוקדמת — מחר יום אגם.`, sp:`אל תתכננו שום אטרקציה ביום 1.` },
+      { d:'16.8', t:`יום 2 — יום אגם רגוע: Lazise + Peschiera + פדלים`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €280 | לינה Mid: €375 | סה"כ: €655
+• ☀ יום פתיחה רך — ללא פארק, ללא לחץ.
+• 🚗 נסיעה: וילה → Lazise. ~5-15 ק"מ. ~15-25 דקות.`,
+        n:`• 🚶 Lazise promenade: עיירת אגם עתיקה, טיילת, גלידה. €30.
+• ⛵ סירת פדלים / שייט קצר אופציונלי: €80.
+  ◦ 🧩 צמצום: לבטל אם חם מדי.
+• 🚗 Lazise → Peschiera del Garda: ~5 ק"מ. ~10 דקות.`,
+        e:`• 🚶 Peschiera del Garda: עיירה ונציאנית מבוצרת. כניסה חינם!
+• 🍽 ארוחת ערב: מסעדה או בישול בווילה. €170.
+  ◦ GF: חפשו menu senza glutine.`, sp:`אם חם מדי — בריכת הווילה כל היום.` },
+      { d:'17.8', t:`יום 3 — Gardaland! יום פארק פעילות מרכזי`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €630 | לינה Mid: €375 | סה"כ: €1,005
+• [07:30] 🍳 ארוחת בוקר מוקדמת. GF חטיפים, מים, קרם שמש, כובע.
+• [08:00] 🚗 נסיעה: וילה → Gardaland. ~5-15 ק"מ. 5-20 דקות + 25 דקות חניה.
+• 💰 כרטיסים + Express חלקי: €450. Online בלבד!`,
+        n:`• 🎢 פארק Gardaland:
+  ◦ 🧩 צוות א: הורה + ילדים חובבי מתקנים → Raptor, Jurassic World, Blue Tornado + Express.
+  ◦ 🧩 צוות ב: הורה + ילד שצריך שקט → Prezzemolo Kingdom, מופעים, Golf, הפסקות.
+  ◦ ⏰ איחוד: 11:00, 13:00, 15:30.
+• 🍽 צהריים בפארק: €180. GF: allergen menu של Gardaland!`,
+        e:`• [14:00] 🛋 שעת שקט חובה — מופע/קרוסלה איטית/צל.
+• [15:00] 🎡 סיבוב שני — 3-4 אטרקציות.
+• [18:00] 🚗 חזרה לווילה.`, sp:`צוות ב יוצא אם עומס — ממתין בכניסה/בריכה בווילה.` },
+      { d:'18.8', t:`יום 4 — שחזור: סירמיונה במעבורת / Borghetto`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €270 | לינה Mid: €375 | סה"כ: €645
+• יום רגוע לאחר Gardaland!
+• 🚗 נסיעה: וילה → נמל Peschiera/Lazise. ~10-15 דקות.
+• 🚢 Battello (מעבורת) לסירמיונה. ~30-45 דקות. €90.
+  ◦ ⚠ לא לנסוע ברכב לסירמיונה באוגוסט — פקקים ואין חניה!`,
+        n:`• 🚶 סירמיונה: חצי-אי עתיק, Castello Scaligero, בריכה טבעית.
+• 🍦 גלידה + ארוחות: €180. GF: AIC Mobile.
+• חלופה — Borghetto sul Mincio: כפר ציורי, ~20-30 דקות. אם אגם עמוס.`,
+        e:`• 🚢 מעבורת חזרה + 🚗 לווילה.
+• 🏊 בריכת הווילה אחה"צ.`, sp:`אם המעבורת עמוסה — ישירות לBorghetto. פשוט ורגוע יותר.` },
+      { d:'19.8', t:`יום 5 — Caneva Aquapark — פארק מים!`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €440 | לינה Mid: €375 | סה"כ: €815
+• [08:00] 🍳 ארוחת בוקר מוקדמת. קרם 50+, נעלי מים, כסאות.
+• [08:30] 🚗 וילה → Caneva Aquapark (Lazise). ~10-25 דקות + 20 דקות חניה.
+• 💰 כרטיסים: €280. Online זול יותר!`,
+        n:`• 🌊 Caneva Aquapark: מגלשות, lazy river, תינוקות pool, גלים.
+  ◦ 🧩 תפסו מקום מוצל קודם! מגלשות לפי גילים.
+  ◦ לוקרים/אוכל: €160.
+• 🍽 צהריים בפארק. GF: לבדוק מראש + גיבוי.`,
+        e:`• [15:00-16:00] ⚡ לצאת לפני הקריסה — פקקים בחניה!
+• 🚗 חזרה לווילה. בריכה + ערב רגוע.`, sp:`ילד לא רוצה מגלשות — lazy river + pool תינוקות. לא לכפות.` },
+      { d:'20.8', t:`יום 6 — Parco delle Cascate di Molina — מפלים וטבע`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €165 | לינה Mid: €375 | סה"כ: €540
+• יום טבע לפני המעבר!
+• [09:30] 🚗 דרום גארדה → Molina di Ledro. ~40-55 ק"מ. 35-60 דקות.
+• 💰 כניסה Cascate di Molina: €35.`,
+        n:`• 🌿 Parco delle Cascate di Molina: שבילים בין 30 מפלים! מסלול קצר/בינוני.
+  ◦ מים + רוח = רענן גם בחום. נעלי ספורט חובה.
+• 🧺 פיקניק GF ליד הכניסה. €130.`,
+        e:`• 🚗 חזרה: Molina → וילה דרום גארדה. ~35-60 דקות.
+• 🛋 ערב אחרון בדרום גארדה. אריזה קלה.
+• 🍽 ארוחת ערב + סיום בווילה.`, sp:`מסלול קצר בלבד. עד המפל הראשון ובחזרה לילדים קטנים.` },
+      { d:'21.8', t:`יום 7 — מעבר צפונה + רכיבת סוסים Arco/Sarca`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €360 | לינה Mid: €325 | סה"כ: €685
+• [08:00] 🚗 לצאת לפני 8:30 לכיוון צפון!
+• 🚗 Lazise/Peschiera → Riva del Garda/Arco/Torbole. ~80-95 ק"מ. 2:00-2:30 שעות.
+  ◦ חלופה: לחכות ולצאת אחרי 19:30.`,
+        n:`• 🏨 צ'ק אין וילה צפון גארדה.
+• 🐴 רכיבת סוסים — Arco / עמק Sarca. ~10-30 דקות מהווילה. €150.
+  ◦ לוודא: גיל מינימום, רמת מתחילים.
+  ◦ 🧩 מי שלא רוצה — בריכה/ווילה. ניתן לדחות ליום 10.`,
+        e:`• 🛒 קניות בצפון: Riva del Garda Conad/Despar. €100.
+• 🍽 ארוחת ערב ראשונה בצפון. €160.`, sp:`אם המעבר היה קשה — ביטול רכיבה. בריכה ומנוחה.` },
+      { d:'22.8', t:`יום 8 — Busatte Adventure + חוף צפון גארדה`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €270 | לינה Mid: €325 | סה"כ: €595
+• [09:30] 🚗 Riva/Arco/Torbole → Busatte/Torbole. ~10-25 דקות.
+• 💰 Busatte Adventure (פארק חבלים): €140. לבדוק גיל/גובה מינימום מראש!`,
+        n:`• 🌿 Busatte Adventure: פארק חבלים עם נוף מדהים על האגם. ~2-3 שעות.
+  ◦ 🧩 מי שלא רוצה — צופה, מצלם, מחכה עם נשנושים.
+• 🚗 Busatte → Riva/Torbole: ~5-15 דקות.`,
+        e:`• 🌊 חוף Riva del Garda / Torbole. €130.
+  ◦ צפון = רוח ספורט, מים קרירים יותר.
+• 🍽 ארוחת ערב: €130.`, sp:`לא לכפות — אם ילד לא רוצה, חוף ובריכה.` },
+      { d:'23.8', t:`יום 9 — Lago di Tenno + Canale di Tenno`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €220 | לינה Mid: €325 | סה"כ: €545
+• [10:00] 🚗 Riva/Arco/Torbole → Lago di Tenno. ~15-25 דקות.`,
+        n:`• 🏔 Lago di Tenno: אגם טורקיז קטן ומדהים, ~720 מ' גובה. כניסה חינם! קריר יותר.
+• 🚶 Canale di Tenno: כפר אבן מימי-ביניים, 5 דקות הליכה.
+• 🧺 פיקניק GF. €180.`,
+        e:`• 🚗 חזרה: Tenno → צפון גארדה. ~20-30 דקות.
+• 🍽 ארוחת ערב בצפון. €180. GF: AIC Mobile.`, sp:`Lago di Tenno קריר יותר — טוב לילדים גם בחום.` },
+      { d:'24.8', t:`יום 10 — Cascata del Varone + יום גמיש`, z:'zk',
+        m:`• 💰 עלות יום (ללא לינה): €175 | לינה Mid: €325 | סה"כ: €500
+• [10:00] 🚗 Riva/Arco/Torbole → Cascata del Varone. ~10-20 דקות.
+• 💰 כניסה Cascata del Varone: €35.`,
+        n:`• 🌊 Cascata del Varone: מפל 87 מ' בתוך מנהרת סלע! מרשים ומרטיב בקיץ. ~45 דקות.
+• 🕐 יום גמיש: רכיבה שנדחתה, חוף, קניות, אריזה.`,
+        e:`• 🛒 קניות אחרונות + מזכרות.
+• 🍽 ארוחת ערב פינאלה — הזמינו מראש! €140.
+• 📦 אריזה סופית. מחר טיסה!`, sp:`לא יותר מפעילות אחת ביום זה — מחר נסיעה ארוכה.` },
+      { d:'25.8', t:`יום 11 — נסיעה ל-BGY, החזרת רכב, ✈ חזרה`, z:'zx',
+        m:`• 💰 עלות יום: €165
+• [07:00-08:00] 📦 אריזה. GF ארוחת בוקר מהווילה — אל תסמכו על שדה BGY!
+• 🚗 צפון גארדה → Milan Bergamo Airport (BGY). ~120-140 ק"מ. 2:00-3:00 שעות. מרווח גדול!`,
+        n:`• ⛽ מילוי דלק לפני החזרת רכב — חובה!
+• 🚗 החזרת רכב 7 מקומות ב-BGY.
+• ✈ צ'ק אין + ביטחון: 2.5-3 שעות לפני המראה.`,
+        e:`• 🍫 ארוחה בשדה + קניות. €100.
+  ◦ BGY קטן — אוכל GF מוגבל. הביאו מהווילה!
+• ✈ המראה חזרה הביתה.`, sp:`לצאת עם 3+ שעות מרווח לפני המראה.` }
+    ],
+    qa: [
+      { q:`למה Lake Garda ולא Maggiore/Como?`, a:`נחיתה ב-BGY + דגש ילדים = גארדה נותנת צפיפות גבוהה של פארקים, מים, חבלים, טבע ואטרקציות במרחקים קצרים. Gardaland, Caneva, Busatte, מפלים — הכל 10-60 דקות.` },
+      { q:`למה 2 בסיסים?`, a:`דרום לפארקים (Gardaland, Caneva, Sirmione), צפון לטבע (Busatte, Tenno, Varone). מצמצם נסיעות ארוכות וחוזרות.` },
+      { q:`למה לא שני פארקים ברצף?`, a:`Gardaland (יום 3) → יום שחזור (יום 4) → Caneva (יום 5). מניעת עומס חושי ופיזי לילדים ולמבוגרים.` },
+      { q:`מה הסיכון ביום 1 — Ferragosto?`, a:`15.8 = חג לאומי איטלקי. סופרים סגורים/שעות קצרות, כבישים עמוסים. פתרון: GF ל-24-36 שעות מהארץ. ודאו שהווילה פתוחה לקבלה.` },
+      { q:`התקציב הריאלי?`, a:`Mid: ~₪48,000 כולל טיסות (₪12,300). Low: ~₪33,380. High: ~₪58,880.` },
+      { q:`מה לבדוק לפני?`, a:`1. מחירי וילות בפועל לאוגוסט. 2. Express ב-Gardaland. 3. Caneva online. 4. גיל/גובה ב-Busatte. 5. רכיבת סוסים — גיל/רמה. 6. מסעדות GF מוסמכות AIC. 7. שעות BGY ב-25.8.` },
+      { q:`למה מעבורת לסירמיונה?`, a:`סירמיונה באוגוסט = אין חניה + פקקים. מעבורת מ-Peschiera/Lazise היא הדרך הנכונה. לא ברכב!` },
+      { q:`GF — מה לעשות?`, a:`הביאו מהארץ ל-2 ימים ראשונים. AIC App Italy למסעדות מוסמכות. Senza glutine = ללא גלוטן. בכל פארק — allergen menu + גיבוי. Esselunga/Pam/Despar = GF טוב.` }
+    ]
+  }};
 
 // ════════════════════════════════════════════════
 // MAP DATA
@@ -3164,6 +3386,30 @@ const MAP_DATA = {
       { lat:47.6140, lng:7.6646, label:'Lörrach Car Return', day:'25.8', base:'Lörrach Car Return' },
       { lat:47.5980, lng:7.5292, label:'Basel EuroAirport', day:'25.8', base:'Basel EuroAirport' }
     ]
+  },
+
+  pR: {
+    dayOffset: 15,
+    sleeps: [
+      { lat:45.6689, lng:9.7003,  label:'Milan Bergamo Airport BGY', nights:null,  color:'#888888' },
+      { lat:45.443,  lng:10.686,  label:'South Garda — Lazise / Peschiera', nights:[0,5],  color:'#2a9d8f' },
+      { lat:45.890,  lng:10.844,  label:'North Garda — Riva / Arco / Torbole', nights:[6,9], color:'#e76f51' }
+    ],
+    attractions: [
+      { lat:45.505,  lng:10.732,  label:'Lazise promenade',                  day:'16.8', base:'South Garda — Lazise / Peschiera' },
+      { lat:45.439,  lng:10.687,  label:'Peschiera del Garda',               day:'16.8', base:'South Garda — Lazise / Peschiera' },
+      { lat:45.456,  lng:10.713,  label:'Gardaland',                         day:'17.8', base:'South Garda — Lazise / Peschiera' },
+      { lat:45.492,  lng:10.608,  label:'Sirmione (מעבורת)',                 day:'18.8', base:'South Garda — Lazise / Peschiera' },
+      { lat:45.355,  lng:10.724,  label:'Borghetto sul Mincio (חלופה)',      day:'18.8', base:'South Garda — Lazise / Peschiera' },
+      { lat:45.486,  lng:10.733,  label:'Caneva Aquapark',                   day:'19.8', base:'South Garda — Lazise / Peschiera' },
+      { lat:45.610,  lng:10.908,  label:'Parco Cascate di Molina',           day:'20.8', base:'South Garda — Lazise / Peschiera' },
+      { lat:45.918,  lng:10.886,  label:'רכיבת סוסים Arco / Sarca',         day:'21.8', base:'North Garda — Riva / Arco / Torbole' },
+      { lat:45.872,  lng:10.878,  label:'Busatte Adventure',                 day:'22.8', base:'North Garda — Riva / Arco / Torbole' },
+      { lat:45.859,  lng:10.842,  label:'חוף Riva del Garda',               day:'22.8', base:'North Garda — Riva / Arco / Torbole' },
+      { lat:45.936,  lng:10.814,  label:'Lago di Tenno',                     day:'23.8', base:'North Garda — Riva / Arco / Torbole' },
+      { lat:45.916,  lng:10.813,  label:'Canale di Tenno',                   day:'23.8', base:'North Garda — Riva / Arco / Torbole' },
+      { lat:45.904,  lng:10.839,  label:'Cascata del Varone',                day:'24.8', base:'North Garda — Riva / Arco / Torbole' }
+    ]
   }
 
 };
@@ -3330,7 +3576,7 @@ function drawMapContent(map, d) {
 
   /* Convert calendar day-of-month to trip night number.
      Trip starts 16 August = night 1, so night = day - 15. */
-  function dayToNight(day) { return day - 15; }
+  function dayToNight(day) { return day - (d.dayOffset !== undefined ? d.dayOffset : 15); }
 
   var stayNodes = sleeps.filter(function(s){ return s.nights; });
 
@@ -3427,7 +3673,13 @@ function drawMapContent(map, d) {
       L.marker([a.lat,a.lng],
         {icon:L.divIcon({className:'',iconSize:[22,22],iconAnchor:[11,11],html:htm}),
          zIndexOffset:100})
-       .addTo(map).bindPopup('<b>'+a.label+'</b><br><small>'+a.day+'</small>');
+       .addTo(map).bindPopup(function(){
+        var url='https://www.google.com/search?q='+encodeURIComponent(a.label);
+        return '<b>'+a.label+'</b><br><small>'+a.day+'</small><br>'
+          +'<a href="'+url+'" target="_blank" rel="noopener" '
+          +'style="font-size:.8rem;color:#1a73e8;text-decoration:none">'
+          +'&#x1F50D; &#x05D7;&#x05E4;&#x05E9; &#x05D1;-Google</a>';
+      });
     });
   });
 
@@ -3497,7 +3749,8 @@ renderTable('tbM','pM'); renderDetail('detM','pM'); renderQA('qa-pM','pM');
 renderTable('tbN','pN'); renderDetail('detN','pN'); renderQA('qa-pN','pN');
 renderTable('tbO','pO'); renderDetail('detO','pO'); renderQA('qa-pO','pO');
 renderTable('tbP','pP'); renderDetail('detP','pP'); renderQA('qa-pP','pP');
-renderTable('tbQ','pQ'); renderDetail('detQ','pQ'); renderQA('qa-pQ','pQ');
+renderTable('tbQ','pQ');
+renderTable('tbR','pR'); renderDetail('detR','pR'); renderQA('qa-pR','pR'); renderDetail('detQ','pQ'); renderQA('qa-pQ','pQ');
 
 // activate first panel
 document.getElementById('panel-pG').classList.add('active');
