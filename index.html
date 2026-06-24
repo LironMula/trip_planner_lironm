@@ -1250,7 +1250,7 @@ body { background: var(--bg, #f0f4f8); }
         </div>
 </main>
 
-<div id="build-ver">v2.29.0</div>
+<div id="build-ver">v2.30.0</div>
 
 <script>
 // ════════════════════════════════════════════════
@@ -3483,7 +3483,7 @@ function renderTable(id, pk) {
 function renderDetail(id, pk) {
   const el = document.getElementById(id);
   if (!el) return;
-  var withLinks = (pk === 'pO' || pk === 'pP' || pk === 'pQ');
+  var withLinks = (pk === 'pO' || pk === 'pP' || pk === 'pQ' || pk === 'pR');
   el.innerHTML = PLANS[pk].det.map(function(d) {
     return '<div class="dblock ' + d.z + '">' +
       '<div class="dtitle"><span class="dbadge">' + esc(d.d) + '</span>' + esc(d.t) + '</div>' +
@@ -3628,7 +3628,12 @@ function drawMapContent(map, d) {
     L.marker([s.lat,s.lng],
       {icon:L.divIcon({className:'',iconSize:[sz,sz],iconAnchor:[sz/2,sz/2],html:htm}),
        zIndexOffset:200})
-     .addTo(map).bindPopup('<b>'+s.label+'</b>');
+     .addTo(map).bindPopup(function(){
+        var url='https://www.google.com/search?q='+encodeURIComponent(s.label);
+        if(!s.nights) return '<b>'+s.label+'</b>';
+        return '<b>'+s.label+'</b><br><small>&#x05DC;&#x05D9;&#x05DC;&#x05D5;&#x05EA; '+s.nights[0]+'&#x2013;'+s.nights[1]+'</small><br>'
+          +'<a href="'+url+'" target="_blank" rel="noopener" style="font-size:.8rem;color:#1a73e8;text-decoration:none">&#x1F50D; &#x05D7;&#x05E4;&#x05E9; &#x05D1;-Google</a>';
+      });
   });
 
   /* ── per-day dashed loops ── */
@@ -3676,9 +3681,7 @@ function drawMapContent(map, d) {
        .addTo(map).bindPopup(function(){
         var url='https://www.google.com/search?q='+encodeURIComponent(a.label);
         return '<b>'+a.label+'</b><br><small>'+a.day+'</small><br>'
-          +'<a href="'+url+'" target="_blank" rel="noopener" '
-          +'style="font-size:.8rem;color:#1a73e8;text-decoration:none">'
-          +'&#x1F50D; &#x05D7;&#x05E4;&#x05E9; &#x05D1;-Google</a>';
+          +'<a href="'+url+'" target="_blank" rel="noopener" style="font-size:.8rem;color:#1a73e8;text-decoration:none">&#x1F50D; &#x05D7;&#x05E4;&#x05E9; &#x05D1;-Google</a>';
       });
     });
   });
